@@ -2,12 +2,18 @@ require.config({
 	paths: {
 	"knockout": "../knockout-3.2.0",
 	"knockout-amd-helpers": "../knockout-amd-helpers",
-	"text": "../text"
+	"text": "../text",
+	"jQuery": "../jquery-1.9.0",
+	"bootstrap": "../bootstrap",
+	"less": "../less.min"
 	}
 });
 
 require(['knockout',
-         'knockout-amd-helpers'],
+         'knockout-amd-helpers',
+         'jQuery',
+         'bootstrap',
+         'less'],
 	function(ko) {
 
 	ko.amdTemplateEngine.defaultPath = "../../templates";
@@ -16,15 +22,27 @@ require(['knockout',
 
 	function MainViewModel(data) {
 	
-		return {
-				"test" : "some text",
-				"vm" : {
-					"username" : ko.observable(data.username),
-					"products" : data.products,
-					"orders" : ko.observableArray([]),
-					"cart" : ko.observableArray([]),
-					"customers" : ko.observableArray([])
+		var vm = {
+				"navbar" : {
+					"tabs": [{"id": "products", "name": "Produse"} , {"id": "cart", "name": "Cos cumparaturi"} , {"id": "orders", "name": "Comenzi"} , ],
+					"selectedTab" : ko.observable("products"),
+					"username" : ko.observable(data.username)
+				},
+				"products" : ko.observable(data.products),
+				"orders" : ko.observableArray([]),
+				"cart" : ko.observableArray([]),
+				"customers" : ko.observableArray([])
+			};
+		
+		var methods = {
+				"switchTab": function(tab) {
+					vm.navbar.selectedTab(tab.id);
 				}
+			};
+		
+		return {
+				"vm" : vm,
+				"methods" : methods
 		};
 	}
 
@@ -45,7 +63,4 @@ require(['knockout',
 	
 	ko.applyBindings(new MainViewModel(data));		  
 
-	$(".tabLink").removeClass("active");
-	$("#productsTab").addClass("active");
-	
 });
