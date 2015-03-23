@@ -13,7 +13,7 @@
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav" data-bind="foreach: vm.navbar.tabs">
-					<li data-bind="'attr': {'id': $data.id}, 'css': {'tabLink':true, 'active': ($parent.vm.navbar.selectedTab === $data.id)}, click: $parent.methods.switchTab">
+					<li data-bind="'attr': {'id': $data.id}, 'css': {'tabLink':true, 'active': ($parent.vm.navbar.selectedTab() === $data.id)}, click: $parent.methods.switchTab">
 						<a href="#" data-bind="text: $data.name"></a>
 					</li>
 			</ul>
