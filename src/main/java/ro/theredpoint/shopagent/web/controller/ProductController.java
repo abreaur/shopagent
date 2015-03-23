@@ -1,4 +1,4 @@
-package ro.theredpoint.shopagent.web;
+package ro.theredpoint.shopagent.web.controller;
 
 import java.util.List;
 
@@ -22,5 +22,4 @@ public class ProductController {
 	public List<Product> getProducts() {
 		return productService.getProducts();
 	}
-	
 }
