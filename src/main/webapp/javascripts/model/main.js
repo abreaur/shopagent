@@ -5,16 +5,18 @@ require.config({
 	"text": "../text",
 	"jQuery": "../jquery-1.9.0",
 	"bootstrap": "../bootstrap",
-	"less": "../less.min"
+	"less": "../less.min",
+	"products": "products",
 	}
 });
 
 require(['knockout',
+         'products',
          'knockout-amd-helpers',
          'jQuery',
          'bootstrap',
-         'less'],
-	function(ko) {
+         'less',],
+	function(ko, products) {
 
 	ko.amdTemplateEngine.defaultPath = "../../templates";
 	ko.amdTemplateEngine.defaultSuffix = ".html";
@@ -28,7 +30,7 @@ require(['knockout',
 					"selectedTab" : ko.observable("products"),
 					"username" : ko.observable(data.username)
 				},
-				"products" : ko.observable(data.products),
+				"products" : data.products,
 				"orders" : ko.observableArray([]),
 				"cart" : ko.observableArray([]),
 				"customers" : ko.observableArray([])
@@ -48,18 +50,7 @@ require(['knockout',
 
 	var data = {};
 	data.username = "Monty Burns";
-	data.products = [
-	            {"name" : "product1"},
-	            {"name" : "product2"},
-	            {"name" : "product3"},
-	            {"name" : "product1"},
-	            {"name" : "product2"},
-	            {"name" : "product3"},
-	            {"name" : "product1"},
-	            {"name" : "product2"},
-	            {"name" : "product3"},
-	            {"name" : "product4"}
-	            ];
+	data.products = products.getProducts(1, 10);
 	
 	ko.applyBindings(new MainViewModel(data));		  
 
