@@ -1,14 +1,36 @@
-<div data-bind="foreach: $data.vm.products" class="col-sm-12">
-	<div class="col-sm-3 productThumbnail">
-		<div class="productDetail">
-			<div class="productImage">
-				<img alt="some image" src="http://www.ikea.com/PIAimages/0151521_PE309574_S3.JPG">
-			</div>
-			<div class="productInfo">
-				<label data-bind="text: name"></label>
-			</div>
-			<div class="productPrice">
-				<label>Pret: </label><label data-bind="text: price"></label>
+<div class="productsContainer">
+
+	
+
+	<div class="productsFilter col-sm-12 col-md-6">
+		<label>Cautare produs</label>
+		<input name="filter" id="filter" type="text" class="form-control" placeholder="Descriere" required="" autofocus="">
+	</div>
+	
+	<div class="col-md-12"></div>
+	
+	<div data-bind="foreach: $data.vm.products">
+		<div class="col-sm-6 col-md-3 productThumbnail">
+			<div class="productDetail">
+				
+				<div class="productImage">
+					<img alt="some image" data-bind="attr: {src: picture}">
+				</div>
+					<div>
+						<div class="productInfo">
+							<h5 data-bind="text: name"></h5>
+							<label class="stock" data-bind="text: hasStock ? 'In stoc' : 'Stoc epuizat', css: {hasStock: hasStock}"></label>
+						</div>
+						<div class="productPrice">
+							<h4>
+								<label data-bind="text: price"></label>
+								<label>RON / buc</label>
+							</h4>
+						</div>
+					</div>
+					<div class="addToCart">
+						<input type="button" class="btn btn-primary btn-block" value="Adauga in cos"></input>
+					</div>
 			</div>
 		</div>
 	</div>
