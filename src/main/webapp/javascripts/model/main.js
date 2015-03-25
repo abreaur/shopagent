@@ -43,6 +43,10 @@ require(['knockout',
 					vm.navbar.selectedTab(tab.id);
 				},
 				
+				"viewCart": function(model, e) {
+					vm.navbar.selectedTab('cart');
+				},
+				
 				"addToCart" : function(model, e) {
 					vm.cart.push(model);
 				}
