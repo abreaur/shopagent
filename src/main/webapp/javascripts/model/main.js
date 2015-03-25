@@ -7,16 +7,18 @@ require.config({
 	"bootstrap": "../bootstrap",
 	"less": "../less.min",
 	"products": "products",
+	"cart": "cart",
 	}
 });
 
 require(['knockout',
          'products',
+         'cart',
          'knockout-amd-helpers',
          'jQuery',
          'bootstrap',
          'less',],
-	function(ko, products) {
+	function(ko, products, cart) {
 
 	ko.amdTemplateEngine.defaultPath = "../../templates";
 	ko.amdTemplateEngine.defaultSuffix = ".html";
@@ -32,25 +34,38 @@ require(['knockout',
 				},
 				"products" : data.products,
 				"orders" : ko.observableArray([]),
-				"cart" : ko.observableArray([]),
+				"cart" : data.cart,
 				"customers" : ko.observableArray([])
 			};
 		
 		var methods = {
 				"switchTab": function(tab) {
 					vm.navbar.selectedTab(tab.id);
+				},
+				
+				"addToCart" : function(model, e) {
+					vm.cart.push(model);
 				}
+			};
+		
+		var computed = {
+				"cartSize" : ko.computed(function(){
+						return vm.cart().length;
+					}
+				)
 			};
 		
 		return {
 				"vm" : vm,
-				"methods" : methods
+				"methods" : methods,
+				"computed" : computed
 		};
 	}
 
 	var data = {};
 	data.username = "Monty Burns";
 	data.products = products.getProducts(1, 10);
+	data.cart = cart.getCart();
 	
 	ko.applyBindings(new MainViewModel(data));		  
 

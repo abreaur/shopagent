@@ -1,9 +1,7 @@
 <div class="productsContainer">
 
-	
-
 	<div class="productsFilter col-sm-12 col-md-6">
-		<label>Cautare produs</label>
+		<label>Cauta produs</label>
 		<input name="filter" id="filter" type="text" class="form-control" placeholder="Descriere" required="" autofocus="">
 	</div>
 	
@@ -29,7 +27,7 @@
 						</div>
 					</div>
 					<div class="addToCart">
-						<input type="button" class="btn btn-primary btn-block" value="Adauga in cos"></input>
+						<input type="button" class="btn btn-primary btn-block" value="Adauga la comanda curenta" data-bind="click: $parent.methods.addToCart">
 					</div>
 			</div>
 		</div>

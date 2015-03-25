@@ -1,2 +1,11 @@
-<p>Aici lista produselor din cosul de cumparaturi</p>
-<p>Sumar comanda</p>
+<div class="cartContainer">
+
+	<div data-bind="foreach: $data.vm.cart">
+		<div class="col-sm-12 col-md-12 productThumbnail">
+			<div class="cartProductDetail">
+				<label data-bind="text: name"></label>
+				<label data-bind="text: price"></label>
+			</div>
+		</div>
+	</div>
+</div>
