@@ -1,4 +1,4 @@
-define(['info', 'knockout', 'jQuery'], function (info, ko) {
+define(['info', 'knockout'], function (info, ko) {
     'use strict';
     
 	var c = {

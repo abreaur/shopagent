@@ -1,4 +1,4 @@
-define(['knockout', 'jQuery'], function (ko) {
+define(['knockout'], function (ko) {
     'use strict';
     
 	var p = {

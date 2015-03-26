@@ -1,4 +1,4 @@
-define(['knockout', 'jQuery'], function (ko) {
+define(['knockout'], function (ko) {
     'use strict';
 	var data = {
 					"message" : ko.observable(""),
@@ -12,6 +12,9 @@ define(['knockout', 'jQuery'], function (ko) {
 			data.isVisible(true);
 			data.info(true);
 			data.error(false);
+			setTimeout(function() { 
+				data.isVisible(false);
+			}, 5000);
 		};
 
 	var showError = function(message) {
@@ -19,6 +22,9 @@ define(['knockout', 'jQuery'], function (ko) {
 			data.isVisible(true);
 			data.info(false);
 			data.error(true);
+			setTimeout(function() { 
+				data.isVisible(false);
+			}, 5000);
 		};
 
 	
