@@ -30,7 +30,7 @@ public class ProductServiceImpl implements ProductService {
 		product.setHasStock(RANDOM.nextBoolean());
 		
 		if ((product.hasStock) && (securityService.isAgent())) {
-			product.setStock(RANDOM.nextInt(100));
+//			product.setStock(RANDOM.nextInt(100));
 		}
 	}
 

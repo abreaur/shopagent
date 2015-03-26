@@ -1,33 +1,41 @@
-package ro.theredpoint.shopagent.domain;
+package ro.theredpoint.shopagent.web.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import ro.theredpoint.shopagent.domain.Product;
+import ro.theredpoint.shopagent.domain.Stock;
+
 
 /**
  * @author Radu DELIU
  */
-@Entity
-@Table(name = "PRODUCTS")
-public class Product {
+public class ProductModel {
 
 	public long id;
 	public String name;
 	public double price;
 	public String picture;
 	public boolean hasStock;
-	public Set<Stock> stocks;
+	public Set<StockModel> stocks;
 	
-	@Id
-	@GeneratedValue
-	@Column(name = "PRODUCT_ID")
+	public ProductModel(Product product) {
+		
+		this.id = product.getId();
+		this.name = product.getName();
+		this.price = product.getPrice();
+		this.picture = product.getPicture();
+		
+		stocks = new HashSet<StockModel>();
+		
+		if (product.getStocks() != null) {
+			for (Stock stock : product.getStocks()) {
+				
+				stocks.add(new StockModel(stock));
+			}
+		}
+	}
+	
 	public long getId() {
 		return id;
 	}
@@ -35,7 +43,6 @@ public class Product {
 		this.id = id;
 	}
 	
-	@Column(name = "NAME")
 	public String getName() {
 		return name;
 	}
@@ -43,7 +50,6 @@ public class Product {
 		this.name = name;
 	}
 	
-	@Column(name = "PRICE")
 	public double getPrice() {
 		return price;
 	}
@@ -51,7 +57,6 @@ public class Product {
 		this.price = price;
 	}
 	
-	@Column(name = "PICTURE")
 	public String getPicture() {
 		return picture;
 	}
@@ -59,7 +64,6 @@ public class Product {
 		this.picture = picture;
 	}
 	
-	@Transient
 	public boolean isHasStock() {
 		return hasStock;
 	}
@@ -67,11 +71,10 @@ public class Product {
 		this.hasStock = hasStock;
 	}
 
-	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
-	public Set<Stock> getStocks() {
+	public Set<StockModel> getStocks() {
 		return stocks;
 	}
-	public void setStocks(Set<Stock> stocks) {
+	public void setStocks(Set<StockModel> stocks) {
 		this.stocks = stocks;
 	}
 }
