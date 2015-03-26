@@ -5,6 +5,7 @@ import java.util.Set;
 
 import ro.theredpoint.shopagent.domain.Product;
 import ro.theredpoint.shopagent.domain.Stock;
+import ro.theredpoint.shopagent.domain.StockConverter;
 
 
 /**
@@ -25,7 +26,6 @@ public class ProductModel {
 		this.name = product.getName();
 		this.price = product.getPrice();
 		this.picture = product.getPicture();
-		this.hasStock = true;
 		
 		stocks = new HashSet<StockModel>();
 		
@@ -33,6 +33,20 @@ public class ProductModel {
 			for (Stock stock : product.getStocks()) {
 				
 				stocks.add(new StockModel(stock));
+				
+				if (stock.getQuantity() > 0) {
+					this.hasStock = true;
+				}
+				
+				if (product.getStockConverters() != null) {
+					for (StockConverter stockConverter : product.getStockConverters()) {
+						
+						if (stockConverter.getFrom().getId() == stock.getUnitOfMeasure().getId()) {
+							// Add converted stock
+							stocks.add(new StockModel(stock, stockConverter));
+						}
+					}
+				}
 			}
 		}
 	}

@@ -16,7 +16,7 @@ define(['knockout'], function (ko) {
 				$( ".informationContainer" ).slideUp( 1000, function() {
 					data.isVisible(false);
 				});
-			}, 1500);
+			}, 5000);
 		};
 
 	var showError = function(message) {
@@ -28,7 +28,7 @@ define(['knockout'], function (ko) {
 				$( ".informationContainer" ).slideUp( 1000, function() {
 					data.isVisible(false);
 				});
-			}, 1500);
+			}, 5000);
 		};
 
 	

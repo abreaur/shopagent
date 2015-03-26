@@ -24,6 +24,7 @@ public class Product {
 	public String picture;
 	public boolean hasStock;
 	public Set<Stock> stocks;
+	public Set<StockConverter> stockConverters;
 	
 	@Id
 	@GeneratedValue
@@ -73,5 +74,13 @@ public class Product {
 	}
 	public void setStocks(Set<Stock> stocks) {
 		this.stocks = stocks;
+	}
+	
+	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+	public Set<StockConverter> getStockConverters() {
+		return stockConverters;
+	}
+	public void setStockConverters(Set<StockConverter> stockConverters) {
+		this.stockConverters = stockConverters;
 	}
 }

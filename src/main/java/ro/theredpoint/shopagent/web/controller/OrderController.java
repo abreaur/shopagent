@@ -26,6 +26,7 @@ public class OrderController {
 			for (OrderItem orderItem : order.getOrderItems()) {
 				orderItem.setOrder(null);
 				orderItem.getProduct().setStocks(null);
+				orderItem.getProduct().setStockConverters(null);
 			}
 		}
 		
