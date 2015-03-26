@@ -85,6 +85,7 @@ public class OrderServiceImpl implements OrderService {
 			Product product = productRepository.findOne(productId);
 			existingItem.setProduct(product);
 			existingItem.setDiscount(discount);
+			existingItem.setQuantity(quantity);
 			existingItem.setPrice(product.getPrice());
 			existingItem.setOrder(order);
 			

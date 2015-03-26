@@ -22,8 +22,10 @@ public class OrderController {
 	
 	private Order prepareResponse(Order order) {
 		
-		for (OrderItem orderItem : order.getOrderItems()) {
-			orderItem.setOrder(null);
+		if (order.getOrderItems() != null) {
+			for (OrderItem orderItem : order.getOrderItems()) {
+				orderItem.setOrder(null);
+			}
 		}
 		
 		return order;
