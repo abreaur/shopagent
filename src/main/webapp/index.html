@@ -14,6 +14,8 @@
     <body>
 
 	<div data-bind="template: {name: 'navbar', data: $data}"></div>
+
+	<div data-bind="template: {name: 'info', data: $data.vm.info}"></div>	
     
 	<div data-bind="template: {name: $data.vm.navbar.selectedTab, data: $data}"></div>
     

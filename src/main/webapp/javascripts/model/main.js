@@ -10,19 +10,21 @@ require.config({
 	"products": "products",
 	"cart": "cart",
 	"security": "security",
+	"info": "info",
 	}
 });
 
 require(['knockout',
+         'jQuery',
          'products',
          'cart',
          'security',
+         'info',
          'knockout-amd-helpers',
-         'jQuery',
-         'touchspin',
          'bootstrap',
+         'touchspin',
          'less',],
-	function(ko, products, cart, security) {
+	function(ko, jq, products, cart, security, info) {
 
 	ko.amdTemplateEngine.defaultPath = "../../templates";
 	ko.amdTemplateEngine.defaultSuffix = ".html";
@@ -39,7 +41,8 @@ require(['knockout',
 				"orders" : ko.observableArray([]),
 				"userData" : data.userData,
 				"cartData" : data.cartData,
-				"customers" : ko.observableArray([])
+				"customers" : ko.observableArray([]),
+				"info" : data.info
 			};
 		
 		var methods = {
@@ -68,7 +71,7 @@ require(['knockout',
 		return {
 				"vm" : vm,
 				"methods" : methods,
-				"computed" : computed
+				"computed" : computed,
 		};
 	}
 
@@ -80,7 +83,8 @@ require(['knockout',
 	var data = {
 			"userData" : userObservable,
 			"cartData" : cartObservable,
-			"products" : products.getProducts(1, 10)
+			"products" : products.getProducts(1, 10),
+			"info" : info.data,
 	};
 	
 	ko.bindingHandlers.touchspin = {
@@ -88,6 +92,7 @@ require(['knockout',
 		        $(element).TouchSpin();
 		    },
 		    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+		    	
 		    }
 		};
 	

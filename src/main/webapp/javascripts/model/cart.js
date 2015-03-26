@@ -1,4 +1,4 @@
-define(['knockout', 'jQuery'], function (ko) {
+define(['info', 'knockout', 'jQuery'], function (info, ko) {
     'use strict';
     
 	var c = {
@@ -12,12 +12,18 @@ define(['knockout', 'jQuery'], function (ko) {
 	
 		addToCart : function(cartObservable, product, clientId, successCallback) {
 			var url = "/orders/" + clientId + "/addProduct";
+			var quantity = parseInt(product.quantity);
 			var params = {
-					quantity: parseInt(product.quantity),
-					productId: product.id
+					'quantity': quantity,
+					'productId': product.id
 			};
 			$.post(url, params, function(data) {
 				cartObservable(data);
+				if (quantity === 1) {
+					info.showInfo("1 produs '" + product.name + "' in valoare totala de " + quantity * product.price + " a fost adaugat la comanda curenta!");
+				} else {
+					info.showInfo(quantity + " produse '" + product.name + "' in valoare totala de " + quantity * product.price + " au fost adaugate la comanda curenta!");
+				}
 			});
 		},
 	
