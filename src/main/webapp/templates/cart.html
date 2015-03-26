@@ -1,10 +1,10 @@
 <div class="cartContainer">
 
-	<div data-bind="foreach: $data.vm.cart">
+	<div data-bind="foreach: $data.vm.cartData().orderItems">
 		<div class="col-sm-12 col-md-12 productThumbnail">
 			<div class="cartProductDetail">
-				<label data-bind="text: name"></label>
-				<label data-bind="text: price"></label>
+				<label data-bind="text: product.name"></label>
+				<label data-bind="text: product.price"></label>
 			</div>
 		</div>
 	</div>

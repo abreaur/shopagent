@@ -18,7 +18,7 @@
 					</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li><span>Bine ai venit, <strong><span data-bind="text: (vm.navbar.user().firstName + ' ' + vm.navbar.user().lastName)"></span></strong></span></li>
+				<li><span>Bine ai venit, <strong><span data-bind="text: (vm.userData().firstName + ' ' + vm.userData().lastName)"></span></strong></span></li>
 				<li><span><a href="#" class="myCart" data-bind="click: $parent.methods.viewCart"> Comanda curenta (<span data-bind="text: $parent.computed.cartSize()">0</span>)</a></span></li>
 				<li><span><a href="/logout">Iesire</a></span></li>
 			</ul>

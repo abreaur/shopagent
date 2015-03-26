@@ -1,20 +1,29 @@
-define(['knockout', 'jQuery'], function (ko) {
+define(['cart', 'knockout', 'jQuery'], function (cart, ko) {
     'use strict';
     
-	var c = {
-		getCurrentUser : function() {
+	var u = {
+		loadCurrentUser : function(userObservable, cartObservable) {
 			var url = "/security/currentUser";
 			var params = "";
 			
-			var currentUser = ko.observable({});
-			
 			$.post(url, params, function(data) {
-				currentUser(data);
+				var isClient = false;
+				userObservable(data);
+				if (data.roles) {
+					for(var i = 0; i < data.roles.length; i++) {
+						if (data.roles[i].name === 'CLIENT') {
+							isClient = true;
+							break;
+						}
+					}
+				}
+				
+				if (isClient) {
+					cart.loadCart(cartObservable, data.id);
+				}
 			});
-			
-			return currentUser;
 		}
 	};
 	
-	return c;
+	return u;
 });

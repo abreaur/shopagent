@@ -2,32 +2,23 @@ define(['knockout', 'jQuery'], function (ko) {
     'use strict';
     
 	var c = {
-		getCart : function() {
-//			var filters = JSON.stringify({});
-//			var url = "/products";
-//			var params = "filters="+filters;
-//			
-//			var results = ko.observableArray();
-//			
-//			$.post(url, params, function(data) {
-//				results(data);
-//			});
-//			
-//			return results;
-			
-			var products = [
-			                {'name' : 'some product id', 'quantity' : 1, 'price' : 12},
-			                {'name' : 'other product id', 'quantity' : 3, 'price' : 3},
-			                {'name' : 'third product id', 'quantity' : 2, 'price' : 32.5},
-			                {'name' : 'last product id', 'quantity' : 1, 'price' : 10},
-			                ];
-			
-			
-			return ko.observableArray(products);
+		loadCart : function(cartObservable, clientId) {
+			var url = "/orders/" + clientId + "/activeOrder";
+			var params = "";
+			$.post(url, params, function(data) {
+				cartObservable(data);
+			});
 		},
 	
-		addToCart : function(product) {
-			alert('added product to cart: ' + product.name + ' price: ' + product.price);
+		addToCart : function(cartObservable, product, clientId, successCallback) {
+			var url = "/orders/" + clientId + "/addProduct";
+			var params = {
+					quantity: 1,
+					productId: product.id
+			};
+			$.post(url, params, function(data) {
+				cartObservable(data);
+			});
 		},
 	
 		removeFromCart : function(product) {

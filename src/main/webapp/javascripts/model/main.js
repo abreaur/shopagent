@@ -31,12 +31,12 @@ require(['knockout',
 		var vm = {
 				"navbar" : {
 					"tabs": [{"id": "products", "name": "Produse"} , {"id": "cart", "name": "Cos cumparaturi"} , {"id": "orders", "name": "Comenzi"} , ],
-					"selectedTab" : ko.observable("products"),
-					"user" : data.user
+					"selectedTab" : ko.observable("products")
 				},
 				"products" : data.products,
 				"orders" : ko.observableArray([]),
-				"cart" : data.cart,
+				"userData" : data.userData,
+				"cartData" : data.cartData,
 				"customers" : ko.observableArray([])
 			};
 		
@@ -50,13 +50,17 @@ require(['knockout',
 				},
 				
 				"addToCart" : function(model, e) {
-					vm.cart.push(model);
+					cart.addToCart(vm.cartData, model, data.cartData().client.id);
 				}
 			};
 		
 		var computed = {
-				"cartSize" : ko.computed(function(){
-						return vm.cart().length;
+				"cartSize" : ko.computed(function() {
+						var length = 0;
+						if (vm.cartData().orderItems) {
+							length = vm.cartData().orderItems.length;
+						}
+						return length;
 					}
 				)
 			};
@@ -68,10 +72,16 @@ require(['knockout',
 		};
 	}
 
-	var data = {};
-	data.user = security.getCurrentUser();
-	data.products = products.getProducts(1, 10);
-	data.cart = cart.getCart();
+	var userObservable = ko.observable({});
+	var cartObservable = ko.observable({});
+	
+	security.loadCurrentUser(userObservable, cartObservable);
+	
+	var data = {
+			"userData" : userObservable,
+			"cartData" : cartObservable,
+			"products" : products.getProducts(1, 10)
+	};
 	
 	ko.applyBindings(new MainViewModel(data));		  
 
