@@ -1,4 +1,4 @@
-define(['cart', 'knockout', 'jQuery'], function (cart, ko) {
+define(['cart', 'knockout'], function (cart, ko) {
     'use strict';
     
 	var u = {

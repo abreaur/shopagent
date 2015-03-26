@@ -3,8 +3,6 @@ require.config({
 	"knockout": "../knockout-3.2.0",
 	"knockout-amd-helpers": "../knockout-amd-helpers",
 	"text": "../text",
-	"jQuery": "../jquery-1.9.0",
-	"touchspin": "../touchspin",
 	"bootstrap": "../bootstrap",
 	"less": "../less.min",
 	"products": "products",
@@ -15,16 +13,14 @@ require.config({
 });
 
 require(['knockout',
-         'jQuery',
          'products',
          'cart',
          'security',
          'info',
          'knockout-amd-helpers',
          'bootstrap',
-         'touchspin',
          'less',],
-	function(ko, jq, products, cart, security, info) {
+	function(ko, products, cart, security, info) {
 
 	ko.amdTemplateEngine.defaultPath = "../../templates";
 	ko.amdTemplateEngine.defaultSuffix = ".html";
@@ -34,7 +30,7 @@ require(['knockout',
 	
 		var vm = {
 				"navbar" : {
-					"tabs": [{"id": "products", "name": "Produse"} , {"id": "cart", "name": "Cos cumparaturi"} , {"id": "orders", "name": "Comenzi"} , ],
+					"tabs": [{"id": "products", "name": "Produse"} , {"id": "cart", "name": "Comanda curenta"} , {"id": "orders", "name": "Comenzi"} , ],
 					"selectedTab" : ko.observable("products")
 				},
 				"products" : data.products,
