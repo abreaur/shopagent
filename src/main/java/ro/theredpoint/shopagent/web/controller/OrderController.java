@@ -25,6 +25,7 @@ public class OrderController {
 		if (order.getOrderItems() != null) {
 			for (OrderItem orderItem : order.getOrderItems()) {
 				orderItem.setOrder(null);
+				orderItem.getProduct().setStocks(null);
 			}
 		}
 		
