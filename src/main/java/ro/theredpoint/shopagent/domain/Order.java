@@ -33,6 +33,7 @@ public class Order {
 	private Client client;
 	private OrderStatus orderStatus;
 	private Date created;
+	private Date expectedDeliveryDate;
 	private double amount;
 	private Set<OrderItem> orderItems;
 
@@ -79,6 +80,14 @@ public class Order {
 	}
 	public void setCreated(Date created) {
 		this.created = created;
+	}
+	
+	@Column(name = "EXPECTED_DELIVERY_DATE")
+	public Date getExpectedDeliveryDate() {
+		return expectedDeliveryDate;
+	}
+	public void setExpectedDeliveryDate(Date expectedDeliveryDate) {
+		this.expectedDeliveryDate = expectedDeliveryDate;
 	}
 	
 	@Column(name = "AMOUNT")

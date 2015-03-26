@@ -1,5 +1,7 @@
 package ro.theredpoint.shopagent.repository;
 
+import java.util.Set;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -13,4 +15,7 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 
 	@Query(value = "from Order o where o.client.id = ?1 and o.orderStatus = ?2")
 	public Order findByClientAndOrderStatus(long clientId, OrderStatus orderStatus);
+	
+	@Query(value = "from Order o where o.client.id = ?1 and o.orderStatus <> ?2 order by created")
+	public Set<Order> findByClientAndNotOrderStatus(long clientId, OrderStatus orderStatus);
 }

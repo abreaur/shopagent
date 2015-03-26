@@ -1,5 +1,8 @@
 package ro.theredpoint.shopagent.web.controller;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +15,6 @@ import ro.theredpoint.shopagent.service.OrderService;
 
 /**
  * @author Radu DELIU
- *
  */
 @RestController
 public class OrderController {
@@ -33,6 +35,17 @@ public class OrderController {
 		return order;
 	}
 	
+	private Set<Order> prepareResponse(Set<Order> orders) {
+		
+		Set<Order> result = new HashSet<Order>();
+		
+		for (Order order : orders) {
+			result.add(prepareResponse(order));
+		}
+		
+		return result;
+	}
+	
 	@RequestMapping(value = "orders/{clientId}/activeOrder", produces = "application/json")
 	public Order getActiveOrder(@PathVariable long clientId) {
 		
@@ -45,5 +58,17 @@ public class OrderController {
 			@RequestParam(value = "discount", defaultValue = "0", required = false) double discount) {
 		
 		return prepareResponse(orderService.addProduct(clientId, productId, quantity, discount));	
+	}
+	
+	@RequestMapping(value = "orders/{clientId}/placeActiveOrder", produces = "application/json")
+	public Order placeActiveOrder(@PathVariable long clientId) {
+		
+		return prepareResponse(orderService.placeActiveOrder(clientId));
+	}
+	
+	@RequestMapping(value = "orders/{clientId}/placedOrders", produces = "application/json")
+	public Set<Order> getPlacedOrder(@PathVariable long clientId) {
+		
+		return prepareResponse(orderService.getPlacedCustomerOrders(clientId));
 	}
 }

@@ -1,7 +1,9 @@
 package ro.theredpoint.shopagent.service.impl;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,7 +108,31 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Order removeProduct(long productId, long clientId, double quantity) {
+	public Order removeProduct(long clientId, long productId, double quantity) {
 		return null;
+	}
+
+	@Override
+	public Order placeActiveOrder(long clientId) {
+		
+		Order order = orderRepository.findByClientAndOrderStatus(clientId, OrderStatus.BASKET);
+		
+		if (order == null) {
+			// TODO No active order - Raise error
+			return null;
+		}
+		
+		order.setOrderStatus(OrderStatus.PLACED);
+		Calendar expectedDeliveryDate = Calendar.getInstance();
+		expectedDeliveryDate.add(Calendar.HOUR_OF_DAY, 24 + 12 * order.getOrderItems().size());
+		
+		order.setExpectedDeliveryDate(expectedDeliveryDate.getTime());
+		
+		return orderRepository.save(order);
+	}
+
+	@Override
+	public Set<Order> getPlacedCustomerOrders(long clientId) {
+		return orderRepository.findByClientAndNotOrderStatus(clientId, OrderStatus.BASKET);
 	}
 }

@@ -1,5 +1,7 @@
 package ro.theredpoint.shopagent.service;
 
+import java.util.Set;
+
 import ro.theredpoint.shopagent.domain.Order;
 
 /**
@@ -27,10 +29,24 @@ public interface OrderService {
 	/**
 	 * Remove a product from active order.
 	 * 
-	 * @param productId
 	 * @param clientId
+	 * @param productId
 	 * @param quantity
 	 * @return
 	 */
-	public Order removeProduct(long productId, long clientId, double quantity);
+	public Order removeProduct(long clientId, long productId, double quantity);
+	
+	/**
+	 * Place active order.
+	 * 
+	 * @param clientId
+	 * @return
+	 */
+	public Order placeActiveOrder(long clientId);
+	
+	/**
+	 * @param clientId
+	 * @return Placed customer orders.
+	 */
+	public Set<Order> getPlacedCustomerOrders(long clientId);
 }
