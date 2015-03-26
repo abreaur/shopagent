@@ -12,15 +12,17 @@
 			<a class="navbar-brand" href="#">eShop</a>
 		</div>
 		<div class="navbar-collapse collapse">
-			<ul class="nav navbar-nav" data-bind="foreach: vm.navbar.tabs">
-					<li data-bind="'attr': {'id': $data.id}, 'css': {'tabLink':true, 'active': ($parent.vm.navbar.selectedTab() === $data.id)}, click: $parent.methods.switchTab">
+			<ul class="nav navbar-nav" data-bind="foreach: navbar.tabs">
+					<li data-bind="'attr': {'id': $data.id}, 'css': {'tabLink':true, 'active': ($parent.navbar.selectedTab() === $data.id)}, click: $parent.methods.switchTab">
 						<a href="#" data-bind="text: $data.name"></a>
 					</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><span>Bine ai venit, <strong><span data-bind="text: (vm.userData().firstName + ' ' + vm.userData().lastName)"></span></strong></span></li>
-				<li><span><a href="#" class="myCart" data-bind="click: $parent.methods.viewCart"> Comanda curenta (<span data-bind="text: $parent.computed.cartSize()">0</span>)</a></span></li>
 				<li><span><a href="/logout">Iesire</a></span></li>
+				<li data-bind="visible: (computed.isAgent() && navbar.selectedClient() != '')"><span>Client curent: <strong><span data-bind="text: navbar.selectedClient"></span></strong></span></li>
+				<li><span><a href="#" data-bind="visible: (computed.isAgent() && navbar.selectedClient() === ''), click: $parent.methods.viewClients"> Selecteaza client </a></span></li>
+				<li><span><a href="#" class="myCart" data-bind="click: $parent.methods.viewCart"> Comanda curenta (<span data-bind="text: $parent.computed.cartSize()">0</span>)</a></span></li>
 			</ul>
 		</div>
 		<!--/.nav-collapse -->
