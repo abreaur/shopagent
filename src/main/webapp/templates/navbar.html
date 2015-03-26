@@ -1,5 +1,5 @@
 
-<div class="navbar navbar-default" role="navigation">
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed"
@@ -19,11 +19,11 @@
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><span>Bine ai venit, <strong><span data-bind="text: (vm.userData().firstName + ' ' + vm.userData().lastName)"></span></strong></span></li>
-				<li><span><a href="/logout">Iesire</a></span></li>
-				<li data-bind="visible: (computed.isAgent() && navbar.selectedClient() != '')"><span>Client curent: <strong><span data-bind="text: navbar.selectedClient"></span></strong></span></li>
-				<li><span><a href="#" data-bind="visible: (computed.isAgent() && navbar.selectedClient() === ''), click: $parent.methods.viewClients"> Selecteaza client </a></span></li>
+				<li data-bind="visible: (computed.isAgent() && navbar.selectedClient() != '')"><span class="myCart" >Client curent: <strong><span data-bind="text: navbar.selectedClient"></span></strong></span></li>
+				<li><span><a href="#" class="myCart" data-bind="visible: (computed.isAgent() && navbar.selectedClient() === ''), click: $parent.methods.viewClients"> Selecteaza client </a></span></li>
 				<li><span><a href="#" class="myCart" data-bind="click: $parent.methods.viewCart"> Comanda curenta (<span data-bind="text: $parent.computed.cartSize()">0</span>)</a></span></li>
-			</ul>
+				<li><span><a href="/logout">Iesire</a></span></li>
+				</ul>
 		</div>
 		<!--/.nav-collapse -->
 	</div>
