@@ -13,8 +13,10 @@ define(['knockout'], function (ko) {
 			data.info(true);
 			data.error(false);
 			setTimeout(function() { 
-				data.isVisible(false);
-			}, 5000);
+				$( ".informationContainer" ).slideUp( 1000, function() {
+					data.isVisible(false);
+				});
+			}, 1500);
 		};
 
 	var showError = function(message) {
@@ -23,8 +25,10 @@ define(['knockout'], function (ko) {
 			data.info(false);
 			data.error(true);
 			setTimeout(function() { 
-				data.isVisible(false);
-			}, 5000);
+				$( ".informationContainer" ).slideUp( 1000, function() {
+					data.isVisible(false);
+				});
+			}, 1500);
 		};
 
 	

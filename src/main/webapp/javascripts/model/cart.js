@@ -20,9 +20,9 @@ define(['info', 'knockout'], function (info, ko) {
 			$.post(url, params, function(data) {
 				cartObservable(data);
 				if (quantity === 1) {
-					info.showInfo("1 produs '" + product.name + "' in valoare totala de " + quantity * product.price + " a fost adaugat la comanda curenta!");
+					info.showInfo("1 produs '" + product.name + "' in valoare totala de " + quantity * product.price + "RON a fost adaugat la comanda curenta!");
 				} else {
-					info.showInfo(quantity + " produse '" + product.name + "' in valoare totala de " + quantity * product.price + " au fost adaugate la comanda curenta!");
+					info.showInfo(quantity + " produse '" + product.name + "' in valoare totala de " + quantity * product.price + "RON au fost adaugate la comanda curenta!");
 				}
 			});
 		},
