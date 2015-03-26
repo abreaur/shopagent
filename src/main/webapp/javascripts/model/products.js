@@ -10,6 +10,9 @@ define(['knockout', 'jQuery'], function (ko) {
 			var results = ko.observableArray();
 			
 			$.post(url, params, function(data) {
+				for(var i=0; i<data.length; i++) {
+					data[i].quantity = 1;
+				}
 				results(data);
 			});
 			

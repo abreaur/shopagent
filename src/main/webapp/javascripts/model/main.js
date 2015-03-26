@@ -4,6 +4,7 @@ require.config({
 	"knockout-amd-helpers": "../knockout-amd-helpers",
 	"text": "../text",
 	"jQuery": "../jquery-1.9.0",
+	"touchspin": "../touchspin",
 	"bootstrap": "../bootstrap",
 	"less": "../less.min",
 	"products": "products",
@@ -18,6 +19,7 @@ require(['knockout',
          'security',
          'knockout-amd-helpers',
          'jQuery',
+         'touchspin',
          'bootstrap',
          'less',],
 	function(ko, products, cart, security) {
@@ -44,11 +46,9 @@ require(['knockout',
 				"switchTab": function(tab) {
 					vm.navbar.selectedTab(tab.id);
 				},
-				
 				"viewCart": function(model, e) {
 					vm.navbar.selectedTab('cart');
 				},
-				
 				"addToCart" : function(model, e) {
 					cart.addToCart(vm.cartData, model, data.cartData().client.id);
 				}
@@ -83,6 +83,16 @@ require(['knockout',
 			"products" : products.getProducts(1, 10)
 	};
 	
-	ko.applyBindings(new MainViewModel(data));		  
-
+	ko.bindingHandlers.touchspin = {
+		    init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+		        $(element).TouchSpin();
+		    },
+		    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+		        // This will be called once when the binding is first applied to an element,
+		        // and again whenever any observables/computeds that are accessed change
+		        // Update the DOM element based on the supplied values here.
+		    }
+		};
+	
+	ko.applyBindings(new MainViewModel(data));
 });

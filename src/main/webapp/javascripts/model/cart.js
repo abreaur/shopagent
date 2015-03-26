@@ -13,7 +13,7 @@ define(['knockout', 'jQuery'], function (ko) {
 		addToCart : function(cartObservable, product, clientId, successCallback) {
 			var url = "/orders/" + clientId + "/addProduct";
 			var params = {
-					quantity: 1,
+					quantity: parseInt(product.quantity),
 					productId: product.id
 			};
 			$.post(url, params, function(data) {
