@@ -25,6 +25,7 @@ public class ProductModel {
 		this.name = product.getName();
 		this.price = product.getPrice();
 		this.picture = product.getPicture();
+		this.hasStock = true;
 		
 		stocks = new HashSet<StockModel>();
 		
