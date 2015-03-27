@@ -5,22 +5,24 @@ require.config({
 	"text": "../text",
 	"bootstrap": "../bootstrap",
 	"less": "../less.min",
+	"info": "info",
 	"products": "products",
 	"cart": "cart",
 	"security": "security",
-	"info": "info",
+	"clients": "clients",
 	}
 });
 
 require(['knockout',
+         'info',
          'products',
          'cart',
          'security',
-         'info',
+         'clients',
          'knockout-amd-helpers',
          'bootstrap',
          'less',],
-	function(ko, products, cart, security, info) {
+	function(ko, info, products, cart, security, clients) {
 
 	ko.amdTemplateEngine.defaultPath = "../../templates";
 	ko.amdTemplateEngine.defaultSuffix = ".html";
@@ -29,28 +31,13 @@ require(['knockout',
 	function MainViewModel(data) {
 	
 		var vm = {
-				"navbar" : {
-					"tabs": [{"id": "products", "name": "Produse"} , {"id": "cart", "name": "Comanda curenta"} , {"id": "orders", "name": "Comenzi"} , ],
-					"selectedTab" : ko.observable("products")
-				},
 				"products" : data.products,
 				"orders" : ko.observableArray([]),
 				"userData" : data.userData,
 				"cartData" : data.cartData,
+				"clientsData" : data.clientsData,
 				"customers" : ko.observableArray([]),
 				"info" : data.info
-			};
-		
-		var methods = {
-				"switchTab": function(tab) {
-					vm.navbar.selectedTab(tab.id);
-				},
-				"viewCart": function(model, e) {
-					vm.navbar.selectedTab('cart');
-				},
-				"addToCart" : function(model, e) {
-					cart.addToCart(vm.cartData, model, data.cartData().client.id);
-				}
 			};
 		
 		var computed = {
@@ -61,24 +48,77 @@ require(['knockout',
 						}
 						return length;
 					}
-				)
+				),
+				"isAgent" : ko.computed(function() {
+						var isAgent = false;
+						if (vm.userData().roles) {
+							var roles = vm.userData().roles;
+							for(var i = 0; i < roles.length; i++) {
+								if (roles[i].name === 'AGENT') {
+									isAgent = true;
+									break;
+								}
+							}
+						}
+						
+						return isAgent;
+					}
+				),
+			};
+
+		var navbar = {
+				"tabs": ko.computed(function() {
+					var tabs = [{"id": "products", "name": "Produse"} , 
+						         {"id": "cart", "name": "Comanda curenta"} , 
+						         {"id": "orders", "name": "Comenzi"}];
+					if (computed.isAgent()) {
+				         tabs.push({"id": "clients", "name": "Clienti"});
+					}
+					return tabs;
+				}),
+				"selectedTab" : ko.observable("products"),
+				"selectedClient" : ko.observable("")
+		};
+		
+		
+		var methods = {
+				"switchTab": function(tab) {
+					navbar.selectedTab(tab.id);
+				},
+				"viewCart": function(model, e) {
+					navbar.selectedTab('cart');
+				},
+				"viewClients": function(model, e) {
+					navbar.selectedTab('clients');
+				},
+				"addToCart" : function(model, e) {
+					cart.addToCart(vm.cartData, model, data.cartData().client.id);
+				},
+				"selectClient" : function(model, e) {
+					clients.selectClient(vm.cartData, model.id);
+					navbar.selectedClient(model.name);
+				}
 			};
 		
 		return {
 				"vm" : vm,
 				"methods" : methods,
 				"computed" : computed,
+				"navbar" : navbar,
 		};
 	}
 
 	var userObservable = ko.observable({});
 	var cartObservable = ko.observable({});
+	var clientsObservable = ko.observable({});
+	clients.loadClients(clientsObservable);
 	
 	security.loadCurrentUser(userObservable, cartObservable);
 	
 	var data = {
 			"userData" : userObservable,
 			"cartData" : cartObservable,
+			"clientsData" : clientsObservable,
 			"products" : products.getProducts(1, 10),
 			"info" : info.data,
 	};
