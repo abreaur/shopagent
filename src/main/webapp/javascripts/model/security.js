@@ -3,7 +3,7 @@ define(['cart', 'knockout'], function (cart, ko) {
     
 	var u = {
 		loadCurrentUser : function(userObservable, cartObservable) {
-			var url = "/security/currentUser";
+			var url = "security/currentUser";
 			var params = "";
 			
 			$.post(url, params, function(data) {

@@ -4,7 +4,7 @@ define(['knockout'], function (ko) {
 	var p = {
 		getProducts : function() {
 			var filters = JSON.stringify({});
-			var url = "/products";
+			var url = "products";
 			var params = "filters="+filters;
 			
 			var results = ko.observableArray();

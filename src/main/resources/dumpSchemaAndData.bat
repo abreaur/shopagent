@@ -1,0 +1,1 @@
+mysqldump -u shopagent -pshopagent shopagent > shopagent.sql

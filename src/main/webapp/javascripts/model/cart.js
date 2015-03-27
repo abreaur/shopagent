@@ -3,7 +3,7 @@ define(['info', 'knockout'], function (info, ko) {
     
 	var c = {
 		loadCart : function(cartObservable, clientId) {
-			var url = "/orders/" + clientId + "/activeOrder";
+			var url = "orders/" + clientId + "/activeOrder";
 			var params = "";
 			$.post(url, params, function(data) {
 				cartObservable(data);
@@ -11,7 +11,7 @@ define(['info', 'knockout'], function (info, ko) {
 		},
 	
 		addToCart : function(cartObservable, product, clientId, successCallback) {
-			var url = "/orders/" + clientId + "/addProduct";
+			var url = "orders/" + clientId + "/addProduct";
 			var quantity = parseInt(product.quantity);
 			var params = {
 					'quantity': quantity,
