@@ -124,7 +124,7 @@ public class OrderServiceImpl implements OrderService {
 		
 		orderItem.setAmount(BigDecimal.valueOf(orderItem.getQuantity()).multiply(BigDecimal.valueOf(
 				orderItem.getPrice())).multiply(BigDecimal.ONE.subtract(BigDecimal.valueOf(
-				orderItem.getDiscount()))).doubleValue());
+				orderItem.getDiscount()).divide(BigDecimal.valueOf(100)))).doubleValue());
 	}
 	
 	private void updateOrderAmount(Order order) {
