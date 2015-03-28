@@ -2,11 +2,19 @@
 	<table class="table">
 	    <thead>
 	        <tr>
-	        	<th class="col-sm-1 col-md-1"></th>
-		        <th class="col-sm-4 col-md-4">Nume articol</th>
-		        <th class="col-sm-1 col-md-1">Cantitate</th>
-		        <th class="col-sm-2 col-md-2">Discount</th>
-		        <th class="col-sm-2 col-md-2"></th>
+	        	<!-- ko if: $parent.computed.isAgent -->
+        			<th class="col-sm-1 col-md-1"></th>
+			        <th class="col-sm-4 col-md-4">Nume articol</th>
+			        <th class="col-sm-1 col-md-1">Cantitate</th>
+			        <th class="col-sm-2 col-md-2">Discount</th>
+			        <th class="col-sm-2 col-md-2"></th>
+        		<!-- /ko -->
+        		<!-- ko ifnot: $parent.computed.isAgent -->
+		        	<th class="col-sm-1 col-md-1"></th>
+			        <th class="col-sm-6 col-md-4">Nume articol</th>
+			        <th class="col-sm-1 col-md-1">Cantitate</th>
+			        <th class="col-sm-2 col-md-2"></th>
+		        <!-- /ko -->
 	        </tr>
 	    </thead>
 	    <tbody data-bind="foreach: $data.vm.cartData().orderItems">
@@ -22,17 +30,21 @@
 	            		<input type="text" data-bind="touchspin: 'normal', value: quantity, event: {change: $parent.methods.updateQuantity}">
 	            	</div>
 	            	<div class="productPrice">
-	            		<label data-bind="text: price + ' RON'"></label>
+	            		<label data-bind="text: amount + ' RON'"></label>
 	            	</div>
 	            </td>
+	            <!-- ko if: $parent.computed.isAgent -->
 	         	<td>
 	            	<div>
 	            		<input type="text" data-bind="touchspin: 'percent', value: discount, event: {change: $parent.methods.updateProductDiscount}">
 	            	</div>
 	            </td>
+	            <!-- /ko -->
 	         	<td>
 	            	<div>
-	            		<span>-</span>
+	            		<a href="#">
+  							<span class="glyphicon glyphicon-remove" data-bind="click: $parent.methods.removeProduct"></span>
+						</a>
 	            	</div>
 	            </td>
 	    	</tr>

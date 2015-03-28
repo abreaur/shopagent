@@ -177,3 +177,11 @@ form {
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 }
+
+.glyphicon-remove {
+	margin-top: 10px;
+	color: 595959;
+	&:hover {
+		color: red;
+	}
+}

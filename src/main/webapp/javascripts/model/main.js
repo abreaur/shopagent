@@ -110,6 +110,10 @@ require(['knockout',
 					e.stopPropagation();
 					cart.updateProductDiscount(vm.cartData, model, data.cartData().clientId);
 				},
+				"removeProduct" : function(model, e) {
+					e.stopPropagation();
+					cart.removeProduct(vm.cartData, model, data.cartData().clientId);
+				},
 				"selectClient" : function(model, e) {
 					clients.selectClient(vm.cartData, model.id);
 					navbar.selectedClient(model.name);
@@ -154,9 +158,7 @@ require(['knockout',
 		        	$(element).TouchSpin();
 		        } else if (valueUnwrapped === 'small') {
 		        	$(element).TouchSpin({
-			            verticalbuttons: true,
-			            verticalupclass: 'glyphicon glyphicon-plus',
-			            verticaldownclass: 'glyphicon glyphicon-minus'
+			            verticalbuttons: true
 			        });
 		        } else if (valueUnwrapped === 'percent') {
 		        	$(element).TouchSpin({

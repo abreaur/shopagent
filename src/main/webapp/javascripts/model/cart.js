@@ -27,47 +27,76 @@ define(['info', 'knockout'], function (info, ko) {
 					'unitOfMeasure' : product.unitOfMeasure,
 			};
 			$.post(url, params, function(data) {
-				cartObservable(data.data);
-				if (quantity === 1) {
-					info.showInfo("1 produs '" + product.name + "' in valoare totala de " + quantity * product.price + " RON a fost adaugat la comanda curenta!");
+				if (data.successful) {
+					cartObservable(data.data);
+					if (quantity === 1) {
+						info.showInfo("1 produs '" + product.name + "' in valoare totala de " + quantity * product.price + " RON a fost adaugat la comanda curenta!");
+					} else {
+						info.showInfo(quantity + " produse '" + product.name + "' in valoare totala de " + quantity * product.price + " RON au fost adaugate la comanda curenta!");
+					}
 				} else {
-					info.showInfo(quantity + " produse '" + product.name + "' in valoare totala de " + quantity * product.price + " RON au fost adaugate la comanda curenta!");
+					info.showError("Eroare la adaugare produs!");
+					console.log(data.error);
 				}
 			});
 		},
 		
-		updateQuantity : function(cartObservable, product, clientId) {
-			var url = "orders/" + clientId + "/addProduct";
-			var quantity = parseInt(product.quantity);
+		updateQuantity : function(cartObservable, item, clientId) {
+			var url = "orders/" + clientId + "/updateProductQuantity";
+			var quantity = parseInt(item.quantity);
 			var params = {
 					'quantity': quantity,
-					'productId': product.id,
-					'stockId' : product.stockId,
-					'unitOfMeasure' : product.unitOfMeasure,
+					'productId': item.product.id,
+					'stockId' : item.stockId,
+					'unitOfMeasure' : item.unitOfMeasure,
 			};
 			
 			$.post(url, params, function(data) {
-				cartObservable(data.data);
+				if (data.successful) {
+					cartObservable(data.data);
+				} else {
+					info.showError("Eroare la modificarea cantitatii!");
+					console.log(data.error);
+				}
 			});
 		},
 		
-		updateProductDiscount : function(cartObservable, product, clientId) {
-			var url = "orders/" + clientId + "/addProduct";
-			var discount = parseInt(product.discount) / 100;
+		updateProductDiscount : function(cartObservable, item, clientId) {
+			var url = "orders/" + clientId + "/updateProductDiscount";
+			var discount = parseInt(item.discount) / 100;
 			var params = {
 					'discount': discount,
-					'productId': product.id,
-					'stockId' : product.stockId,
-					'unitOfMeasure' : product.unitOfMeasure,
+					'productId': item.product.id,
+					'stockId' : item.stockId,
+					'unitOfMeasure' : item.unitOfMeasure,
 			};
 			$.post(url, params, function(data) {
-				cartObservable(data.data);
+				if (data.successful) {
+					cartObservable(data.data);
+				} else {
+					info.showError("Eroare la modificarea discountului!");
+					console.log(data.error);
+				}
 			});
 		},
 	
-		removeFromCart : function(product) {
-			alert('removing product from cart: ' + product.name);
-		}
+		removeProduct : function(cartObservable, item, clientId) {
+			var url = "orders/" + clientId + "/removeProduct";
+			var params = {
+					'productId': item.product.id,
+					'stockId' : item.stockId,
+					'unitOfMeasure' : item.unitOfMeasure,
+			};
+			
+			$.post(url, params, function(data) {
+				if (data.successful) {
+					cartObservable(data.data);
+				} else {
+					info.showError("Eroare la eliminarea produsului din comanda curenta!");
+					console.log(data.error);
+				}
+			});
+		},
 	};
 	
 	return c;
