@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.6.21, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.5.40, for Win64 (x86)
 --
 -- Host: localhost    Database: shopagent
 -- ------------------------------------------------------
--- Server version	5.6.21-log
+-- Server version	5.5.40
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -57,12 +57,14 @@ CREATE TABLE `order_items` (
   `quantity` double DEFAULT NULL,
   `order_id` bigint(20) NOT NULL,
   `product_id` bigint(20) NOT NULL,
+  `stock_id` bigint(20) NOT NULL,
+  `unit_of_measure_id` bigint(20) NOT NULL,
   PRIMARY KEY (`order_item`),
   KEY `FK_9gap2fmw66v092ntb58rtohwh` (`order_id`),
   KEY `FK_3fea23hxar30bx7m7h8ed25n9` (`product_id`),
   CONSTRAINT `FK_3fea23hxar30bx7m7h8ed25n9` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`),
   CONSTRAINT `FK_9gap2fmw66v092ntb58rtohwh` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -71,7 +73,7 @@ CREATE TABLE `order_items` (
 
 LOCK TABLES `order_items` WRITE;
 /*!40000 ALTER TABLE `order_items` DISABLE KEYS */;
-INSERT INTO `order_items` VALUES (5,10,0,10,1,5,1),(6,2,0,2,2,5,3),(7,3,0,3,3,5,4),(8,0.28,0,0.28,1,5,12),(9,12,0,12,2,5,2);
+INSERT INTO `order_items` VALUES (5,10,0,10,1,5,1,0,0),(6,2,0,2,2,5,3,0,0),(7,3,0,3,3,5,4,0,0),(8,0.28,0,0.28,1,5,12,0,0),(9,12,0,12,2,5,2,0,0),(14,90,0,45,2,6,2,5,1),(15,750,0.5,150,10,6,1,1,1);
 /*!40000 ALTER TABLE `order_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -89,12 +91,13 @@ CREATE TABLE `orders` (
   `order_status` int(11) DEFAULT NULL,
   `client_id` bigint(20) NOT NULL,
   `user_id` bigint(20) NOT NULL,
+  `expected_delivery_date` datetime DEFAULT NULL,
   PRIMARY KEY (`order_id`),
   KEY `FK_ktwyfbqs32h2qw22odq9pqmex` (`client_id`),
   KEY `FK_k8kupdtcdpqd57b6j4yq9uvdj` (`user_id`),
   CONSTRAINT `FK_k8kupdtcdpqd57b6j4yq9uvdj` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   CONSTRAINT `FK_ktwyfbqs32h2qw22odq9pqmex` FOREIGN KEY (`client_id`) REFERENCES `clients` (`client_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,7 +106,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (5,0,'2015-03-26 21:37:56',0,2,2);
+INSERT INTO `orders` VALUES (5,0,'2015-03-26 21:37:56',0,2,2,NULL),(6,840,'2015-03-28 17:44:23',0,1,2,NULL);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -118,7 +121,6 @@ CREATE TABLE `products` (
   `product_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `picture` varchar(255) DEFAULT NULL,
-  `price` double DEFAULT NULL,
   PRIMARY KEY (`product_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -129,7 +131,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'Rola 1','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/I/M/IMG_8717.JPG',10),(2,'Product 2','http://www.ikea.com/PIAimages/0151521_PE309574_S3.JPG',12),(3,'Product 3','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1018300.jpg',2),(4,'Product 4','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/10347_large.jpg',3),(5,'Product 5','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1002051.jpg',23),(6,'Product 6','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1003367_1.jpg',9.99),(7,'Rola 7','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1027681.jpg',10.01),(8,'Product 8','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1024332_1.jpg',22),(9,'Product 9','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1018502.jpg',245),(10,'Product 10','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/3/4/34112.jpg',32),(11,'Product 11','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1019117_2.jpg',3),(12,'Product 12','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1032638.jpg',0.28);
+INSERT INTO `products` VALUES (1,'Rola 1','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/I/M/IMG_8717.JPG'),(2,'Product 2','http://www.ikea.com/PIAimages/0151521_PE309574_S3.JPG'),(3,'Product 3','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1018300.jpg'),(4,'Product 4','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/10347_large.jpg'),(5,'Product 5','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1002051.jpg'),(6,'Product 6','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1003367_1.jpg'),(7,'Rola 7','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1027681.jpg'),(8,'Product 8','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1024332_1.jpg'),(9,'Product 9','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1018502.jpg'),(10,'Product 10','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/3/4/34112.jpg'),(11,'Product 11','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1019117_2.jpg'),(12,'Product 12','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1032638.jpg');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -205,6 +207,7 @@ CREATE TABLE `stocks` (
   `unit_of_measure_id` bigint(20) NOT NULL,
   `quantity` double DEFAULT NULL,
   `unit_price` double DEFAULT NULL,
+  `main` bit(1) DEFAULT NULL,
   PRIMARY KEY (`stock_id`),
   KEY `FK_htp625bmmsb6gay567r5sdfoc` (`product_id`),
   KEY `FK_t4dk2ens7morbtjktcpy5xoe7` (`unit_of_measure_id`),
@@ -219,7 +222,7 @@ CREATE TABLE `stocks` (
 
 LOCK TABLES `stocks` WRITE;
 /*!40000 ALTER TABLE `stocks` DISABLE KEYS */;
-INSERT INTO `stocks` VALUES (1,1,1,10,150),(2,7,1,2,3),(3,1,2,15,1),(4,1,2,25,1),(5,2,1,2,45),(6,3,1,0,345),(7,4,1,0,12),(8,5,1,2,19.99),(9,6,2,200,2),(10,8,1,0,1999),(11,9,1,1,298),(12,10,1,22,12);
+INSERT INTO `stocks` VALUES (1,1,1,10,150,''),(2,7,1,2,3,''),(3,1,2,15,1,'\0'),(4,1,2,25,1,'\0'),(5,2,1,2,45,''),(6,3,1,0,345,''),(7,4,1,0,12,''),(8,5,1,2,19.99,''),(9,6,2,200,2,''),(10,8,1,0,1999,''),(11,9,1,1,298,''),(12,10,1,22,12,'');
 /*!40000 ALTER TABLE `stocks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -311,4 +314,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-03-26 22:43:16
+-- Dump completed on 2015-03-28 18:22:38
