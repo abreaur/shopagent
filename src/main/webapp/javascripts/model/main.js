@@ -100,25 +100,25 @@ require(['knockout',
 				},
 				"addToCart" : function(model, e) {
 					e.stopPropagation();
-					cart.addToCart(vm.cartData, model, data.cartData().client.id);
+					cart.addToCart(vm.cartData, model, data.cartData().clientId);
 				},
 				"updateQuantity" : function(model, e) {
 					e.stopPropagation();
-					cart.updateQuantity(vm.cartData, model, data.cartData().client.id);
+					cart.updateQuantity(vm.cartData, model, data.cartData().clientId);
 				},
 				"updateProductDiscount" : function(model, e) {
 					e.stopPropagation();
-					cart.updateProductDiscount(vm.cartData, model, data.cartData().client.id);
+					cart.updateProductDiscount(vm.cartData, model, data.cartData().clientId);
 				},
 				"selectClient" : function(model, e) {
 					clients.selectClient(vm.cartData, model.id);
 					navbar.selectedClient(model.name);
 				},
 				"selectProduct" : function(model, e) {
-					e.stopPropagation();
-					vm.selectedProduct(model);
-					vm.selectedProductId(model.id);
-					navbar.selectedTab("");
+//					e.stopPropagation();
+//					vm.selectedProduct(model);
+//					vm.selectedProductId(model.id);
+//					navbar.selectedTab("");
 				}
 			};
 		

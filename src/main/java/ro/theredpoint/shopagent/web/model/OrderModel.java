@@ -15,6 +15,7 @@ import ro.theredpoint.shopagent.domain.OrderItem;
 public class OrderModel {
 
 	private long id;
+	private long clientId;
 	private OrderStatus orderStatus;
 	private Date created;
 	private Date expectedDeliveryDate;
@@ -24,6 +25,7 @@ public class OrderModel {
 	public OrderModel(Order order) {
 		
 		this.id = order.getId();
+		this.setClientId(order.getClient().getId());
 		this.orderStatus = order.getOrderStatus();
 		this.created = order.getCreated();
 		this.expectedDeliveryDate = order.getExpectedDeliveryDate();
@@ -75,5 +77,13 @@ public class OrderModel {
 	}
 	public void setOrderItems(List<OrderItemModel> orderItems) {
 		this.orderItems = orderItems;
+	}
+
+	public long getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(long clientId) {
+		this.clientId = clientId;
 	}
 }

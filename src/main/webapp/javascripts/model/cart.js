@@ -22,10 +22,12 @@ define(['info', 'knockout'], function (info, ko) {
 			var quantity = parseInt(product.quantity());
 			var params = {
 					'quantity': quantity,
-					'productId': product.id
+					'productId': product.id,
+					'stockId' : product.stockId,
+					'unitOfMeasure' : product.unitOfMeasure,
 			};
 			$.post(url, params, function(data) {
-				cartObservable(data);
+				cartObservable(data.data);
 				if (quantity === 1) {
 					info.showInfo("1 produs '" + product.name + "' in valoare totala de " + quantity * product.price + " RON a fost adaugat la comanda curenta!");
 				} else {
@@ -39,19 +41,14 @@ define(['info', 'knockout'], function (info, ko) {
 			var quantity = parseInt(product.quantity);
 			var params = {
 					'quantity': quantity,
-					'productId': product.id
+					'productId': product.id,
+					'stockId' : product.stockId,
+					'unitOfMeasure' : product.unitOfMeasure,
 			};
 			
-			alert(quantity);
-			
-//			$.post(url, params, function(data) {
-//				cartObservable(data);
-//				if (quantity === 1) {
-//					info.showInfo("1 produs '" + product.name + "' in valoare totala de " + quantity * product.price + " RON a fost adaugat la comanda curenta!");
-//				} else {
-//					info.showInfo(quantity + " produse '" + product.name + "' in valoare totala de " + quantity * product.price + " RON au fost adaugate la comanda curenta!");
-//				}
-//			});
+			$.post(url, params, function(data) {
+				cartObservable(data.data);
+			});
 		},
 		
 		updateProductDiscount : function(cartObservable, product, clientId) {
@@ -59,17 +56,13 @@ define(['info', 'knockout'], function (info, ko) {
 			var discount = parseInt(product.discount) / 100;
 			var params = {
 					'discount': discount,
-					'productId': product.id
+					'productId': product.id,
+					'stockId' : product.stockId,
+					'unitOfMeasure' : product.unitOfMeasure,
 			};
-			alert(discount);
-//			$.post(url, params, function(data) {
-//				cartObservable(data);
-//				if (quantity === 1) {
-//					info.showInfo("1 produs '" + product.name + "' in valoare totala de " + quantity * product.price + " RON a fost adaugat la comanda curenta!");
-//				} else {
-//					info.showInfo(quantity + " produse '" + product.name + "' in valoare totala de " + quantity * product.price + " RON au fost adaugate la comanda curenta!");
-//				}
-//			});
+			$.post(url, params, function(data) {
+				cartObservable(data.data);
+			});
 		},
 	
 		removeFromCart : function(product) {
