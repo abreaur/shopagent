@@ -213,7 +213,7 @@ CREATE TABLE `stocks` (
   KEY `FK_t4dk2ens7morbtjktcpy5xoe7` (`unit_of_measure_id`),
   CONSTRAINT `FK_htp625bmmsb6gay567r5sdfoc` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`),
   CONSTRAINT `FK_t4dk2ens7morbtjktcpy5xoe7` FOREIGN KEY (`unit_of_measure_id`) REFERENCES `unit_of_measures` (`unit_of_measure_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -222,7 +222,7 @@ CREATE TABLE `stocks` (
 
 LOCK TABLES `stocks` WRITE;
 /*!40000 ALTER TABLE `stocks` DISABLE KEYS */;
-INSERT INTO `stocks` VALUES (1,1,1,10,150,''),(2,7,1,2,3,''),(3,1,2,15,1,'\0'),(4,1,2,25,1,'\0'),(5,2,1,2,45,''),(6,3,1,0,345,''),(7,4,1,0,12,''),(8,5,1,2,19.99,''),(9,6,2,200,2,''),(10,8,1,0,1999,''),(11,9,1,1,298,''),(12,10,1,22,12,'');
+INSERT INTO `stocks` VALUES (1,1,1,10,150,''),(2,7,1,2,3,''),(3,1,2,15,1,'\0'),(4,1,2,25,1,'\0'),(5,2,1,2,45,''),(6,3,1,0,345,''),(7,4,1,0,12,''),(8,5,1,2,19.99,''),(9,6,2,200,2,''),(10,8,1,0,1999,''),(11,9,1,1,298,''),(12,10,1,22,12,''),(13,11,1,0,10,''),(14,12,1,0,22,'');
 /*!40000 ALTER TABLE `stocks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -314,4 +314,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-03-28 18:22:38
+-- Dump completed on 2015-03-28 18:42:20
