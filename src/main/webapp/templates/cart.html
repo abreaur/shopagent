@@ -5,19 +5,20 @@
 	        	<!-- ko if: $parent.computed.isAgent -->
         			<th class="col-sm-1 col-md-1"></th>
 			        <th class="col-sm-4 col-md-4">Nume articol</th>
-			        <th class="col-sm-1 col-md-1">Cantitate</th>
-			        <th class="col-sm-2 col-md-2">Discount</th>
-			        <th class="col-sm-2 col-md-2"></th>
+			        <th class="col-sm-3 col-md-3">Cantitate</th>
+			        <th class="col-sm-3 col-md-3">Discount</th>
+			        <th class="col-sm-1 col-md-1"></th>
         		<!-- /ko -->
         		<!-- ko ifnot: $parent.computed.isAgent -->
 		        	<th class="col-sm-1 col-md-1"></th>
-			        <th class="col-sm-6 col-md-4">Nume articol</th>
-			        <th class="col-sm-1 col-md-1">Cantitate</th>
+			        <th class="col-sm-6 col-md-6">Nume articol</th>
+			        <th class="col-sm-3 col-md-3">Cantitate</th>
 			        <th class="col-sm-2 col-md-2"></th>
 		        <!-- /ko -->
 	        </tr>
 	    </thead>
-	    <tbody data-bind="foreach: $data.vm.cartData().orderItems">
+	    <tbody>
+	    	<!-- ko foreach: $data.vm.cartData().orderItems -->
 	        <tr>
 	        	<td>
 	        		<div class="productImage">
@@ -27,7 +28,7 @@
 	            <td data-bind="text: product.name"></td>
 	            <td>
 	            	<div>
-	            		<input type="text" data-bind="touchspin: 'normal', value: quantity, event: {change: $parent.methods.updateQuantity}">
+	            		<input type="text" data-bind="touchspin: unitOfMeasure, value: quantity, event: {change: $parent.methods.updateQuantity}">
 	            	</div>
 	            	<div class="productPrice">
 	            		<label data-bind="text: amount + ' RON'"></label>
@@ -47,6 +48,35 @@
 						</a>
 	            	</div>
 	            </td>
+	    	</tr>
+	    	<!-- /ko -->
+	    	<tr>
+	        	<td></td>
+	            <td>
+	            	<div class="productPrice">
+	            		<label>TOTAL:</label>
+	            	</div>
+	            </td>
+	            <td>
+	            	<div class="productPrice">
+	            		<label data-bind="text: $data.vm.cartData().amount + ' RON'"></label>
+	            	</div>
+	            </td>
+	            <!-- ko if: $parent.computed.isAgent -->
+	         	<td>
+	         		<div>
+	            		<input type="button" class="btn btn-primary btn-block" value="Plaseaza comanda" data-bind="click: $parent.methods.placeActiveOrder">
+	            	</div>
+	         	</td>
+	         	<td></td>
+	            <!-- /ko -->
+	            <!-- ko ifnot: $parent.computed.isAgent -->
+	         	<td>
+	            	<div>
+	            		<input type="button" class="btn btn-primary btn-block" value="Plaseaza comanda" data-bind="click: $parent.methods.placeActiveOrder">
+	            	</div>
+	            </td>
+	            <!-- /ko -->
 	    	</tr>
 	    </tbody>
 	</table>

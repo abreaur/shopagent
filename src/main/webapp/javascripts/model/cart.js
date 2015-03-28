@@ -63,7 +63,7 @@ define(['info', 'knockout'], function (info, ko) {
 		
 		updateProductDiscount : function(cartObservable, item, clientId) {
 			var url = "orders/" + clientId + "/updateProductDiscount";
-			var discount = parseInt(item.discount) / 100;
+			var discount = Math.min(100, parseInt(item.discount));
 			var params = {
 					'discount': discount,
 					'productId': item.product.id,
@@ -93,6 +93,21 @@ define(['info', 'knockout'], function (info, ko) {
 					cartObservable(data.data);
 				} else {
 					info.showError("Eroare la eliminarea produsului din comanda curenta!");
+					console.log(data.error);
+				}
+			});
+		},
+	
+		placeActiveOrder : function(cartObservable, item, clientId) {
+			var url = "orders/" + clientId + "/placeActiveOrder";
+			var params = {};
+			
+			$.post(url, params, function(data) {
+				if (data.successful) {
+					cartObservable(data.data);
+					info.showInfo("Comanda curenta a fost plasata cu succes si va ajunge la destinatie la data: " + data.data.expectedDeliveryDate + "!");
+				} else {
+					info.showError("Eroare la plasarea comenzii curente!");
 					console.log(data.error);
 				}
 			});

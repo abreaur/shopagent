@@ -74,7 +74,8 @@ require(['knockout',
 				"tabs": ko.computed(function() {
 					var tabs = [{"id": "products", "name": "Produse"} , 
 						         {"id": "cart", "name": "Comanda curenta"} , 
-						         {"id": "orders", "name": "Comenzi"}];
+//						         {"id": "orders", "name": "Comenzi"}
+						         ];
 					if (computed.isAgent()) {
 				         tabs.push({"id": "clients", "name": "Clienti"});
 					}
@@ -113,6 +114,10 @@ require(['knockout',
 				"removeProduct" : function(model, e) {
 					e.stopPropagation();
 					cart.removeProduct(vm.cartData, model, data.cartData().clientId);
+				},
+				"placeActiveOrder" : function(model, e) {
+					e.stopPropagation();
+					cart.placeActiveOrder(vm.cartData, model, data.cartData().clientId);
 				},
 				"selectClient" : function(model, e) {
 					clients.selectClient(vm.cartData, model.id);
@@ -154,9 +159,7 @@ require(['knockout',
 		    	var value = valueAccessor();
 		        var valueUnwrapped = ko.unwrap(value);
 
-		        if (valueUnwrapped === 'normal') {
-		        	$(element).TouchSpin();
-		        } else if (valueUnwrapped === 'small') {
+		        if (valueUnwrapped === 'small') {
 		        	$(element).TouchSpin({
 			            verticalbuttons: true
 			        });
@@ -168,6 +171,10 @@ require(['knockout',
 		                boostat: 5,
 		                maxboostedstep: 10,
 		                postfix: '%'
+		            });
+		        } else {
+		        	$(element).TouchSpin({
+		                postfix: valueUnwrapped
 		            });
 		        }
 		    },
