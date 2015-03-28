@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ro.theredpoint.shopagent.domain.Order;
-import ro.theredpoint.shopagent.domain.OrderItem;
 import ro.theredpoint.shopagent.service.OrderService;
+import ro.theredpoint.shopagent.web.model.OrderModel;
+import ro.theredpoint.shopagent.web.model.WebResponse;
 
 /**
  * @author Radu DELIU
@@ -22,22 +23,14 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 	
-	private Order prepareResponse(Order order) {
+	private OrderModel prepareResponse(Order order) {
 		
-		if (order.getOrderItems() != null) {
-			for (OrderItem orderItem : order.getOrderItems()) {
-				orderItem.setOrder(null);
-				orderItem.getProduct().setStocks(null);
-				orderItem.getProduct().setStockConverters(null);
-			}
-		}
-		
-		return order;
+		return new OrderModel(order);
 	}
 	
-	private Set<Order> prepareResponse(Set<Order> orders) {
+	private Set<OrderModel> prepareResponse(Set<Order> orders) {
 		
-		Set<Order> result = new HashSet<Order>();
+		Set<OrderModel> result = new HashSet<OrderModel>();
 		
 		for (Order order : orders) {
 			result.add(prepareResponse(order));
@@ -47,27 +40,80 @@ public class OrderController {
 	}
 	
 	@RequestMapping(value = "orders/{clientId}/activeOrder", produces = "application/json")
-	public Order getActiveOrder(@PathVariable long clientId) {
+	public OrderModel getActiveOrder(@PathVariable long clientId) {
 		
 		return prepareResponse(orderService.getActiveOrder(clientId));
 	}
 	
 	@RequestMapping(value = "orders/{clientId}/addProduct", produces = "application/json")
-	public Order addProduct(@PathVariable long clientId, @RequestParam(value = "productId") long productId,
-			@RequestParam(value = "quantity") double quantity,
-			@RequestParam(value = "discount", defaultValue = "0", required = false) double discount) {
+	public WebResponse<OrderModel> addProduct(@PathVariable long clientId, @RequestParam(value = "productId") long productId,
+			@RequestParam(value = "stockId") long stockId, @RequestParam(value = "unitOfMeasure") String unitOfMeasure,
+			@RequestParam(value = "quantity") double quantity) {
 		
-		return prepareResponse(orderService.addProduct(clientId, productId, quantity, discount));	
+		try {
+			return new WebResponse<OrderModel>(prepareResponse(orderService.addProduct(clientId, productId, stockId,
+					unitOfMeasure, quantity)));
+		}
+		catch(Exception e) {
+			return new WebResponse<OrderModel>(e.getMessage());
+		}
 	}
 	
 	@RequestMapping(value = "orders/{clientId}/placeActiveOrder", produces = "application/json")
-	public Order placeActiveOrder(@PathVariable long clientId) {
+	public WebResponse<OrderModel> placeActiveOrder(@PathVariable long clientId) {
 		
-		return prepareResponse(orderService.placeActiveOrder(clientId));
+		try {
+			return new WebResponse<OrderModel>(prepareResponse(orderService.placeActiveOrder(clientId)));
+		}
+		catch (Exception e) {
+			return new WebResponse<OrderModel>(e.getMessage());
+		}
 	}
 	
+	@RequestMapping(value = "orders/{clientId}/updateProductQuantity", produces = "application/json")
+	public WebResponse<OrderModel> updateProductQuantity(@PathVariable long clientId, @RequestParam(value = "productId") long productId,
+			@RequestParam(value = "stockId") long stockId, @RequestParam(value = "unitOfMeasure") String unitOfMeasure,
+			@RequestParam(value = "quantity") double quantity) {
+		
+		try {
+			return new WebResponse<OrderModel>(prepareResponse(orderService.updateQuantity(clientId, productId, stockId,
+					unitOfMeasure, quantity)));
+		}
+		catch(Exception e) {
+			return new WebResponse<OrderModel>(e.getMessage());
+		}
+	}
+	
+	@RequestMapping(value = "orders/{clientId}/updateProductDiscount", produces = "application/json")
+	public WebResponse<OrderModel> updateProductDiscount(@PathVariable long clientId, @RequestParam(value = "productId") long productId,
+			@RequestParam(value = "stockId") long stockId, @RequestParam(value = "unitOfMeasure") String unitOfMeasure,
+			@RequestParam(value = "discount") double discount) {
+		
+		try {
+			return new WebResponse<OrderModel>(prepareResponse(orderService.updateDiscount(clientId, productId, stockId,
+					unitOfMeasure, discount)));
+		}
+		catch(Exception e) {
+			return new WebResponse<OrderModel>(e.getMessage());
+		}
+	}
+
+	
+	@RequestMapping(value = "orders/{clientId}/removeProduct", produces = "application/json")
+	public WebResponse<OrderModel> removeProduct(@PathVariable long clientId, @RequestParam(value = "productId") long productId,
+			@RequestParam(value = "stockId") long stockId, @RequestParam(value = "unitOfMeasure") String unitOfMeasure) {
+		
+		try {
+			return new WebResponse<OrderModel>(prepareResponse(orderService.removeProduct(clientId, productId, stockId,
+					unitOfMeasure)));
+		}
+		catch(Exception e) {
+			return new WebResponse<OrderModel>(e.getMessage());
+		}
+	}
+
 	@RequestMapping(value = "orders/{clientId}/placedOrders", produces = "application/json")
-	public Set<Order> getPlacedOrder(@PathVariable long clientId) {
+	public Set<OrderModel> getPlacedOrder(@PathVariable long clientId) {
 		
 		return prepareResponse(orderService.getPlacedCustomerOrders(clientId));
 	}

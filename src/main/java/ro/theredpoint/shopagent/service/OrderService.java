@@ -20,21 +20,50 @@ public interface OrderService {
 	 * 
 	 * @param clientId
 	 * @param productId
+	 * @param stockId
+	 * @param unitOfMeasure
 	 * @param quantity
-	 * @param discount
 	 * @return
 	 */
-	public Order addProduct(long clientId, long productId, double quantity, double discount);
+	public Order addProduct(long clientId, long productId, long stockId, String unitOfMeasure, double quantity);
 	
+	/**
+	 * Update quantity of an existing product.
+	 * 
+	 * @param clientId
+	 * @param productId
+	 * @param stockId
+	 * @param unitOfMeasure
+	 * @param quantity
+	 * @return
+	 * @throws BusinessException 
+	 */
+	public Order updateQuantity(long clientId, long productId, long stockId, String unitOfMeasure, double quantity) throws BusinessException;
+
+	/**
+	 * Update discount of an existing product.
+	 * 
+	 * @param clientId
+	 * @param productId
+	 * @param stockId
+	 * @param unitOfMeasure
+	 * @param quantity
+	 * @return
+	 * @throws BusinessException 
+	 */
+	public Order updateDiscount(long clientId, long productId, long stockId, String unitOfMeasure, double discount) throws BusinessException;
+
 	/**
 	 * Remove a product from active order.
 	 * 
 	 * @param clientId
 	 * @param productId
-	 * @param quantity
+	 * @param stockId
+	 * @param unitOfMeasure
 	 * @return
+	 * @throws BusinessException
 	 */
-	public Order removeProduct(long clientId, long productId, double quantity);
+	public Order removeProduct(long clientId, long productId, long stockId, String unitOfMeasure) throws BusinessException;
 	
 	/**
 	 * Place active order.

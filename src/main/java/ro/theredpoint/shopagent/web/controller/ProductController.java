@@ -1,7 +1,7 @@
 package ro.theredpoint.shopagent.web.controller;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,24 +21,30 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 	
-	private Set<ProductModel> convertToModel(Set<Product> products) {
+	private List<ProductModel> convertToModel(List<Product> products) {
 		
-		Set<ProductModel> productModels = new HashSet<ProductModel>();
+		List<ProductModel> productModels = new ArrayList<ProductModel>();
 		
 		for (Product product : products) {
-			productModels.add(new ProductModel(product));
+			productModels.add(new ProductModel(product, true));
 		}
 		
 		return productModels;
 	}
 	
 	@RequestMapping(value = "products", produces = "application/json")
-	public Set<ProductModel> getProducts() {
+	public List<ProductModel> getProducts() {
 		return convertToModel(productService.getProducts());
 	}
 	
 	@RequestMapping(value = "products/{name}", produces = "application/json")
-	public Set<ProductModel> getProductsByName(@PathVariable String name) {
+	public List<ProductModel> getProductsByName(@PathVariable String name) {
 		return convertToModel(productService.getProductsByName(name));
+	}
+	
+	@RequestMapping(value = "product/{productId}", produces = "application/json")
+	public ProductModel getProduct(@PathVariable long productId) {
+		
+		return new ProductModel(productService.getProduct(productId), true);
 	}
 }

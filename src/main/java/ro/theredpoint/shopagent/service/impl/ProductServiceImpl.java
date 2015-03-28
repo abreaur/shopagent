@@ -1,7 +1,6 @@
 package ro.theredpoint.shopagent.service.impl;
 
-import java.util.Random;
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,37 +16,24 @@ import ro.theredpoint.shopagent.service.SecurityService;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-	private static final Random RANDOM = new Random(System.currentTimeMillis());
-	
 	@Autowired
 	private SecurityService securityService;  
 	
 	@Autowired
 	private ProductRepository productRepository; 
 	
-	private void randomProductInfo(Product product) {
+	public List<Product> getProducts() {
 		
-		product.setHasStock(RANDOM.nextBoolean());
-		
-		if ((product.hasStock) && (securityService.isAgent())) {
-//			product.setStock(RANDOM.nextInt(100));
-		}
-	}
-
-	public Set<Product> getProducts() {
-		
-		Set<Product> products = productRepository.findAll();
-		
-		for (Product product : products) {
-			
-			randomProductInfo(product);
-		}
-		
-		return products;
+		return productRepository.findAll();
 	}
 
 	@Override
-	public Set<Product> getProductsByName(String name) {
+	public List<Product> getProductsByName(String name) {
 		return productRepository.findByName(name);
+	}
+
+	@Override
+	public Product getProduct(long id) {
+		return productRepository.findOne(id);
 	}
 }

@@ -18,6 +18,7 @@ public class Stock {
 	private long id;
 	private UnitOfMeasure unitOfMeasure;
 	private Product product;
+	private boolean main;
 	private double quantity;
 	private double price;
 	
@@ -63,5 +64,13 @@ public class Stock {
 	}
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	
+	@Column(name = "MAIN")
+	public boolean isMain() {
+		return main;
+	}
+	public void setMain(boolean main) {
+		this.main = main;
 	}
 }

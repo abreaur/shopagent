@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  * @author Radu DELIU
@@ -20,9 +19,7 @@ public class Product {
 
 	public long id;
 	public String name;
-	public double price;
 	public String picture;
-	public boolean hasStock;
 	public Set<Stock> stocks;
 	public Set<StockConverter> stockConverters;
 	
@@ -44,14 +41,6 @@ public class Product {
 		this.name = name;
 	}
 	
-	@Column(name = "PRICE")
-	public double getPrice() {
-		return price;
-	}
-	public void setPrice(double price) {
-		this.price = price;
-	}
-	
 	@Column(name = "PICTURE")
 	public String getPicture() {
 		return picture;
@@ -60,14 +49,6 @@ public class Product {
 		this.picture = picture;
 	}
 	
-	@Transient
-	public boolean isHasStock() {
-		return hasStock;
-	}
-	public void setHasStock(boolean hasStock) {
-		this.hasStock = hasStock;
-	}
-
 	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
 	public Set<Stock> getStocks() {
 		return stocks;

@@ -1,6 +1,6 @@
 package ro.theredpoint.shopagent.service;
 
-import java.util.Set;
+import java.util.List;
 
 import ro.theredpoint.shopagent.domain.Product;
 
@@ -9,6 +9,7 @@ import ro.theredpoint.shopagent.domain.Product;
  */
 public interface ProductService {
 
-	public Set<Product> getProducts();
-	public Set<Product> getProductsByName(String name);
+	public List<Product> getProducts();
+	public List<Product> getProductsByName(String name);
+	public Product getProduct(long id);
 }

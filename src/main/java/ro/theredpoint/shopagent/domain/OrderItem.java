@@ -20,6 +20,8 @@ public class OrderItem {
 	private double price;
 	private Order order;
 	private Product product;
+	private Stock stock;
+	private UnitOfMeasure unitOfMeasure;
 	private double amount;
 	private double discount;
 	
@@ -81,5 +83,23 @@ public class OrderItem {
 	}
 	public void setDiscount(double discount) {
 		this.discount = discount;
+	}
+	
+	@ManyToOne
+	@JoinColumn(name = "STOCK_ID", nullable = false)
+	public Stock getStock() {
+		return stock;
+	}
+	public void setStock(Stock stock) {
+		this.stock = stock;
+	}
+	
+	@ManyToOne
+	@JoinColumn(name = "UNIT_OF_MEASURE_ID", nullable = false)
+	public UnitOfMeasure getUnitOfMeasure() {
+		return unitOfMeasure;
+	}
+	public void setUnitOfMeasure(UnitOfMeasure unitOfMeasure) {
+		this.unitOfMeasure = unitOfMeasure;
 	}
 }

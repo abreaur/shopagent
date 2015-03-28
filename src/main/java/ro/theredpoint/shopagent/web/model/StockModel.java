@@ -14,6 +14,7 @@ public class StockModel {
 	private String unitOfMeasure;
 	private double quantity;
 	private double price;
+	private boolean main;
 	
 	public StockModel(Stock stock) {
 		
@@ -21,6 +22,7 @@ public class StockModel {
 		unitOfMeasure = stock.getUnitOfMeasure().getCode();
 		quantity = stock.getQuantity();
 		price = stock.getPrice();
+		main = stock.isMain();
 	}
 	
 	public StockModel(Stock stock, StockConverter stockConverter) {
@@ -54,5 +56,11 @@ public class StockModel {
 	}
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	public boolean isMain() {
+		return main;
+	}
+	public void setMain(boolean main) {
+		this.main = main;
 	}
 }

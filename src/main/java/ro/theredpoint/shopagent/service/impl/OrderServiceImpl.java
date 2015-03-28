@@ -10,11 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ro.theredpoint.shopagent.domain.Order;
-import ro.theredpoint.shopagent.domain.OrderItem;
 import ro.theredpoint.shopagent.domain.Order.OrderStatus;
+import ro.theredpoint.shopagent.domain.OrderItem;
 import ro.theredpoint.shopagent.domain.Product;
+import ro.theredpoint.shopagent.repository.OrderItemRepository;
 import ro.theredpoint.shopagent.repository.OrderRepository;
 import ro.theredpoint.shopagent.repository.ProductRepository;
+import ro.theredpoint.shopagent.repository.StockRepository;
+import ro.theredpoint.shopagent.repository.UnitOfMeasureRepository;
+import ro.theredpoint.shopagent.service.BusinessException;
 import ro.theredpoint.shopagent.service.ClientService;
 import ro.theredpoint.shopagent.service.OrderService;
 import ro.theredpoint.shopagent.service.SecurityService;
@@ -29,13 +33,16 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Autowired
 	private OrderRepository orderRepository;
-	
+	@Autowired
+	private OrderItemRepository orderItemRepository;
 	@Autowired
 	private ProductRepository productRepository;
-	
+	@Autowired
+	private StockRepository stockRepository;
+	@Autowired
+	private UnitOfMeasureRepository unitOfMeasureRepository;
 	@Autowired
 	private SecurityService securityService;
-	
 	@Autowired
 	private ClientService clientService;
 	
@@ -66,18 +73,10 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Order addProduct(long clientId, long productId, double quantity, double discount) {
+	public Order addProduct(long clientId, long productId, long stockId, String unitOfMeasure, double quantity) {
 		
 		Order order = getActiveOrder(clientId);
-		
-		OrderItem existingItem = null;
-		
-		for (OrderItem orderItem : order.getOrderItems()) {
-			if (orderItem.getProduct().getId() == productId) {
-				existingItem = orderItem;
-				break;
-			}
-		}
+		OrderItem existingItem = findExistingItem(productId, stockId, unitOfMeasure, order);
 		
 		if (existingItem == null) {
 			LOG.info(String.format("Product %d does not exists on order %d. Creating a new order item.",
@@ -86,10 +85,12 @@ public class OrderServiceImpl implements OrderService {
 			existingItem = new OrderItem();
 			Product product = productRepository.findOne(productId);
 			existingItem.setProduct(product);
-			existingItem.setDiscount(discount);
+			existingItem.setDiscount(0);
 			existingItem.setQuantity(quantity);
-			existingItem.setPrice(product.getPrice());
+			existingItem.setStock(stockRepository.findOne(stockId));
+			existingItem.setPrice(existingItem.getStock().getPrice());
 			existingItem.setOrder(order);
+			existingItem.setUnitOfMeasure(unitOfMeasureRepository.findByCode(unitOfMeasure));
 			
 			order.getOrderItems().add(existingItem);
 		}
@@ -98,18 +99,44 @@ public class OrderServiceImpl implements OrderService {
 			existingItem.setQuantity(BigDecimal.valueOf(existingItem.getQuantity()).add(BigDecimal.valueOf(quantity)).doubleValue());
 		}
 		
-		// TODO use discount
-		// Update amount
-		existingItem.setAmount(BigDecimal.valueOf(quantity).multiply(BigDecimal.valueOf(
-				existingItem.getPrice())).doubleValue());
+		updateOrderItemAmount(existingItem);
 		
+		updateOrderAmount(order);
 		
 		return orderRepository.save(order);
 	}
 
-	@Override
-	public Order removeProduct(long clientId, long productId, double quantity) {
-		return null;
+	private OrderItem findExistingItem(long productId, long stockId,
+			String unitOfMeasure, Order order) {
+		OrderItem existingItem = null;
+		
+		for (OrderItem orderItem : order.getOrderItems()) {
+			if ((orderItem.getProduct().getId() == productId) && (orderItem.getStock().getId() == stockId)
+					 && (orderItem.getUnitOfMeasure().getCode().equals(unitOfMeasure))) {
+				existingItem = orderItem;
+				break;
+			}
+		}
+		return existingItem;
+	}
+
+	private void updateOrderItemAmount(OrderItem orderItem) {
+		
+		orderItem.setAmount(BigDecimal.valueOf(orderItem.getQuantity()).multiply(BigDecimal.valueOf(
+				orderItem.getPrice())).multiply(BigDecimal.ONE.subtract(BigDecimal.valueOf(
+				orderItem.getDiscount()))).doubleValue());
+	}
+	
+	private void updateOrderAmount(Order order) {
+
+		BigDecimal amount = BigDecimal.ZERO;
+		
+		for (OrderItem orderItem : order.getOrderItems()) {
+
+			amount = amount.add(BigDecimal.valueOf(orderItem.getAmount()));
+		}
+		
+		order.setAmount(amount.doubleValue());
 	}
 
 	@Override
@@ -134,5 +161,73 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Set<Order> getPlacedCustomerOrders(long clientId) {
 		return orderRepository.findByClientAndNotOrderStatus(clientId, OrderStatus.BASKET);
+	}
+
+	@Override
+	public Order updateQuantity(long clientId, long productId, long stockId, String unitOfMeasure, double quantity) throws BusinessException {
+
+		Order order = getActiveOrder(clientId);
+		OrderItem existingItem = findExistingItem(productId, stockId, unitOfMeasure, order);
+		
+		if (existingItem == null) {
+			LOG.error(String.format("Product %s, stockId: %d, unitOfMeasure %s does not exists on order %d of client %d",
+					productId, stockId, unitOfMeasure, order.getId(), clientId));
+			throw new BusinessException("Articolul selectat nu exista pe comanda");
+		}
+		else {
+			LOG.info(String.format("Updating quantity of order item %d, new quantity %f", existingItem.getId(), quantity));
+			existingItem.setQuantity(quantity);
+		}
+		
+		updateOrderItemAmount(existingItem);
+		
+		updateOrderAmount(order);
+		
+		return orderRepository.save(order);
+	}
+
+	@Override
+	public Order removeProduct(long clientId, long productId, long stockId, String unitOfMeasure) throws BusinessException {
+		
+		Order order = getActiveOrder(clientId);
+		OrderItem existingItem = findExistingItem(productId, stockId, unitOfMeasure, order);
+		
+		if (existingItem == null) {
+			LOG.error(String.format("Product %s, stockId: %d, unitOfMeasure %s does not exists on order %d of "
+					+ "client %d. Nothing to remove",
+					productId, stockId, unitOfMeasure, order.getId(), clientId));
+			return order;
+		}
+
+		LOG.info(String.format("Removing item %d from order %d", existingItem.getId(), order.getId()));
+		
+		order.getOrderItems().remove(existingItem);
+		orderItemRepository.delete(existingItem);
+		updateOrderAmount(order);
+		
+		return orderRepository.save(order);
+	}
+
+	@Override
+	public Order updateDiscount(long clientId, long productId, long stockId, String unitOfMeasure, double discount) throws BusinessException {
+
+		Order order = getActiveOrder(clientId);
+		OrderItem existingItem = findExistingItem(productId, stockId, unitOfMeasure, order);
+		
+		if (existingItem == null) {
+			LOG.error(String.format("Product %s, stockId: %d, unitOfMeasure %s does not exists on order %d of client %d",
+					productId, stockId, unitOfMeasure, order.getId(), clientId));
+			throw new BusinessException("Articolul selectat nu exista pe comanda");
+		}
+		else {
+			LOG.info(String.format("Updating discount of order item %d, new discount %f", existingItem.getId(), discount));
+			existingItem.setDiscount(discount);
+		}
+		
+		updateOrderItemAmount(existingItem);
+		
+		updateOrderAmount(order);
+		
+		return orderRepository.save(order);
 	}
 }
