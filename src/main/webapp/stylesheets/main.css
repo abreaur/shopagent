@@ -79,19 +79,23 @@ form {
 }
 
 .productDetail {
-  display: block;
-  padding: 10px 10px 10px 10px;
-  margin: 10px 10px 10px 10px;
-  color: #555;
-  background-color: #fff;
-  background-image: none;
-  border: 1px solid rgba(102, 175, 233, .6);
-  border-radius: 4px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	  display: block;
+	  padding: 10px 10px 10px 10px;
+	  margin: 10px 10px 10px 10px;
+	  color: #555;
+	  background-color: #fff;
+	  background-image: none;
+	  border: 1px solid rgba(102, 175, 233, .6);
+	  border-radius: 4px;
+	  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+	  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.productPrice {
+	text-align:right;
 }
 
 .productImage > img{
@@ -145,11 +149,15 @@ form {
 	text-align: center;
 }
 
+.quantity {
+	width: 50%;
+}
+
 .mainContainer {
 	margin-top: 5%;
 }
 
-.infoMessage{
+.infoMessage {
 	width:100%;
 	height: 100%;
 	padding-top:15px;
@@ -159,8 +167,8 @@ form {
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 }
-	
-.errorMessage{
+
+.errorMessage {
 	height: 100%;
 	padding-top:15px;
 	color: red;

@@ -37,7 +37,11 @@ require(['knockout',
 				"cartData" : data.cartData,
 				"clientsData" : data.clientsData,
 				"customers" : ko.observableArray([]),
-				"info" : data.info
+				"info" : data.info,
+				"selectedProductId" : ko.observable(""),
+				"selectedProduct" : ko.observable({
+					
+				})
 			};
 		
 		var computed = {
@@ -84,19 +88,37 @@ require(['knockout',
 		var methods = {
 				"switchTab": function(tab) {
 					navbar.selectedTab(tab.id);
+					vm.selectedProductId("");
 				},
 				"viewCart": function(model, e) {
 					navbar.selectedTab('cart');
+					vm.selectedProductId("");
 				},
 				"viewClients": function(model, e) {
 					navbar.selectedTab('clients');
+					vm.selectedProductId("");
 				},
 				"addToCart" : function(model, e) {
+					e.stopPropagation();
 					cart.addToCart(vm.cartData, model, data.cartData().client.id);
+				},
+				"updateQuantity" : function(model, e) {
+					e.stopPropagation();
+					cart.updateQuantity(vm.cartData, model, data.cartData().client.id);
+				},
+				"updateProductDiscount" : function(model, e) {
+					e.stopPropagation();
+					cart.updateProductDiscount(vm.cartData, model, data.cartData().client.id);
 				},
 				"selectClient" : function(model, e) {
 					clients.selectClient(vm.cartData, model.id);
 					navbar.selectedClient(model.name);
+				},
+				"selectProduct" : function(model, e) {
+					e.stopPropagation();
+					vm.selectedProduct(model);
+					vm.selectedProductId(model.id);
+					navbar.selectedTab("");
 				}
 			};
 		
@@ -125,7 +147,27 @@ require(['knockout',
 	
 	ko.bindingHandlers.touchspin = {
 		    init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-		        $(element).TouchSpin();
+		    	var value = valueAccessor();
+		        var valueUnwrapped = ko.unwrap(value);
+
+		        if (valueUnwrapped === 'normal') {
+		        	$(element).TouchSpin();
+		        } else if (valueUnwrapped === 'small') {
+		        	$(element).TouchSpin({
+			            verticalbuttons: true,
+			            verticalupclass: 'glyphicon glyphicon-plus',
+			            verticaldownclass: 'glyphicon glyphicon-minus'
+			        });
+		        } else if (valueUnwrapped === 'percent') {
+		        	$(element).TouchSpin({
+		                min: 0,
+		                max: 100,
+		                step: 1,
+		                boostat: 5,
+		                maxboostedstep: 10,
+		                postfix: '%'
+		            });
+		        }
 		    },
 		    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
 		    	

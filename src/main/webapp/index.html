@@ -17,8 +17,11 @@
     <body>
 	<div data-bind="template: {name: 'navbar', data: $data}"></div>
 	<div class="mainContainer">
-		<div data-bind="template: {name: 'info', data: $data.vm.info}"></div>	
-		<div data-bind="template: {name: $data.navbar.selectedTab, data: $data}"></div>
+		<div data-bind="template: {name: 'info', data: $data.vm.info}"></div>
+		<div data-bind="template: {name: $data.navbar.selectedTab, data: $data}, visible: $data.vm.selectedProductId()===''"></div>
+		<!-- ko if: $data.vm.selectedProductId()!='' -->
+        	<div data-bind="template: {name: 'product', data: $data.vm.selectedProduct}, visible: $data.vm.selectedProductId()!=''"></div>
+        <!-- /ko -->
     </div>
     </body>
 </html>

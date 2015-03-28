@@ -1,19 +1,8 @@
 <div class="productsContainer">
-
-	<div class="productsFilter col-sm-12 col-md-6">
-		<label>Cauta produs</label>
-		<input name="filter" id="filter" type="text" class="form-control" placeholder="Descriere" required="" autofocus="">
-	</div>
-	
-	<div class="col-md-12"></div>
-	
-	<div data-bind="foreach: $data.vm.products">
-		<div class="col-sm-6 col-md-3 productThumbnail" data-bind="click: $parent.methods.selectProduct">
-			<div class="productDetail">
-				
-				<div class="productImage">
+				<div class="productImage col-sm-12 col-md-4">
 					<img alt="some image" data-bind="attr: {src: picture}">
 				</div>
+				<div class="col-sm-12 col-md-3">
 				<div class="productInfo">
 					<h5 data-bind="text: name"></h5>
 					<label class="stock" data-bind="text: hasStock ? 'In stoc' : 'Stoc epuizat', css: {hasStock: hasStock}"></label>
@@ -38,7 +27,5 @@
 				<div class="addToCart">
 					<input type="button" class="btn btn-primary btn-block" value="Adauga la comanda curenta" data-bind="click: $parent.methods.addToCart, disable: !hasStock || quantity()==='0'">
 				</div>
-			</div>
-		</div>
-	</div>
+				</div>
 </div>
