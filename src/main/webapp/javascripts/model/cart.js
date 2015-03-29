@@ -1,21 +1,23 @@
 define(['info', 'knockout'], function (info, ko) {
     'use strict';
     
+    var load = function(cartObservable, clientId) {
+    			var url = "orders/" + clientId + "/activeOrder";
+    			var params = "";
+    			$.post(url, params, function(data) {
+    				if (data.orderItems) {
+    					for (var i = 0; i < data.orderItems.length; i++) {
+    						if (!data.orderItems[i].discount) {
+    							data.orderItems[i].discount = 0;
+    						}
+    					}
+    				}
+    				cartObservable(data);
+    			});
+    		};
+    
 	var c = {
-		loadCart : function(cartObservable, clientId) {
-			var url = "orders/" + clientId + "/activeOrder";
-			var params = "";
-			$.post(url, params, function(data) {
-				if (data.orderItems) {
-					for (var i = 0; i < data.orderItems.length; i++) {
-						if (!data.orderItems[i].discount) {
-							data.orderItems[i].discount = 0;
-						}
-					}
-				}
-				cartObservable(data);
-			});
-		},
+		loadCart : load,
 		
 		addToCart : function(cartObservable, product, clientId) {
 			var url = "orders/" + clientId + "/addProduct";
@@ -99,13 +101,15 @@ define(['info', 'knockout'], function (info, ko) {
 			});
 		},
 	
-		placeActiveOrder : function(cartObservable, item, clientId) {
+		placeActiveOrder : function(cartObservable, item, clientId, successCallback) {
 			var url = "orders/" + clientId + "/placeActiveOrder";
 			var params = {};
 			
 			$.post(url, params, function(data) {
 				if (data.successful) {
 					cartObservable(data.data);
+					load(cartObservable, clientId);
+					successCallback();
 					info.showInfo("Comanda curenta a fost plasata cu succes si va ajunge la destinatie la data: " + data.data.expectedDeliveryDate + "!");
 				} else {
 					var errorMessage = "Eroare la plasarea comenzii curente!";

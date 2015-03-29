@@ -114,7 +114,10 @@ require(['knockout',
 				},
 				"placeActiveOrder" : function(model, e) {
 					e.stopPropagation();
-					cart.placeActiveOrder(vm.cartData, model, data.cartData().clientId);
+					cart.placeActiveOrder(vm.cartData, model, data.cartData().clientId, function() {
+						navbar.selectedTab('products');
+						vm.products(products.getProducts(vm.filterString));
+					});
 				},
 				"selectClient" : function(model, e) {
 					clients.selectClient(vm.cartData, model.id);
@@ -132,8 +135,7 @@ require(['knockout',
 						navbar.selectedTab('products');
 					}
 					return length == 0;
-				}
-				),
+				}),
 				"selectProduct" : function(model, e) {
 //					e.stopPropagation();
 //					vm.selectedProduct(model);
