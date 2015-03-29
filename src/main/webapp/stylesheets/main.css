@@ -136,8 +136,8 @@ form {
 }
 
 .cartContainer {
-	width: 70%;
-	margin-left:15%;
+	width: 80%;
+	margin-left:10%;
 }
 
 .informationContainer {
@@ -181,8 +181,11 @@ form {
 
 .glyphicon-remove {
 	margin-top: 10px;
-	color: 595959;
-	&:hover {
-		color: red;
-	}
+	color: #595959;
+}
+.glyphicon-remove:hover {
+	color: #BC2328;
+}
+.bootstrap-touchspin > input {
+	text-align: center;
 }

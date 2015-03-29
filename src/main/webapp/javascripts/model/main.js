@@ -31,7 +31,8 @@ require(['knockout',
 	function MainViewModel(data) {
 	
 		var vm = {
-				"products" : data.products,
+				"filterString": "",
+				"products" : ko.observable(data.products),
 				"orders" : ko.observableArray([]),
 				"userData" : data.userData,
 				"cartData" : data.cartData,
@@ -52,6 +53,14 @@ require(['knockout',
 						}
 						return length;
 					}
+				),
+				"isCartEmpty" : ko.computed(function() {
+					var length = 0;
+					if (vm.cartData().orderItems) {
+						length = vm.cartData().orderItems.length;
+					}
+					return length == 0;
+				}
 				),
 				"isAgent" : ko.computed(function() {
 						var isAgent = false;
@@ -113,7 +122,11 @@ require(['knockout',
 				},
 				"removeProduct" : function(model, e) {
 					e.stopPropagation();
-					cart.removeProduct(vm.cartData, model, data.cartData().clientId);
+					cart.removeProduct(vm.cartData, model, data.cartData().clientId, function(){
+						if (computed.isCartEmpty()) {
+							navbar.selectedTab('products');
+						}						
+					});
 				},
 				"placeActiveOrder" : function(model, e) {
 					e.stopPropagation();
@@ -122,6 +135,9 @@ require(['knockout',
 				"selectClient" : function(model, e) {
 					clients.selectClient(vm.cartData, model.id);
 					navbar.selectedClient(model.name);
+				},
+				"filterProducts" : function(model, e) {
+					vm.products(products.getProducts(vm.filterString));
 				},
 				"selectProduct" : function(model, e) {
 //					e.stopPropagation();
@@ -150,7 +166,7 @@ require(['knockout',
 			"userData" : userObservable,
 			"cartData" : cartObservable,
 			"clientsData" : clientsObservable,
-			"products" : products.getProducts(1, 10),
+			"products" : products.getProducts(""),
 			"info" : info.data,
 	};
 	

@@ -19,9 +19,9 @@ define(['info', 'knockout'], function (info, ko) {
 		
 		addToCart : function(cartObservable, product, clientId) {
 			var url = "orders/" + clientId + "/addProduct";
-			var quantity = parseInt(product.quantity());
+			var selectedQuantity = parseInt(product.selectedQuantity());
 			var params = {
-					'quantity': quantity,
+					'quantity': selectedQuantity,
 					'productId': product.id,
 					'stockId' : product.stockId,
 					'unitOfMeasure' : product.unitOfMeasure,
@@ -29,10 +29,10 @@ define(['info', 'knockout'], function (info, ko) {
 			$.post(url, params, function(data) {
 				if (data.successful) {
 					cartObservable(data.data);
-					if (quantity === 1) {
-						info.showInfo("1 produs '" + product.name + "' in valoare totala de " + quantity * product.price + " RON a fost adaugat la comanda curenta!");
+					if (selectedQuantity === 1) {
+						info.showInfo("1 produs '" + product.name + "' in valoare totala de " + selectedQuantity * product.price + " RON a fost adaugat la comanda curenta!");
 					} else {
-						info.showInfo(quantity + " produse '" + product.name + "' in valoare totala de " + quantity * product.price + " RON au fost adaugate la comanda curenta!");
+						info.showInfo(selectedQuantity + " produse '" + product.name + "' in valoare totala de " + selectedQuantity * product.price + " RON au fost adaugate la comanda curenta!");
 					}
 				} else {
 					info.showError("Eroare la adaugare produs!");
@@ -80,7 +80,7 @@ define(['info', 'knockout'], function (info, ko) {
 			});
 		},
 	
-		removeProduct : function(cartObservable, item, clientId) {
+		removeProduct : function(cartObservable, item, clientId, callback) {
 			var url = "orders/" + clientId + "/removeProduct";
 			var params = {
 					'productId': item.product.id,
@@ -91,6 +91,7 @@ define(['info', 'knockout'], function (info, ko) {
 			$.post(url, params, function(data) {
 				if (data.successful) {
 					cartObservable(data.data);
+					callback();
 				} else {
 					info.showError("Eroare la eliminarea produsului din comanda curenta!");
 					console.log(data.error);
@@ -107,8 +108,12 @@ define(['info', 'knockout'], function (info, ko) {
 					cartObservable(data.data);
 					info.showInfo("Comanda curenta a fost plasata cu succes si va ajunge la destinatie la data: " + data.data.expectedDeliveryDate + "!");
 				} else {
-					info.showError("Eroare la plasarea comenzii curente!");
-					console.log(data.error);
+					var errorMessage = "Eroare la plasarea comenzii curente!";
+					if (data.error) {
+						erorMessage = data.error;
+					}
+					info.showError(errorMessage);
+					console.log(errorMessage);
 				}
 			});
 		},

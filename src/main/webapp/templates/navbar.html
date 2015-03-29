@@ -13,15 +13,30 @@
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav" data-bind="foreach: navbar.tabs">
-					<li data-bind="'attr': {'id': $data.id}, 'css': {'tabLink':true, 'active': ($parent.navbar.selectedTab() === $data.id)}, click: $parent.methods.switchTab">
+					<li data-bind="'attr': {'id': $data.id}, 
+									'css': {'tabLink':true, 
+											'active': ($parent.navbar.selectedTab() === $data.id),
+											'disabled' : ($data.id == 'cart' && $parent.computed.isCartEmpty)
+									}, 
+									click: $parent.methods.switchTab">
 						<a href="#" data-bind="text: $data.name"></a>
 					</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
+				<!-- ko ifnot: $parent.computed.isCartEmpty -->
+				<li>
+					<span>
+						<a href="#" class="myCart" data-bind="enable: !$parent.computed.isCartEmpty(), click: $parent.methods.viewCart"> Comanda curenta 
+							(<span data-bind="text: $parent.computed.cartSize()">0</span>)
+						</a>
+					</span>
+				</li>
+				<!-- /ko -->
 				<li><span>Bine ai venit, <strong><span data-bind="text: (vm.userData().firstName + ' ' + vm.userData().lastName)"></span></strong></span></li>
+				
 				<li data-bind="visible: (computed.isAgent() && navbar.selectedClient() != '')"><span class="myCart" >Client curent: <strong><span data-bind="text: navbar.selectedClient"></span></strong></span></li>
 				<li><span><a href="#" class="myCart" data-bind="visible: (computed.isAgent() && navbar.selectedClient() === ''), click: $parent.methods.viewClients"> Selecteaza client </a></span></li>
-				<li><span><a href="#" class="myCart" data-bind="click: $parent.methods.viewCart"> Comanda curenta (<span data-bind="text: $parent.computed.cartSize()">0</span>)</a></span></li>
+				
 				<li><span><a href="logout">Iesire</a></span></li>
 			</ul>
 		</div>

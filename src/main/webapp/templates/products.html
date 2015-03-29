@@ -2,12 +2,14 @@
 
 	<div class="productsFilter col-sm-12 col-md-6">
 		<label>Cauta produs</label>
-		<input name="filter" id="filter" type="text" class="form-control" placeholder="Descriere" required="" autofocus="">
+		<input 	name="filter" id="filter" type="text" 
+				class="form-control" placeholder="Descriere" required="" autofocus=""
+				data-bind="value: $data.vm.filterString, event {change: $data.methods.filterProducts}">
 	</div>
 	
 	<div class="col-md-12"></div>
 	
-	<div data-bind="foreach: $data.vm.products">
+	<div data-bind="foreach: $data.vm.products()">
 		<div class="col-sm-6 col-md-3 productThumbnail" data-bind="click: $parent.methods.selectProduct">
 			<div class="productDetail">
 				
@@ -16,19 +18,24 @@
 				</div>
 				<div class="productInfo">
 					<h5 data-bind="text: name"></h5>
-					<label class="stock" data-bind="text: hasStock ? 'In stoc' : 'Stoc epuizat', css: {hasStock: hasStock}"></label>
+					<!-- ko if: $parent.computed.isAgent -->
+						<label class="stock" data-bind="text: 'Stoc: ' +  quantity, css: {hasStock: hasStock}"></label>
+					<!-- /ko -->
+					<!-- ko ifnot: $parent.computed.isAgent -->
+						<label class="stock" data-bind="text: hasStock ? 'In stoc' : 'Stoc epuizat', css: {hasStock: hasStock}"></label>
+					<!-- /ko -->
 				</div>
 				<table>
 						<tr>
 							<td class="quantity">
 								<div data-bind="attr: {id: 'quantityDiv' + id}">
-			        				<input class="quantitySelector" type="text" data-bind="value: quantity, touchspin: 'small', disable: !hasStock">
+			        				<input class="quantitySelector" type="text" data-bind="value: selectedQuantity, touchspin: 'small', disable: !hasStock">
 			    				</div>
 		    				</td>
 		    				<td>
 								<div class="productPrice">
 									<h3>
-										<strong data-bind="text: price"></strong>
+										<strong data-bind="text: price.toFixed(2)"></strong>
 									</h3>
 									<span>RON / </span><span data-bind="text: unitOfMeasure"></span>
 								</div>
@@ -36,7 +43,7 @@
     					</tr>
     			</table>
 				<div class="addToCart">
-					<input type="button" class="btn btn-primary btn-block" value="Adauga la comanda curenta" data-bind="click: $parent.methods.addToCart, disable: !hasStock || quantity()==='0'">
+					<input type="button" class="btn btn-primary btn-block" value="Adauga la comanda curenta" data-bind="click: $parent.methods.addToCart, disable: !hasStock || selectedQuantity()==='0'">
 				</div>
 			</div>
 		</div>
