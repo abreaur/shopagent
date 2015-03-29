@@ -5,9 +5,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
 
+
+
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import ro.theredpoint.shopagent.domain.Order;
 import ro.theredpoint.shopagent.domain.Order.OrderStatus;
@@ -27,6 +32,7 @@ import ro.theredpoint.shopagent.service.SecurityService;
  * @author Radu DELIU
  */
 @Service
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
 	private static final Logger LOG = Logger.getLogger(OrderServiceImpl.class);
@@ -140,14 +146,21 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Order placeActiveOrder(long clientId) {
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public Order placeActiveOrder(long clientId) throws BusinessException {
 		
 		Order order = orderRepository.findByClientAndOrderStatus(clientId, OrderStatus.BASKET);
 		
 		if (order == null) {
-			// TODO No active order - Raise error
-			return null;
+			throw new BusinessException("Comanda nu poate fi plasata deoarece nu ati comanda nici un produs.");
 		}
+		LOG.info(String.format("Placing order %d for client %d", order.getId(), clientId));
+		
+		if ((order.getOrderItems() == null) || (order.getOrderItems().isEmpty())) {
+			throw new BusinessException("Comanda nu poate fi plasata deoarece nu contine nici un produs.");
+		}
+		
+		removeStock(order);
 		
 		order.setOrderStatus(OrderStatus.PLACED);
 		Calendar expectedDeliveryDate = Calendar.getInstance();
@@ -156,6 +169,37 @@ public class OrderServiceImpl implements OrderService {
 		order.setExpectedDeliveryDate(expectedDeliveryDate.getTime());
 		
 		return orderRepository.save(order);
+	}
+
+	/**
+	 * Remove stock according to order items
+	 * @param order
+	 * @throws BusinessException 
+	 */
+	private void removeStock(Order order) throws BusinessException {
+		
+		LOG.info(String.format("Updating stocks for order %d", order.getId()));
+		
+		for (OrderItem orderItem : order.getOrderItems()) {
+			
+			if (LOG.isDebugEnabled()) {
+				LOG.info(String.format("Removing stock for order item %d", orderItem.getId()));
+			}
+			
+			if (orderItem.getStock().getQuantity() < orderItem.getQuantity()) {
+				String message = String.format("Cantitatea comandata (%.2f %s) pentru produsul %s depaseste "
+						+ "stocul disponibil.", orderItem.getQuantity(), orderItem.getUnitOfMeasure().getCode(),
+						orderItem.getProduct().getName());
+				LOG.error(message + String.format("Stoc disponibil %s", orderItem.getStock().getQuantity()));
+				throw new BusinessException(message);
+			}
+			
+			double newQuantity = BigDecimal.valueOf(orderItem.getStock().getQuantity()).subtract(
+					BigDecimal.valueOf(orderItem.getQuantity())).doubleValue();
+			LOG.info(String.format("Updating product %s stock: old value %.2f, new value %.2f", 
+					orderItem.getProduct().getName(), orderItem.getStock().getQuantity(), newQuantity));
+			orderItem.getStock().setQuantity(newQuantity);
+		}
 	}
 
 	@Override
@@ -175,7 +219,7 @@ public class OrderServiceImpl implements OrderService {
 			throw new BusinessException("Articolul selectat nu exista pe comanda");
 		}
 		else {
-			LOG.info(String.format("Updating quantity of order item %d, new quantity %f", existingItem.getId(), quantity));
+			LOG.info(String.format("Updating quantity of order item %d, new quantity %.2f", existingItem.getId(), quantity));
 			existingItem.setQuantity(quantity);
 		}
 		
@@ -220,7 +264,7 @@ public class OrderServiceImpl implements OrderService {
 			throw new BusinessException("Articolul selectat nu exista pe comanda");
 		}
 		else {
-			LOG.info(String.format("Updating discount of order item %d, new discount %f", existingItem.getId(), discount));
+			LOG.info(String.format("Updating discount of order item %d, new discount %.2f", existingItem.getId(), discount));
 			existingItem.setDiscount(discount);
 		}
 		

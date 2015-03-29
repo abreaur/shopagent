@@ -70,8 +70,9 @@ public interface OrderService {
 	 * 
 	 * @param clientId
 	 * @return
+	 * @throws BusinessException 
 	 */
-	public Order placeActiveOrder(long clientId);
+	public Order placeActiveOrder(long clientId) throws BusinessException;
 	
 	/**
 	 * @param clientId
