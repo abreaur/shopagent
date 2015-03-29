@@ -114,7 +114,7 @@ define(['info', 'knockout'], function (info, ko) {
 				} else {
 					var errorMessage = "Eroare la plasarea comenzii curente!";
 					if (data.error) {
-						erorMessage = data.error;
+						errorMessage = data.error;
 					}
 					info.showError(errorMessage);
 					console.log(errorMessage);

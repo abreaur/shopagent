@@ -187,7 +187,8 @@ require(['knockout',
 		            });
 		        } else {
 		        	$(element).TouchSpin({
-		                postfix: valueUnwrapped
+		                postfix: valueUnwrapped,
+		                max: 1000,
 		            });
 		        }
 		    },
