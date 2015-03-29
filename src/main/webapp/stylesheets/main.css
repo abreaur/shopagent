@@ -182,9 +182,15 @@ form {
 	margin-top: 10px;
 	color: #595959;
 }
+
+.cartRow {
+	margin-top: 8px;
+}
+
 .glyphicon-remove:hover {
 	color: #BC2328;
 }
+
 .bootstrap-touchspin > input {
 	text-align: center;
 }

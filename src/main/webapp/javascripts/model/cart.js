@@ -31,10 +31,11 @@ define(['info', 'knockout'], function (info, ko) {
 			$.post(url, params, function(data) {
 				if (data.successful) {
 					cartObservable(data.data);
+					var successMessage = selectedQuantity + " " + product.unitOfMeasure + " '" + product.name + "' in valoare totala de " + selectedQuantity * product.price + " RON";
 					if (selectedQuantity === 1) {
-						info.showInfo("1 produs '" + product.name + "' in valoare totala de " + selectedQuantity * product.price + " RON a fost adaugat la comanda curenta!");
+						info.showInfo(successMessage + " s-a adaugat la comanda curenta!");
 					} else {
-						info.showInfo(selectedQuantity + " produse '" + product.name + "' in valoare totala de " + selectedQuantity * product.price + " RON au fost adaugate la comanda curenta!");
+						info.showInfo(successMessage + " s-au adaugat la comanda curenta!");
 					}
 				} else {
 					info.showError("Eroare la adaugare produs!");
