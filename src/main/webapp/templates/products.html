@@ -19,7 +19,7 @@
 				<div class="productInfo">
 					<h5 data-bind="text: name"></h5>
 					<!-- ko if: $parent.computed.isAgent -->
-						<label class="stock" data-bind="text: 'Stoc: ' +  quantity, css: {hasStock: hasStock}"></label>
+						<label class="stock" data-bind="text: 'Stoc: ' +  quantity + ' ' + unitOfMeasure, css: {hasStock: hasStock}"></label>
 					<!-- /ko -->
 					<!-- ko ifnot: $parent.computed.isAgent -->
 						<label class="stock" data-bind="text: hasStock ? 'In stoc' : 'Stoc epuizat', css: {hasStock: hasStock}"></label>
@@ -43,7 +43,9 @@
     					</tr>
     			</table>
 				<div class="addToCart">
-					<input type="button" class="btn btn-primary btn-block" value="Adauga la comanda curenta" data-bind="click: $parent.methods.addToCart, disable: !hasStock || selectedQuantity()==='0'">
+					<input 	type="button" class="btn btn-primary btn-block" value="Adauga la comanda curenta" 
+							data-bind = "click: $parent.methods.addToCart, 
+										disable: !hasStock || selectedQuantity()==='0' || ($parent.computed.isAgent() && $parent.navbar.selectedClient() === '')">
 				</div>
 			</div>
 		</div>

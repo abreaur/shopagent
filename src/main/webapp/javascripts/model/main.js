@@ -40,9 +40,7 @@ require(['knockout',
 				"customers" : ko.observableArray([]),
 				"info" : data.info,
 				"selectedProductId" : ko.observable(""),
-				"selectedProduct" : ko.observable({
-					
-				})
+				"selectedProduct" : ko.observable({})
 			};
 		
 		var computed = {
@@ -53,14 +51,6 @@ require(['knockout',
 						}
 						return length;
 					}
-				),
-				"isCartEmpty" : ko.computed(function() {
-					var length = 0;
-					if (vm.cartData().orderItems) {
-						length = vm.cartData().orderItems.length;
-					}
-					return length == 0;
-				}
 				),
 				"isAgent" : ko.computed(function() {
 						var isAgent = false;
@@ -73,7 +63,6 @@ require(['knockout',
 								}
 							}
 						}
-						
 						return isAgent;
 					}
 				),
@@ -93,7 +82,6 @@ require(['knockout',
 				"selectedTab" : ko.observable("products"),
 				"selectedClient" : ko.observable("")
 		};
-		
 		
 		var methods = {
 				"switchTab": function(tab) {
@@ -122,11 +110,7 @@ require(['knockout',
 				},
 				"removeProduct" : function(model, e) {
 					e.stopPropagation();
-					cart.removeProduct(vm.cartData, model, data.cartData().clientId, function(){
-						if (computed.isCartEmpty()) {
-							navbar.selectedTab('products');
-						}						
-					});
+					cart.removeProduct(vm.cartData, model, data.cartData().clientId);
 				},
 				"placeActiveOrder" : function(model, e) {
 					e.stopPropagation();
@@ -139,6 +123,17 @@ require(['knockout',
 				"filterProducts" : function(model, e) {
 					vm.products(products.getProducts(vm.filterString));
 				},
+				"isCartEmpty" : ko.computed(function() {
+					var length = 0;
+					if (vm.cartData().orderItems) {
+						length = vm.cartData().orderItems.length;
+					}
+					if (length == 0) {
+						navbar.selectedTab('products');
+					}
+					return length == 0;
+				}
+				),
 				"selectProduct" : function(model, e) {
 //					e.stopPropagation();
 //					vm.selectedProduct(model);
