@@ -13,7 +13,7 @@
 	</div>
 	<div class="productsFilter col-sm-6 col-md-3">
 		<label>Limita credit</label>
-		<input 	type="text" class="form-control" data-bind="value: $parent.navbar.selectedClient().id ? $parent.navbar.selectedClient().creditLimit.toFixed(2) + ' RON' : ''" readonly>
+		<input 	type="text" class="form-control" data-bind="value: $parent.navbar.selectedClientCreditLimit() ? $parent.navbar.selectedClientCreditLimit().toFixed(2) + ' RON' : ''" readonly>
 	</div>
 	<!-- /ko -->
 	<div class="col-md-12"></div>

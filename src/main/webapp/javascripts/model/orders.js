@@ -12,36 +12,39 @@ define(['knockout', 'info'], function (ko, info) {
 		});
 	};
     
-	function flashNewOrder(ordersObservable, clientId, orderId) {
+	function flashNewOrder(ordersObservable, clientId, order) {
 		loadOrders(ordersObservable, clientId, function() {
 			setTimeout(function() {
-				$("#orderRow" + orderId).animate({backgroundColor: "rgba(0, 255, 0, 0.1)"});
-				$("#orderRow" + orderId).animate({backgroundColor: "rgb(255, 255, 255)"});
+				$("#orderRow" + order.id).animate({backgroundColor: "rgba(0, 255, 0, 0.1)"});
+				$("#orderRow" + order.id).animate({backgroundColor: "rgb(255, 255, 255)"});
 			}, 1000);
 		});
 	};
 	
-	function flashCanceledOrder(ordersObservable, clientId, orderId) {
+	function flashCanceledOrder(ordersObservable, clientId, order) {
 		loadOrders(ordersObservable, clientId, function() {
 			setTimeout(function() {
-				$("#orderRow" + orderId).animate({backgroundColor: "rgba(255, 0, 0, 0.1)"});
-				$("#orderRow" + orderId).animate({backgroundColor: "rgb(255, 255, 255)"});
+				$("#orderRow" + order.id).animate({backgroundColor: "rgba(255, 0, 0, 0.1)"});
+				$("#orderRow" + order.id).animate({backgroundColor: "rgb(255, 255, 255)"});
 			}, 1000);
 		});
 	};
     
 	var o = {
 		loadOrders : loadOrders,
-		cancelOrder : function(ordersObservable, clientId, orderId) {
-			$('#cancelOrderModal' + orderId).modal('hide');
+		cancelOrder : function(ordersObservable, clientId, order, callback) {
+			$('#cancelOrderModal' + order.id).modal('hide');
 			$('body').removeClass('modal-open');
 			$('.modal-backdrop').remove();
-	    	var url = "/orders/"+ orderId +"/cancelOrder";
+	    	var url = "/orders/"+ order.id +"/cancelOrder";
 			var params = "";
 			$.post(url, params, function(data) {
 				if (data.successful) {
 					info.showInfo("Comanda a fost anulata cu succes!");
-					flashCanceledOrder(ordersObservable, clientId, orderId);
+					flashCanceledOrder(ordersObservable, clientId, order);
+					if (callback) {
+						callback(order);
+					}
 				} else {
 					var errorMessage = "Eroare la anularea comenzii!";
 					if (data.error) {

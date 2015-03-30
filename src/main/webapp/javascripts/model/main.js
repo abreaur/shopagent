@@ -85,7 +85,8 @@ require(['knockout',
 					return tabs;
 				}),
 				"selectedTab" : ko.observable("products"),
-				"selectedClient" : ko.observable({})
+				"selectedClient" : ko.observable({}),
+				"selectedClientCreditLimit" : ko.observable(),
 		};
 		
 		var methods = {
@@ -124,24 +125,27 @@ require(['knockout',
 				},
 				"placeActiveOrder" : function(model, e) {
 					e.stopPropagation();
-					cart.placeActiveOrder(vm.cartData, model, data.cartData().clientId, function(orderId) {
+					cart.placeActiveOrder(vm.cartData, model, data.cartData().clientId, function(order) {
 						navbar.selectedTab('orders');
-						orders.flashNewOrder(vm.ordersData, data.cartData().clientId, orderId);
+						orders.flashNewOrder(vm.ordersData, data.cartData().clientId, order);
+						if (computed.isAgent()) {
+							navbar.selectedClientCreditLimit(navbar.selectedClientCreditLimit() - order.amount);
+						}
 						vm.products(products.getProducts(vm.filterString));
 					});
-					if (computed.isAgent()) {
-						// reset credit limit and reliability
-					}
 				},
 				"cancelOrder" : function(model, e) {
-					orders.cancelOrder(vm.ordersData, data.cartData().clientId, model.id);
-					if (computed.isAgent()) {
-						// reset credit limit and reliability
-					}
+					orders.cancelOrder(vm.ordersData, data.cartData().clientId, model, function(order) {
+						vm.products(products.getProducts(vm.filterString));
+						if (computed.isAgent()) {
+							navbar.selectedClientCreditLimit(navbar.selectedClientCreditLimit() + order.amount);
+						}
+					});
 				},
 				"selectClient" : function(model, e) {
 					clients.selectClient(vm.cartData, vm.ordersData, model.id);
 					navbar.selectedClient(model);
+					navbar.selectedClientCreditLimit(model.creditLimit);
 				},
 				"filterProducts" : function(model, e) {
 					vm.products(products.getProducts(vm.filterString));

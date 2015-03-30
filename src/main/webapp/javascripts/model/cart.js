@@ -146,7 +146,7 @@ define(['info', 'orders', 'knockout'], function (info, orders, ko) {
 				if (data.successful) {
 					cartObservable(data.data);
 					load(cartObservable, clientId, function(){
-						successCallback(data.data.id);
+						successCallback(data.data);
 					});
 					info.showInfo("Comanda curenta a fost plasata cu succes si va ajunge la destinatie la data: " + data.data.expectedDeliveryDate + "!");
 				} else {
