@@ -11,6 +11,7 @@ require.config({
 	"security": "security",
 	"clients": "clients",
 	"product": "product",
+	"orders": "orders",
 	}
 });
 
@@ -21,10 +22,11 @@ require(['knockout',
          'security',
          'clients',
          'product',
+         'orders',
          'knockout-amd-helpers',
          'bootstrap',
          'less',],
-	function(ko, info, products, cart, security, clients, product) {
+	function(ko, info, products, cart, security, clients, product, orders) {
 
 	ko.amdTemplateEngine.defaultPath = "../../templates";
 	ko.amdTemplateEngine.defaultSuffix = ".html";
@@ -39,6 +41,7 @@ require(['knockout',
 				"userData" : data.userData,
 				"cartData" : data.cartData,
 				"clientsData" : data.clientsData,
+				"ordersData" : data.ordersData,
 				"customers" : ko.observableArray([]),
 				"info" : data.info,
 				"selectedProductId" : ko.observable(""),
@@ -74,7 +77,7 @@ require(['knockout',
 				"tabs": ko.computed(function() {
 					var tabs = [{"id": "products", "name": "Produse"} , 
 						         {"id": "cart", "name": "Comanda curenta"} , 
-//						         {"id": "orders", "name": "Comenzi"}
+						         {"id": "orders", "name": "Comenzi"}
 						         ];
 					if (computed.isAgent()) {
 				         tabs.push({"id": "clients", "name": "Clienti"});
@@ -126,8 +129,12 @@ require(['knockout',
 						vm.products(products.getProducts(vm.filterString));
 					});
 				},
+				"cancelOrder" : function(model, e) {
+					e.stopPropagation();
+					orders.cancelOrder(model);
+				},
 				"selectClient" : function(model, e) {
-					clients.selectClient(vm.cartData, model.id);
+					clients.selectClient(vm.cartData, vm.ordersData, model.id);
 					navbar.selectedClient(model.name);
 				},
 				"filterProducts" : function(model, e) {
@@ -138,7 +145,7 @@ require(['knockout',
 					if (vm.cartData().orderItems) {
 						length = vm.cartData().orderItems.length;
 					}
-					if (length == 0) {
+					if (length == 0 && navbar.selectedTab() === 'cart') {
 						navbar.selectedTab('products');
 					}
 					return length == 0;
@@ -167,12 +174,14 @@ require(['knockout',
 	var clientsObservable = ko.observable({});
 	clients.loadClients(clientsObservable);
 	
-	security.loadCurrentUser(userObservable, cartObservable);
+	var ordersObservable = ko.observable({});
+	security.loadCurrentUser(userObservable, cartObservable, ordersObservable);
 	
 	var data = {
 			"userData" : userObservable,
 			"cartData" : cartObservable,
 			"clientsData" : clientsObservable,
+			"ordersData" : ordersObservable,
 			"products" : products.getProducts(""),
 			"info" : info.data,
 	};

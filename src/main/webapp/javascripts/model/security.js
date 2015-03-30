@@ -1,8 +1,8 @@
-define(['cart', 'knockout'], function (cart, ko) {
+define(['cart', 'orders', 'knockout'], function (cart, orders, ko) {
     'use strict';
     
 	var u = {
-		loadCurrentUser : function(userObservable, cartObservable) {
+		loadCurrentUser : function(userObservable, cartObservable, ordersObservable) {
 			var url = "security/currentUser";
 			var params = "";
 			
@@ -20,6 +20,7 @@ define(['cart', 'knockout'], function (cart, ko) {
 				
 				if (isClient) {
 					cart.loadCart(cartObservable, data.id);
+					orders.loadOrders(ordersObservable, data.id);
 				}
 			});
 		}

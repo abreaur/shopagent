@@ -1,1 +1,35 @@
-<p>Aici lista comenzilor facute pana acum</p>
+<div class="cartContainer">
+	<table class="table">
+	    <thead>
+	        <tr>
+			        <th class="col-sm-1 col-md-1"></th>
+			        <th class="col-sm-2 col-md-2">Data plasare</th>
+			        <th class="col-sm-2 col-md-2">Data livrare</th>
+			        <th class="col-sm-1 col-md-1">Pret total</th>
+			        <th class="col-sm-1 col-md-1">Status</th>
+			        <th class="col-sm-1 col-md-1"></th>
+			        <th class="col-sm-1 col-md-1"></th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	    	<!-- ko foreach: $data.vm.ordersData -->
+	        <tr>
+	        	<td></td>
+	        	<td><div class="cartRow"><span data-bind="text: $data.created"></span></div></td>
+	        	<td><div class="cartRow"><span data-bind="text: $data.expectedDeliveryDate"></span></div></td>
+	            <td><div class="productPrice cartRow"><label data-bind="text: $data.amount.toFixed(2) + ' RON'"></label></div></td>
+	            <td>
+	            	<div class="cartRow">
+	            		<label data-bind="text: $data.orderStatus"></label>
+	            	</div>
+	            </td>
+	         	<td>
+	            	<div>
+	            		<input type="button" class="btn btn-primary btn-block" value="Anuleaza" data-bind="click: $parent.methods.cancelOrder">
+	            	</div>
+	            </td>
+	    	</tr>
+	    	<!-- /ko -->
+	    </tbody>
+	</table>
+</div>

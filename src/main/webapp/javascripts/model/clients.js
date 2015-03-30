@@ -1,4 +1,4 @@
-define(['cart', 'knockout'], function (cart, ko) {
+define(['cart', 'orders', 'knockout'], function (cart, orders, ko) {
     'use strict';
     
 	var c = {
@@ -9,8 +9,9 @@ define(['cart', 'knockout'], function (cart, ko) {
 				clientsObservable(data);
 			});
 		},
-		selectClient : function(cartObservable, clientId) {
+		selectClient : function(cartObservable, ordersObservable, clientId) {
 			cart.loadCart(cartObservable, clientId);
+			orders.loadOrders(ordersObservable, clientId);
 		},
 	};
 	
