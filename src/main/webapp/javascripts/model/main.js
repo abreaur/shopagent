@@ -129,10 +129,15 @@ require(['knockout',
 						orders.flashNewOrder(vm.ordersData, data.cartData().clientId, orderId);
 						vm.products(products.getProducts(vm.filterString));
 					});
+					if (computed.isAgent()) {
+						// reset credit limit and reliability
+					}
 				},
 				"cancelOrder" : function(model, e) {
-					e.stopPropagation();
 					orders.cancelOrder(vm.ordersData, data.cartData().clientId, model.id);
+					if (computed.isAgent()) {
+						// reset credit limit and reliability
+					}
 				},
 				"selectClient" : function(model, e) {
 					clients.selectClient(vm.cartData, vm.ordersData, model.id);

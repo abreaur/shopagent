@@ -33,6 +33,9 @@ define(['knockout', 'info'], function (ko, info) {
 	var o = {
 		loadOrders : loadOrders,
 		cancelOrder : function(ordersObservable, clientId, orderId) {
+			$('#cancelOrderModal' + orderId).modal('hide');
+			$('body').removeClass('modal-open');
+			$('.modal-backdrop').remove();
 	    	var url = "/orders/"+ orderId +"/cancelOrder";
 			var params = "";
 			$.post(url, params, function(data) {

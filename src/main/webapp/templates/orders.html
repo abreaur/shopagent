@@ -26,8 +26,8 @@
 	         	<td>
 	            	<div>
 	            		<input type="button" class="btn btn-primary btn-block" value="Anuleaza" 
-	            				data-bind="click: $root.methods.cancelOrder,
-	            							disable: $data.orderStatus === 'CANCELLED'">
+	            				data-toggle="modal"
+	            				data-bind="disable: $data.orderStatus === 'CANCELLED', attr: {'data-target': '#cancelOrderModal' + $data.id}">
 	            	</div>
 	            </td>
 	            <td></td>
@@ -35,4 +35,25 @@
 	    	<!-- /ko -->
 	    </tbody>
 	</table>
+	<!-- ko foreach: $data.vm.ordersData -->
+		<!-- Modal for list creation -->
+					<div class="modal fade" data-bind="attr: {'id': 'cancelOrderModal' + $data.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					        <h4 class="modal-title" id="myModalLabel">Confirmare anulare comanda</h4>
+					      </div>
+					      <div class="modal-body">
+					      	<label for="listNameInput">Sigur doriti sa anulati comanda?</label>
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-warning" data-dismiss="modal">Renunta</button>
+					        <button type="button" class="btn btn-primary" data-bind="click: $root.methods.cancelOrder">Da</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+		<!--  -->
+	<!-- /ko -->
 </div>

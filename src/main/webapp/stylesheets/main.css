@@ -62,16 +62,6 @@ form {
 	display: block;
 }
 
-.btn-primary {
-	margin-top: 5px;
-	margin-bottom: 5px;
-}
-
-.btn-warning {
-	margin-top: 4px;
-	margin-bottom: 4px;
-}
-
 .iframe {
 	width: 640px;
 	height: 870px
