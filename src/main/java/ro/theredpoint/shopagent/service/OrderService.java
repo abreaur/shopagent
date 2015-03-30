@@ -1,5 +1,6 @@
 package ro.theredpoint.shopagent.service;
 
+import java.util.List;
 import java.util.Set;
 
 import ro.theredpoint.shopagent.domain.Order;
@@ -78,7 +79,7 @@ public interface OrderService {
 	 * @param clientId
 	 * @return Placed customer orders.
 	 */
-	public Set<Order> getPlacedCustomerOrders(long clientId);
+	public List<Order> getPlacedCustomerOrders(long clientId);
 	
 	/**
 	 * 

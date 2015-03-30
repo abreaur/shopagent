@@ -44,7 +44,7 @@ public class ProductModel {
 					this.stockId = stock.getId();
 				}
 				
-				if (addStocks) {
+				if ((addStocks) && (stock.getQuantity() > 0)) {
 					stocks.add(new StockModel(stock));
 
 					if (product.getStockConverters() != null) {

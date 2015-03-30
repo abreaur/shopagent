@@ -3,10 +3,7 @@ package ro.theredpoint.shopagent.service.impl;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Set;
-
-
-
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +15,14 @@ import ro.theredpoint.shopagent.domain.Order;
 import ro.theredpoint.shopagent.domain.Order.OrderStatus;
 import ro.theredpoint.shopagent.domain.OrderItem;
 import ro.theredpoint.shopagent.domain.Product;
+import ro.theredpoint.shopagent.domain.StockConverter;
+import ro.theredpoint.shopagent.repository.ClientRepository;
 import ro.theredpoint.shopagent.repository.OrderItemRepository;
 import ro.theredpoint.shopagent.repository.OrderRepository;
 import ro.theredpoint.shopagent.repository.ProductRepository;
 import ro.theredpoint.shopagent.repository.StockRepository;
 import ro.theredpoint.shopagent.repository.UnitOfMeasureRepository;
 import ro.theredpoint.shopagent.service.BusinessException;
-import ro.theredpoint.shopagent.service.ClientService;
 import ro.theredpoint.shopagent.service.OrderService;
 import ro.theredpoint.shopagent.service.SecurityService;
 
@@ -50,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private SecurityService securityService;
 	@Autowired
-	private ClientService clientService;
+	private ClientRepository clientRepository;
 	
 	@Override
 	public Order getActiveOrder(long clientId) {
@@ -62,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
 			
 			order = new Order();
 			
-			order.setClient(clientService.getClient(clientId));
+			order.setClient(clientRepository.findOne(clientId));
 			order.setUser(securityService.getCurrentUser());
 			order.setOrderStatus(OrderStatus.BASKET);
 			order.setCreated(new Date());
@@ -94,7 +92,19 @@ public class OrderServiceImpl implements OrderService {
 			existingItem.setDiscount(0);
 			existingItem.setQuantity(quantity);
 			existingItem.setStock(stockRepository.findOne(stockId));
-			existingItem.setPrice(existingItem.getStock().getPrice());
+			if (existingItem.getStock().getUnitOfMeasure().getCode().equals(unitOfMeasure)) {
+				existingItem.setPrice(existingItem.getStock().getPrice());
+			}
+			else {
+				for (StockConverter stockConverter : product.getStockConverters()) {
+					if (stockConverter.getTo().getCode().equals(unitOfMeasure)) {
+						existingItem.setPrice(stockConverter.getUnitPrice());
+						
+						break;
+					}
+				}
+				
+			}
 			existingItem.setOrder(order);
 			existingItem.setUnitOfMeasure(unitOfMeasureRepository.findByCode(unitOfMeasure));
 			
@@ -160,7 +170,8 @@ public class OrderServiceImpl implements OrderService {
 			throw new BusinessException("Comanda nu poate fi plasata deoarece nu contine nici un produs.");
 		}
 		
-		removeStock(order);
+		updateStock(order, true);
+		updateCreditLimit(order, true);
 		
 		order.setOrderStatus(OrderStatus.PLACED);
 		Calendar expectedDeliveryDate = Calendar.getInstance();
@@ -173,37 +184,72 @@ public class OrderServiceImpl implements OrderService {
 
 	/**
 	 * Remove stock according to order items
+	 * @param remove
 	 * @param order
 	 * @throws BusinessException 
 	 */
-	private void removeStock(Order order) throws BusinessException {
+	private void updateStock(Order order, boolean remove) throws BusinessException {
 		
-		LOG.info(String.format("Updating stocks for order %d", order.getId()));
+		LOG.info(String.format("Updating stocks for order %d, remove %b", order.getId(), remove));
 		
 		for (OrderItem orderItem : order.getOrderItems()) {
 			
 			if (LOG.isDebugEnabled()) {
-				LOG.info(String.format("Removing stock for order item %d", orderItem.getId()));
+				LOG.debug(String.format("Updating stock for order item %d", orderItem.getId()));
 			}
 			
-			if (orderItem.getStock().getQuantity() < orderItem.getQuantity()) {
-				String message = String.format("Cantitatea comandata (%.2f %s) pentru produsul %s depaseste "
-						+ "stocul disponibil.", orderItem.getQuantity(), orderItem.getUnitOfMeasure().getCode(),
-						orderItem.getProduct().getName());
-				LOG.error(message + String.format("Stoc disponibil %s", orderItem.getStock().getQuantity()));
-				throw new BusinessException(message);
+			
+			if (remove) {
+				if (orderItem.getStock().getQuantity() < orderItem.getQuantity()) {
+					String message = String.format("Cantitatea comandata (%.2f %s) pentru produsul %s depaseste "
+							+ "stocul disponibil.", orderItem.getQuantity(), orderItem.getUnitOfMeasure().getCode(),
+							orderItem.getProduct().getName());
+					LOG.error(message + String.format(" Stoc disponibil %s", orderItem.getStock().getQuantity()));
+					throw new BusinessException(message);
+				}
 			}
 			
-			double newQuantity = BigDecimal.valueOf(orderItem.getStock().getQuantity()).subtract(
-					BigDecimal.valueOf(orderItem.getQuantity())).doubleValue();
+			BigDecimal currentQuantity = BigDecimal.valueOf(orderItem.getQuantity());
+			if (remove) {
+				currentQuantity = currentQuantity.multiply(BigDecimal.valueOf(-1));
+			}
+			double newQuantity = BigDecimal.valueOf(orderItem.getStock().getQuantity()).add(
+					currentQuantity).doubleValue();
 			LOG.info(String.format("Updating product %s stock: old value %.2f, new value %.2f", 
 					orderItem.getProduct().getName(), orderItem.getStock().getQuantity(), newQuantity));
 			orderItem.getStock().setQuantity(newQuantity);
 		}
 	}
+	
+	/**
+	 * Update client credit limit.
+	 * 
+	 * @param order
+	 * @param remove - credit should be decreases
+	 * @throws BusinessException
+	 */
+	private void updateCreditLimit(Order order, boolean remove) throws BusinessException {
+
+		LOG.info(String.format("Updating credit limit for order %d, client %d, remove %b", order.getId(),
+				order.getClient().getId(), remove));
+
+		BigDecimal orderValue = BigDecimal.valueOf(order.getAmount());
+		if (remove) {
+			orderValue = orderValue.multiply(BigDecimal.valueOf(-1));
+		}
+		
+		double newCreditLimit = BigDecimal.valueOf(order.getClient().getCreditLimit()).add(
+				orderValue).doubleValue();
+		
+		LOG.info(String.format("Updating credit limit for client %s : old value %.2f, new value %.2f", 
+				order.getClient().getId(), order.getClient().getCreditLimit(), newCreditLimit));
+		
+		order.getClient().setCreditLimit(newCreditLimit);
+		clientRepository.save(order.getClient());
+	}
 
 	@Override
-	public Set<Order> getPlacedCustomerOrders(long clientId) {
+	public List<Order> getPlacedCustomerOrders(long clientId) {
 		return orderRepository.findByClientAndNotOrderStatus(clientId, OrderStatus.BASKET);
 	}
 
@@ -283,8 +329,10 @@ public class OrderServiceImpl implements OrderService {
 		
 		order.setOrderStatus(OrderStatus.CANCELLED);
 		order.setCancelDate(new Date());
+
+		updateStock(order, false);
+		updateCreditLimit(order, false);
 		
 		return orderRepository.save(order);
-		
 	}
 }

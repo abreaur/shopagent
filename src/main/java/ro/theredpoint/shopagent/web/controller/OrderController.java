@@ -1,7 +1,7 @@
 package ro.theredpoint.shopagent.web.controller;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,9 +29,9 @@ public class OrderController {
 		return new OrderModel(order);
 	}
 	
-	private Set<OrderModel> prepareResponse(Set<Order> orders) {
+	private List<OrderModel> prepareResponse(List<Order> orders) {
 		
-		Set<OrderModel> result = new HashSet<OrderModel>();
+		List<OrderModel> result = new ArrayList<OrderModel>();
 		
 		for (Order order : orders) {
 			result.add(prepareResponse(order));
@@ -114,7 +114,7 @@ public class OrderController {
 	}
 
 	@RequestMapping(value = "orders/{clientId}/placedOrders", produces = "application/json")
-	public Set<OrderModel> getPlacedOrder(@PathVariable long clientId) {
+	public List<OrderModel> getPlacedOrder(@PathVariable long clientId) {
 		
 		return prepareResponse(orderService.getPlacedCustomerOrders(clientId));
 	}
