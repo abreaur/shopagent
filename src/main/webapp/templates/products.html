@@ -6,7 +6,16 @@
 				class="form-control" placeholder="Descriere" required="" autofocus=""
 				data-bind="value: $data.vm.filterString, event {change: $data.methods.filterProducts}">
 	</div>
-	
+	<!-- ko if: $parent.computed.isAgent -->
+	<div class="productsFilter col-sm-6 col-md-3">
+		<label>Bonitate</label>
+		<input 	type="text" class="form-control" data-bind="value: $parent.navbar.selectedClient().id ? $parent.navbar.selectedClient().reliability : ''" readonly>
+	</div>
+	<div class="productsFilter col-sm-6 col-md-3">
+		<label>Limita credit</label>
+		<input 	type="text" class="form-control" data-bind="value: $parent.navbar.selectedClient().id ? $parent.navbar.selectedClient().creditLimit.toFixed(2) + ' RON' : ''" readonly>
+	</div>
+	<!-- /ko -->
 	<div class="col-md-12"></div>
 	
 	<div data-bind="foreach: $data.vm.products()">

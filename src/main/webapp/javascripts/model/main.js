@@ -85,7 +85,7 @@ require(['knockout',
 					return tabs;
 				}),
 				"selectedTab" : ko.observable("products"),
-				"selectedClient" : ko.observable("")
+				"selectedClient" : ko.observable({})
 		};
 		
 		var methods = {
@@ -135,7 +135,7 @@ require(['knockout',
 				},
 				"selectClient" : function(model, e) {
 					clients.selectClient(vm.cartData, vm.ordersData, model.id);
-					navbar.selectedClient(model.name);
+					navbar.selectedClient(model);
 				},
 				"filterProducts" : function(model, e) {
 					vm.products(products.getProducts(vm.filterString));

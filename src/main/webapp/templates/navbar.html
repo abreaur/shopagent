@@ -18,7 +18,7 @@
 											'active': ($parent.navbar.selectedTab() === $data.id),
 											'disabled' : (
 															($data.id == 'cart' && $parent.methods.isCartEmpty) ||
-															($data.id == 'orders' && $parent.computed.isAgent && $parent.navbar.selectedClient() === '')
+															($data.id == 'orders' && $parent.computed.isAgent && $parent.navbar.selectedClient().name)
 											)
 									}, 
 									click: $parent.methods.switchTab">
@@ -38,7 +38,7 @@
 				<!-- ko if: $parent.computed.isAgent -->
 		        <li class="dropdown">
 			        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-			        	<span data-bind="text: (navbar.selectedClient() === ''? 'Selecteaza client' : navbar.selectedClient())"></span>
+			        	<span data-bind="text: (!navbar.selectedClient().name ? 'Selecteaza client' : navbar.selectedClient().name)"></span>
 						<span class="caret"></span>
 					</a>
 			        <ul class="dropdown-menu" role="menu" data-bind="foreach: $data.vm.clientsData">

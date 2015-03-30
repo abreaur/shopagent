@@ -26,6 +26,8 @@ CREATE TABLE `clients` (
   `client_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `user_id` bigint(20) DEFAULT NULL,
+  `credit_limit` double DEFAULT 0,
+  `reliability` double DEFAULT 0,
   PRIMARY KEY (`client_id`),
   KEY `FK_smrp6gi0tckq1w5rnd7boyowu` (`user_id`),
   CONSTRAINT `FK_smrp6gi0tckq1w5rnd7boyowu` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
@@ -38,7 +40,7 @@ CREATE TABLE `clients` (
 
 LOCK TABLES `clients` WRITE;
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
-INSERT INTO `clients` VALUES (1,'Client 1',2),(2,'Client 2',NULL);
+INSERT INTO `clients` VALUES (1,'Client 1',2,1000,1000),(2,'Client 2',NULL,1000,1000);
 /*!40000 ALTER TABLE `clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
