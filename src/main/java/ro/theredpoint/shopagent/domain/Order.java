@@ -33,6 +33,7 @@ public class Order {
 	private Client client;
 	private OrderStatus orderStatus;
 	private Date created;
+	private Date cancelDate;
 	private Date expectedDeliveryDate;
 	private double amount;
 	private Set<OrderItem> orderItems;
@@ -80,6 +81,14 @@ public class Order {
 	}
 	public void setCreated(Date created) {
 		this.created = created;
+	}
+
+	@Column(name = "CANCEL_DATE")
+	public Date getCancelDate() {
+		return cancelDate;
+	}
+	public void setCancelDate(Date cancelDate) {
+		this.cancelDate = cancelDate;
 	}
 	
 	@Column(name = "EXPECTED_DELIVERY_DATE")

@@ -17,6 +17,9 @@ public class Client {
 	private User user;
 	private Double creditLimit;
 	private Double reliability;
+	private String address;
+	private String CUI;
+	private String fiscalCode;
 	
 	@Id
 	@GeneratedValue
@@ -59,5 +62,29 @@ public class Client {
 	}
 	public void setReliability(Double reliability) {
 		this.reliability = reliability;
+	}
+	
+	@Column(name = "ADDRESS")
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	
+	@Column(name = "CUI")
+	public String getCUI() {
+		return CUI;
+	}
+	public void setCUI(String cUI) {
+		CUI = cUI;
+	}
+	
+	@Column(name = "FISCAL_CODE")
+	public String getFiscalCode() {
+		return fiscalCode;
+	}
+	public void setFiscalCode(String fiscalCode) {
+		this.fiscalCode = fiscalCode;
 	}
 }

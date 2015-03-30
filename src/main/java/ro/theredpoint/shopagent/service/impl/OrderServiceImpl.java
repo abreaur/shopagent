@@ -274,4 +274,17 @@ public class OrderServiceImpl implements OrderService {
 		
 		return orderRepository.save(order);
 	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public Order cancelOrder(long orderId) throws BusinessException {
+
+		Order order = orderRepository.findOne(orderId);
+		
+		order.setOrderStatus(OrderStatus.CANCELLED);
+		order.setCancelDate(new Date());
+		
+		return orderRepository.save(order);
+		
+	}
 }

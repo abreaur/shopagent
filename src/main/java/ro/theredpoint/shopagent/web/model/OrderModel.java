@@ -18,6 +18,7 @@ public class OrderModel {
 	private long clientId;
 	private OrderStatus orderStatus;
 	private Date created;
+	private Date cancelDate;
 	private Date expectedDeliveryDate;
 	private double amount;
 	private List<OrderItemModel> orderItems;
@@ -28,6 +29,7 @@ public class OrderModel {
 		this.setClientId(order.getClient().getId());
 		this.orderStatus = order.getOrderStatus();
 		this.created = order.getCreated();
+		this.cancelDate = order.getCancelDate();
 		this.expectedDeliveryDate = order.getExpectedDeliveryDate();
 		this.amount = order.getAmount();
 		
@@ -60,6 +62,14 @@ public class OrderModel {
 	public void setCreated(Date created) {
 		this.created = created;
 	}
+	
+	public Date getCancelDate() {
+		return cancelDate;
+	}
+	public void setCancelDate(Date cancelDate) {
+		this.cancelDate = cancelDate;
+	}
+	
 	public Date getExpectedDeliveryDate() {
 		return expectedDeliveryDate;
 	}

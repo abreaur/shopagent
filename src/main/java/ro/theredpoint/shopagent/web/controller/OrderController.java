@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ro.theredpoint.shopagent.domain.Order;
+import ro.theredpoint.shopagent.service.BusinessException;
 import ro.theredpoint.shopagent.service.OrderService;
 import ro.theredpoint.shopagent.web.model.OrderModel;
 import ro.theredpoint.shopagent.web.model.WebResponse;
@@ -116,5 +117,15 @@ public class OrderController {
 	public Set<OrderModel> getPlacedOrder(@PathVariable long clientId) {
 		
 		return prepareResponse(orderService.getPlacedCustomerOrders(clientId));
+	}
+	
+	@RequestMapping(value = "orders/{orderId}/cancelOrder", produces = "application/json")
+	public WebResponse<OrderModel> cancelOrder(@PathVariable long orderId) {
+		
+		try {
+			return new WebResponse<OrderModel>(prepareResponse(orderService.cancelOrder(orderId)));
+		} catch (BusinessException e) {
+			return new WebResponse<OrderModel>(e.getMessage());
+		}
 	}
 }

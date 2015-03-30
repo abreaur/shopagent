@@ -79,4 +79,11 @@ public interface OrderService {
 	 * @return Placed customer orders.
 	 */
 	public Set<Order> getPlacedCustomerOrders(long clientId);
+	
+	/**
+	 * 
+	 * @return 
+	 * @throws BusinessException
+	 */
+	public Order cancelOrder(long orderId) throws BusinessException;
 }
