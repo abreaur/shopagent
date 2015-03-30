@@ -75,7 +75,7 @@
 		<div class="addToCart">
 			<input type="button" class="btn btn-primary btn-block" value="Adauga la comanda curenta" 
 							data-bind="click: $root.methods.addToCart,
-									   disable: !vm.hasStock || vm.selectedQuantity()==='0' || ($root.computed.isAgent() && $root.navbar.selectedClient() === '')">
+									   disable: !vm.hasStock || vm.selectedQuantity()==='0' || ($root.computed.isAgent() && !$root.navbar.selectedClient().id)">
 		</div>
 	</div>
 </div>
