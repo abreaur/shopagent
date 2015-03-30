@@ -132,7 +132,7 @@ require(['knockout',
 				},
 				"cancelOrder" : function(model, e) {
 					e.stopPropagation();
-					orders.cancelOrder(model);
+					orders.cancelOrder(vm.ordersData, data.cartData().clientId, model.id);
 				},
 				"selectClient" : function(model, e) {
 					clients.selectClient(vm.cartData, vm.ordersData, model.id);

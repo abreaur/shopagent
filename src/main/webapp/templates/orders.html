@@ -25,7 +25,9 @@
 	            </td>
 	         	<td>
 	            	<div>
-	            		<input type="button" class="btn btn-primary btn-block" value="Anuleaza" data-bind="click: $parent.methods.cancelOrder">
+	            		<input type="button" class="btn btn-primary btn-block" value="Anuleaza" 
+	            				data-bind="click: $root.methods.cancelOrder,
+	            							disable: $data.orderStatus === 'CANCELLED'">
 	            	</div>
 	            </td>
 	    	</tr>

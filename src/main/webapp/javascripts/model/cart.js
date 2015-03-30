@@ -155,7 +155,6 @@ define(['info', 'orders', 'knockout'], function (info, orders, ko) {
 						errorMessage = data.error;
 					}
 					info.showError(errorMessage);
-					console.log(errorMessage);
 				}
 			});
 		},
