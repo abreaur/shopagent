@@ -15,6 +15,8 @@ public class Client {
 	private long id;
 	private String name;
 	private User user;
+	private Double creditLimit;
+	private Double reliability;
 	
 	@Id
 	@GeneratedValue
@@ -41,5 +43,21 @@ public class Client {
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	@Column(name = "CREDIT_LIMIT")
+	public Double getCreditLimit() {
+		return creditLimit;
+	}
+	public void setCreditLimit(Double creditLimit) {
+		this.creditLimit = creditLimit;
+	}
+	
+	@Column(name = "RELIABILITY")
+	public Double getReliability() {
+		return reliability;
+	}
+	public void setReliability(Double reliability) {
+		this.reliability = reliability;
 	}
 }
