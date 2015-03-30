@@ -1,7 +1,6 @@
 package ro.theredpoint.shopagent.service;
 
 import java.util.List;
-import java.util.Set;
 
 import ro.theredpoint.shopagent.domain.Order;
 
@@ -25,8 +24,9 @@ public interface OrderService {
 	 * @param unitOfMeasure
 	 * @param quantity
 	 * @return
+	 * @throws BusinessException 
 	 */
-	public Order addProduct(long clientId, long productId, long stockId, String unitOfMeasure, double quantity);
+	public Order addProduct(long clientId, long productId, long stockId, String unitOfMeasure, double quantity) throws BusinessException;
 	
 	/**
 	 * Update quantity of an existing product.

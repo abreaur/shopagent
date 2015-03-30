@@ -13,8 +13,8 @@ import ro.theredpoint.shopagent.service.SecurityService;
 @Service
 public class SecurityServiceImpl implements SecurityService {
 
-	private static final String CLIENT_ROLE = "ROLE_CLIENT";
-	private static final String AGENT_ROLE = "ROLE_AGENT";
+	private static final String CLIENT_ROLE = "CLIENT";
+	private static final String AGENT_ROLE = "AGENT";
 	
 	@Autowired
 	private UserRepository userRepository;

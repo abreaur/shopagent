@@ -1,8 +1,12 @@
 package ro.theredpoint.shopagent.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -14,10 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 import ro.theredpoint.shopagent.domain.Order;
 import ro.theredpoint.shopagent.domain.Order.OrderStatus;
 import ro.theredpoint.shopagent.domain.OrderItem;
+import ro.theredpoint.shopagent.domain.OrderItemStockUsage;
 import ro.theredpoint.shopagent.domain.Product;
+import ro.theredpoint.shopagent.domain.Stock;
 import ro.theredpoint.shopagent.domain.StockConverter;
+import ro.theredpoint.shopagent.domain.UnitOfMeasure;
 import ro.theredpoint.shopagent.repository.ClientRepository;
 import ro.theredpoint.shopagent.repository.OrderItemRepository;
+import ro.theredpoint.shopagent.repository.OrderItemStockUsageRepository;
 import ro.theredpoint.shopagent.repository.OrderRepository;
 import ro.theredpoint.shopagent.repository.ProductRepository;
 import ro.theredpoint.shopagent.repository.StockRepository;
@@ -49,6 +57,8 @@ public class OrderServiceImpl implements OrderService {
 	private SecurityService securityService;
 	@Autowired
 	private ClientRepository clientRepository;
+	@Autowired
+	private OrderItemStockUsageRepository orderItemStockUsageRepository; 
 	
 	@Override
 	public Order getActiveOrder(long clientId) {
@@ -77,7 +87,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Order addProduct(long clientId, long productId, long stockId, String unitOfMeasure, double quantity) {
+	public Order addProduct(long clientId, long productId, long stockId, String unitOfMeasure, double quantity) throws BusinessException {
 		
 		Order order = getActiveOrder(clientId);
 		OrderItem existingItem = findExistingItem(productId, stockId, unitOfMeasure, order);
@@ -96,14 +106,8 @@ public class OrderServiceImpl implements OrderService {
 				existingItem.setPrice(existingItem.getStock().getPrice());
 			}
 			else {
-				for (StockConverter stockConverter : product.getStockConverters()) {
-					if (stockConverter.getTo().getCode().equals(unitOfMeasure)) {
-						existingItem.setPrice(stockConverter.getUnitPrice());
-						
-						break;
-					}
-				}
 				
+				existingItem.setPrice(getStockConverter(product, unitOfMeasure).getUnitPrice());
 			}
 			existingItem.setOrder(order);
 			existingItem.setUnitOfMeasure(unitOfMeasureRepository.findByCode(unitOfMeasure));
@@ -122,8 +126,20 @@ public class OrderServiceImpl implements OrderService {
 		return orderRepository.save(order);
 	}
 
-	private OrderItem findExistingItem(long productId, long stockId,
-			String unitOfMeasure, Order order) {
+	private StockConverter getStockConverter(Product product, String unitOfMeasure) throws BusinessException {
+
+		for (StockConverter stockConverter : product.getStockConverters()) {
+			if (stockConverter.getTo().getCode().equals(unitOfMeasure)) {
+				
+				return stockConverter;
+			}
+		}
+
+		throw new BusinessException(String.format("Can not find stock convertor for product %s and unit of measure %s",
+				product.getName(), unitOfMeasure));
+	}
+
+	private OrderItem findExistingItem(long productId, long stockId, String unitOfMeasure, Order order) {
 		OrderItem existingItem = null;
 		
 		for (OrderItem orderItem : order.getOrderItems()) {
@@ -194,33 +210,197 @@ public class OrderServiceImpl implements OrderService {
 		
 		for (OrderItem orderItem : order.getOrderItems()) {
 			
-			if (LOG.isDebugEnabled()) {
-				LOG.debug(String.format("Updating stock for order item %d", orderItem.getId()));
+			if (LOG.isInfoEnabled()) {
+				LOG.info(String.format("Updating stock for order item %d", orderItem.getId()));
 			}
 			
+			double availableStock = 0;
+			boolean convertStock;
+			StockConverter stockConverter = null;
+			
+			if (orderItem.getStock().getUnitOfMeasure().equals(orderItem.getUnitOfMeasure())) {
+				availableStock = orderItem.getStock().getQuantity();
+				convertStock = false;
+			}
+			else {
+				// Convert stock
+				stockConverter = getStockConverter(orderItem.getProduct(), orderItem.getUnitOfMeasure().getCode());
+				availableStock = BigDecimal.valueOf(orderItem.getStock().getQuantity()).multiply(BigDecimal.valueOf(
+						stockConverter.getRate())).doubleValue();
+				convertStock = true;
+			}
 			
 			if (remove) {
-				if (orderItem.getStock().getQuantity() < orderItem.getQuantity()) {
+				
+				if (availableStock < orderItem.getQuantity()) {
 					String message = String.format("Cantitatea comandata (%.2f %s) pentru produsul %s depaseste "
 							+ "stocul disponibil.", orderItem.getQuantity(), orderItem.getUnitOfMeasure().getCode(),
 							orderItem.getProduct().getName());
-					LOG.error(message + String.format(" Stoc disponibil %s", orderItem.getStock().getQuantity()));
+					LOG.error(message + String.format(" Stoc disponibil %s", availableStock));
 					throw new BusinessException(message);
 				}
 			}
 			
-			BigDecimal currentQuantity = BigDecimal.valueOf(orderItem.getQuantity());
-			if (remove) {
-				currentQuantity = currentQuantity.multiply(BigDecimal.valueOf(-1));
+			Stock currentStock = orderItem.getStock();
+			
+			if (convertStock) {
+				
+				Stock choosenStock = null;
+				if (securityService.isClient()) {
+					choosenStock = chooseStock(orderItem.getProduct(), orderItem.getUnitOfMeasure().getCode(),
+							orderItem.getQuantity());
+				}
+				else {
+					choosenStock = orderItem.getStock();
+				}
+				
+				if (choosenStock.getUnitOfMeasure().getCode().equals(orderItem.getUnitOfMeasure().getCode())) {
+					availableStock = choosenStock.getQuantity();
+					// Same unit of measure, just remove quantity
+					BigDecimal orderedQuantity = BigDecimal.valueOf(orderItem.getQuantity());
+					if (remove) {
+						orderedQuantity = orderedQuantity.multiply(BigDecimal.valueOf(-1));
+					}
+					double newQuantity = BigDecimal.valueOf(availableStock).add(orderedQuantity).doubleValue();
+					LOG.info(String.format("Updating %s stock: old value %.2f, new value %.2f", 
+							orderItem.getProduct().getName(), availableStock, newQuantity));
+					choosenStock.setQuantity(newQuantity);
+					
+					addStockUsage(orderItem, choosenStock, orderedQuantity.doubleValue());
+				}
+				else {
+					// Different units of measure
+ 					double requiredUnits = BigDecimal.valueOf(orderItem.getQuantity()).divide(
+ 							BigDecimal.valueOf(stockConverter.getRate())).doubleValue();
+ 					
+ 					int noOfUnits = (int) Math.ceil(requiredUnits);
+
+ 					// Creating used stock info
+ 					for (int i = 0; i < Math.floor(requiredUnits); i++) {
+ 						Stock stock = createNewStock(stockConverter.getProduct(), stockConverter.getUnitPrice(),
+ 								0, stockConverter.getTo());
+ 						addStockUsage(orderItem, stock, stockConverter.getRate());
+
+ 						// Removing one unit from product
+ 						double newQuantity = BigDecimal.valueOf(choosenStock.getQuantity()).subtract(BigDecimal.ONE).doubleValue();
+ 						LOG.info(String.format("Updating %s stock: old value %.2f, new value %.2f", 
+ 								orderItem.getProduct().getName(), choosenStock.getQuantity(), newQuantity));
+ 						choosenStock.setQuantity(newQuantity);
+ 					}
+ 					
+ 					if (requiredUnits != Math.ceil(requiredUnits)) {
+ 						// Not exact no of units, create a new stock info for difference
+ 						Stock differenceStock = createNewStock(stockConverter.getProduct(), stockConverter.getUnitPrice(),
+ 								BigDecimal.valueOf(stockConverter.getRate()).multiply(BigDecimal.valueOf(noOfUnits))
+ 									.subtract(BigDecimal.valueOf(orderItem.getQuantity())).doubleValue(),
+ 								stockConverter.getTo());
+ 						
+ 						// TODO implement Remove
+ 						LOG.info(String.format("Saving new stock info for %s, available stock %.2f %s",
+ 								stockConverter.getProduct().getName(), differenceStock.getQuantity(),
+ 								differenceStock.getUnitOfMeasure().getCode()));
+ 						
+ 						addStockUsage(orderItem, differenceStock, BigDecimal.valueOf(stockConverter.getRate()).
+ 								subtract(BigDecimal.valueOf(differenceStock.getQuantity())).doubleValue());
+ 						
+
+ 						// Removing one unit from product
+ 						double newQuantity = BigDecimal.valueOf(choosenStock.getQuantity()).subtract(BigDecimal.ONE).doubleValue();
+ 						LOG.info(String.format("Updating %s stock: old value %.2f, new value %.2f", 
+ 								orderItem.getProduct().getName(), choosenStock.getQuantity(), newQuantity));
+ 						choosenStock.setQuantity(newQuantity);
+ 					}
+				}
 			}
-			double newQuantity = BigDecimal.valueOf(orderItem.getStock().getQuantity()).add(
-					currentQuantity).doubleValue();
-			LOG.info(String.format("Updating product %s stock: old value %.2f, new value %.2f", 
-					orderItem.getProduct().getName(), orderItem.getStock().getQuantity(), newQuantity));
-			orderItem.getStock().setQuantity(newQuantity);
+			else {
+			
+				BigDecimal orderedQuantity = BigDecimal.valueOf(orderItem.getQuantity());
+				if (remove) {
+					orderedQuantity = orderedQuantity.multiply(BigDecimal.valueOf(-1));
+				}
+				double newQuantity = BigDecimal.valueOf(availableStock).add(orderedQuantity).doubleValue();
+				LOG.info(String.format("Updating %s stock: old value %.2f, new value %.2f", 
+						orderItem.getProduct().getName(), availableStock, newQuantity));
+				currentStock.setQuantity(newQuantity);
+				
+				addStockUsage(orderItem, currentStock, orderedQuantity.abs().doubleValue());
+			}
 		}
 	}
 	
+	public Stock createNewStock(Product product, double price, double quantity, UnitOfMeasure unitOfMeasure) {
+		
+		Stock stock = new Stock();
+			
+		stock.setMain(false);
+		stock.setProduct(product);
+		stock.setPrice(price);
+		stock.setQuantity(quantity);
+		stock.setUnitOfMeasure(unitOfMeasure);
+		
+		return stockRepository.save(stock);
+	}
+	
+	private void addStockUsage(OrderItem orderItem, Stock stock, double usedQuantity) {
+		
+		OrderItemStockUsage orderItemStockUsage = new OrderItemStockUsage();
+		
+		orderItemStockUsage.setUsedQuantity(usedQuantity);
+		orderItemStockUsage.setOrderItem(orderItem);;
+		orderItemStockUsage.setUsedFrom(stock);
+		
+		orderItemStockUsage = orderItemStockUsageRepository.save(orderItemStockUsage);
+		
+		if (orderItem.getStockUsages() == null) {
+			orderItem.setStockUsages(new HashSet<OrderItemStockUsage>());
+		}
+		
+		orderItem.getStockUsages().add(orderItemStockUsage);
+	}
+
+	/**
+	 * It choose the stock info to use for client when it order using main unit of measure.
+	 * 
+	 * @param product
+	 * @param quantity
+	 * @return
+	 */
+	private Stock chooseStock(Product product, String unitOfMeasure, double quantity) {
+
+		LOG.info(String.format("Choosing stock to use for %s - %.2f %s", product.getName(), quantity, unitOfMeasure));
+		List<Stock> chooseFrom = new ArrayList<Stock>();
+		Stock mainStock = null;
+		for (Stock stock : product.getStocks()) {
+			
+			if ((stock.getUnitOfMeasure().getCode().equals(unitOfMeasure)) && (stock.getQuantity() >= quantity)) {
+				chooseFrom.add(stock);
+			}
+			
+			if (stock.isMain()) {
+				mainStock = stock;
+			}
+		}
+		
+		if (!chooseFrom.isEmpty()) {
+			Collections.sort(chooseFrom, new Comparator<Stock>() {
+				public int compare(Stock o1, Stock o2) {
+					return (int) (o1.getQuantity() - o2.getQuantity());
+				};
+			});
+			
+			Stock chosenStock = chooseFrom.get(0);
+			
+			LOG.info(String.format("Chosen stock is %d, quantity %.2f", chosenStock.getId(), chosenStock.getQuantity()));
+			
+			return chosenStock;
+		}
+		
+		LOG.info(String.format("Chosen main stoc %d, quantity %.2f %s", mainStock.getId(), mainStock.getQuantity(),
+				mainStock.getUnitOfMeasure().getCode()));
+		
+		return mainStock;
+	}
+
 	/**
 	 * Update client credit limit.
 	 * 

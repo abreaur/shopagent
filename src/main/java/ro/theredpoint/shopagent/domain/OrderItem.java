@@ -1,11 +1,15 @@
 package ro.theredpoint.shopagent.domain;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -24,6 +28,7 @@ public class OrderItem {
 	private UnitOfMeasure unitOfMeasure;
 	private double amount;
 	private double discount;
+	private Set<OrderItemStockUsage> stockUsages;
 	
 	@Id
 	@GeneratedValue
@@ -101,5 +106,13 @@ public class OrderItem {
 	}
 	public void setUnitOfMeasure(UnitOfMeasure unitOfMeasure) {
 		this.unitOfMeasure = unitOfMeasure;
+	}
+	
+	@OneToMany(mappedBy = "orderItem", cascade = CascadeType.ALL)
+	public Set<OrderItemStockUsage> getStockUsages() {
+		return stockUsages;
+	}
+	public void setStockUsages(Set<OrderItemStockUsage> stockUsages) {
+		this.stockUsages = stockUsages;
 	}
 }
