@@ -1,15 +1,25 @@
 <div class="cartContainer">
-	<table class="table table-striped table-bordered">
+	<table class="table">
 	    <thead>
 	        <tr>
-		        <th class="col-sm-6 col-md-6">Nume client</th>
+		        <th class="col-sm-2 col-md-2">Nume client</th>
+		        <th class="col-sm-3 col-md-3">Adresa</th>
+		        <th class="col-sm-1 col-md-1">CUI</th>
+		        <th class="col-sm-2 col-md-2">Nr. Reg. Comertului</th>
+		        <th class="col-sm-1 col-md-1">Bonitate</th>
+		        <th class="col-sm-2 col-md-2">Limita credit</th>
 		        <th class="col-sm-1 col-md-1">Selecteaza</th>
 	        </tr>
 	    </thead>
 	    <tbody data-bind="foreach: $data.vm.clientsData">
 	        <tr>
-	            <td data-bind="text: name"></td>
-	            <td> <input type="button" class="btn btn-primary btn-block" value="Selecteaza" data-bind="click: $parent.methods.selectClient"></td>
+	            <td data-bind="text: ($data.name ? name : '')"></td>
+	            <td data-bind="text: ($data.address ? address : '')"></td>
+	            <td data-bind="text: ($data.CUI ? CUI : '')"></td>
+	            <td data-bind="text: ($data.fiscalCode ? fiscalCode : '')"></td>
+	            <td data-bind="text: ($data.reliability ? reliability : '')"></td>
+	            <td><div class="productPrice"><span data-bind="text: ($data.creditLimit ? creditLimit + ' RON': '')"></span></div></td>
+	            <td><input type="button" class="btn btn-primary btn-block" value="Selecteaza" data-bind="click: $parent.methods.selectClient"></td>
 	        </tr>
 	    </tbody>
 	</table>

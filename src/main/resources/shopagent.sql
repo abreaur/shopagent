@@ -28,6 +28,9 @@ CREATE TABLE `clients` (
   `user_id` bigint(20) DEFAULT NULL,
   `credit_limit` double DEFAULT 0,
   `reliability` double DEFAULT 0,
+  `ADDRESS` varchar(255) DEFAULT NULL,
+  `CUI` varchar(255) DEFAULT NULL,
+  `FISCAL_CODE` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`client_id`),
   KEY `FK_smrp6gi0tckq1w5rnd7boyowu` (`user_id`),
   CONSTRAINT `FK_smrp6gi0tckq1w5rnd7boyowu` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
@@ -40,7 +43,7 @@ CREATE TABLE `clients` (
 
 LOCK TABLES `clients` WRITE;
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
-INSERT INTO `clients` VALUES (1,'Client 1',2,1000,11),(2,'Client 2',NULL,2000,2);
+INSERT INTO `clients` VALUES (1,'Client 1', 2, 1000, 11, 'Iasi, Romania', 'RO24020204', 'J11/2304/2004'), (2,'Client 2', NULL, 2000, 2, 'Tg. Frumos, Romania, Jud. Iasi', 'RO13436705', NULL);
 /*!40000 ALTER TABLE `clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
