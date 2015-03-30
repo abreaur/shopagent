@@ -137,6 +137,8 @@ form {
 .cartContainer {
 	width: 80%;
 	margin-left:10%;
+	padding-left: 25px;
+	padding-right: 25px;
 }
 
 .informationContainer {
