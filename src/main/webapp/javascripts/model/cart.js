@@ -1,7 +1,7 @@
-define(['info', 'knockout'], function (info, ko) {
+define(['info', 'orders', 'knockout'], function (info, orders, ko) {
     'use strict';
     
-    var load = function(cartObservable, clientId) {
+    var load = function(cartObservable, clientId, successCallback) {
     			var url = "orders/" + clientId + "/activeOrder";
     			var params = "";
     			$.post(url, params, function(data) {
@@ -13,6 +13,9 @@ define(['info', 'knockout'], function (info, ko) {
     					}
     				}
     				cartObservable(data);
+    				if (successCallback) {
+    					successCallback();
+    				}
     			});
     		};
     
@@ -142,8 +145,9 @@ define(['info', 'knockout'], function (info, ko) {
 			$.post(url, params, function(data) {
 				if (data.successful) {
 					cartObservable(data.data);
-					load(cartObservable, clientId);
-					successCallback();
+					load(cartObservable, clientId, function(){
+						successCallback(data.data.id);
+					});
 					info.showInfo("Comanda curenta a fost plasata cu succes si va ajunge la destinatie la data: " + data.data.expectedDeliveryDate + "!");
 				} else {
 					var errorMessage = "Eroare la plasarea comenzii curente!";

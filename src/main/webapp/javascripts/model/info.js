@@ -13,10 +13,10 @@ define(['knockout'], function (ko) {
 			data.info(true);
 			data.error(false);
 			setTimeout(function() { 
-				$( ".informationContainer" ).slideUp( 1000, function() {
+				$( ".informationContainer" ).slideUp(1000, function() {
 					data.isVisible(false);
 				});
-			}, 4000);
+			}, 5000);
 		};
 
 	var showError = function(message) {
@@ -25,12 +25,11 @@ define(['knockout'], function (ko) {
 			data.info(false);
 			data.error(true);
 			setTimeout(function() { 
-				$( ".informationContainer" ).slideUp( 1000, function() {
+				$( ".informationContainer" ).slideUp(1000, function() {
 					data.isVisible(false);
 				});
-			}, 4000);
+			}, 5000);
 		};
-
 	
 	var i = {
 		"data" : data,

@@ -124,8 +124,9 @@ require(['knockout',
 				},
 				"placeActiveOrder" : function(model, e) {
 					e.stopPropagation();
-					cart.placeActiveOrder(vm.cartData, model, data.cartData().clientId, function() {
-						navbar.selectedTab('products');
+					cart.placeActiveOrder(vm.cartData, model, data.cartData().clientId, function(orderId) {
+						navbar.selectedTab('orders');
+						orders.flashNewOrder(vm.ordersData, data.cartData().clientId, orderId);
 						vm.products(products.getProducts(vm.filterString));
 					});
 				},

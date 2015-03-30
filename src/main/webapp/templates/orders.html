@@ -2,7 +2,7 @@
 	<table class="table">
 	    <thead>
 	        <tr>
-			        <th class="col-sm-1 col-md-1"></th>
+			        <th class="col-sm-1 col-md-1">Numar comanda</th>
 			        <th class="col-sm-2 col-md-2">Data plasare</th>
 			        <th class="col-sm-2 col-md-2">Data livrare</th>
 			        <th class="col-sm-1 col-md-1">Pret total</th>
@@ -13,8 +13,8 @@
 	    </thead>
 	    <tbody>
 	    	<!-- ko foreach: $data.vm.ordersData -->
-	        <tr>
-	        	<td></td>
+	        <tr data-bind="attr: {'id' : 'orderRow' + $data.id}">
+	        	<td><div class="cartRow"><span data-bind="text: $data.id"></span></div></td>
 	        	<td><div class="cartRow"><span data-bind="text: $data.created"></span></div></td>
 	        	<td><div class="cartRow"><span data-bind="text: $data.expectedDeliveryDate"></span></div></td>
 	            <td><div class="productPrice cartRow"><label data-bind="text: $data.amount.toFixed(2) + ' RON'"></label></div></td>

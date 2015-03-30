@@ -40,7 +40,7 @@ CREATE TABLE `clients` (
 
 LOCK TABLES `clients` WRITE;
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
-INSERT INTO `clients` VALUES (1,'Client 1',2,1000,1000),(2,'Client 2',NULL,1000,1000);
+INSERT INTO `clients` VALUES (1,'Client 1',2,1000,11),(2,'Client 2',NULL,2000,2);
 /*!40000 ALTER TABLE `clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
