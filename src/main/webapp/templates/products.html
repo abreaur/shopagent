@@ -28,8 +28,11 @@
 				<table>
 						<tr>
 							<td class="quantity">
-								<div data-bind="attr: {id: 'quantityDiv' + id}">
-			        				<input class="quantitySelector" type="text" data-bind="value: selectedQuantity, touchspin: 'small', disable: !hasStock">
+								<div data-bind="attr: {id: 'quantityDiv' + id}, click: $parent.methods.stopPropagation">
+			        				<input 	class="quantitySelector" type="text" 
+			        						data-bind="value: selectedQuantity, 
+			        								touchspin: 'small', 
+			        								disable: !hasStock">
 			    				</div>
 		    				</td>
 		    				<td>

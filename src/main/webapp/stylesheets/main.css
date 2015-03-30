@@ -41,7 +41,6 @@ div {
 	    top: 50%;
 	    left: 50%;
 	    width:20em;
-	    height:14em;
 	    margin-top: -7em; /*set to a negative number 1/2 of your height*/
 	    margin-left: -10em; /*set to a negative number 1/2 of your width*/
 	    background-color: #f3f3f3;
@@ -183,9 +182,15 @@ form {
 	margin-top: 10px;
 	color: #595959;
 }
+
+.cartRow {
+	margin-top: 8px;
+}
+
 .glyphicon-remove:hover {
 	color: #BC2328;
 }
+
 .bootstrap-touchspin > input {
 	text-align: center;
 }
@@ -197,4 +202,8 @@ form {
 
 .logout {
 	margin-right:15px;
+}
+
+.loginError {
+	color: #BC2328;
 }

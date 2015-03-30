@@ -11,7 +11,7 @@
 						<tr>
 							<td class="quantity">
 								<div data-bind="attr: {id: 'quantityDiv' + id}">
-			        				<input class="quantitySelector" type="text" data-bind="value: quantity, touchspin: 'small', disable: !hasStock">
+			        				<input class="quantitySelector" type="text" data-bind="value: selectedQuantity, touchspin: 'small', disable: !hasStock">
 			    				</div>
 		    				</td>
 		    				<td>
@@ -25,7 +25,9 @@
     					</tr>
     			</table>
 				<div class="addToCart">
-					<input type="button" class="btn btn-primary btn-block" value="Adauga la comanda curenta" data-bind="click: $parent.methods.addToCart, disable: !hasStock || quantity()==='0'">
+					<input type="button" class="btn btn-primary btn-block" value="Adauga la comanda curenta" 
+							data-bind="click: $parent.methods.addToCart,
+										disable: !hasStock || selectedQuantity()==='0' || ($parent.computed.isAgent() && $parent.navbar.selectedClient() === '')">
 				</div>
 				</div>
 </div>

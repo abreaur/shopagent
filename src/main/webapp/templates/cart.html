@@ -4,14 +4,16 @@
 	        <tr>
 	        	<!-- ko if: $parent.computed.isAgent -->
         			<th class="col-sm-1 col-md-1"></th>
-			        <th class="col-sm-6 col-md-6">Nume articol</th>
+			        <th class="col-sm-5 col-md-5">Nume articol</th>
+			        <th class="col-sm-1 col-md-1">Pret unitar</th>
 			        <th class="col-sm-2 col-md-2">Cantitate</th>
 			        <th class="col-sm-2 col-md-2">Discount</th>
 			        <th class="col-sm-1 col-md-1"></th>
         		<!-- /ko -->
         		<!-- ko ifnot: $parent.computed.isAgent -->
 		        	<th class="col-sm-1 col-md-1"></th>
-			        <th class="col-sm-7 col-md-7">Nume articol</th>
+			        <th class="col-sm-6 col-md-6">Nume articol</th>
+			        <th class="col-sm-1 col-md-1">Pret unitar</th>
 			        <th class="col-sm-2 col-md-2">Cantitate</th>
 			        <th class="col-sm-2 col-md-2"></th>
 		        <!-- /ko -->
@@ -25,13 +27,22 @@
 						<img alt="some image" data-bind="attr: {src: product.picture}">
 					</div>
 	        	</td>
-	            <td data-bind="text: product.name"></td>
+	            <td>
+	            	<div class="cartRow">
+	            		<span data-bind="text: product.name"></span>
+	            	</div>
+	            </td>
+	            <td>
+		            <div class="productPrice cartRow">
+		            	<label data-bind="text: price.toFixed(2) + ' RON'"></label>
+		            </div>
+	            </td>
 	            <td>
 	            	<div>
 	            		<input type="text" data-bind="touchspin: unitOfMeasure, value: quantity, event: {change: $parent.methods.updateQuantity}">
 	            	</div>
 	            	<div class="productPrice">
-	            		<label data-bind="text: amount + ' RON'"></label>
+	            		<label data-bind="text: amount.toFixed(2) + ' RON'"></label>
 	            	</div>
 	            </td>
 	            <!-- ko if: $parent.computed.isAgent -->
@@ -52,14 +63,15 @@
 	    	<!-- /ko -->
 	    	<tr>
 	        	<td></td>
+	        	<td></td>
 	            <td>
-	            	<div class="productPrice">
+	            	<div class="cartRow productPrice">
 	            		<label>TOTAL:</label>
 	            	</div>
 	            </td>
 	            <td>
-	            	<div class="productPrice">
-	            		<label data-bind="text: $data.vm.cartData().amount + ' RON'"></label>
+	            	<div class="cartRow productPrice">
+	            		<label data-bind="text: $data.vm.cartData().amount.toFixed(2) + ' RON'"></label>
 	            	</div>
 	            </td>
 	            <!-- ko if: $parent.computed.isAgent -->

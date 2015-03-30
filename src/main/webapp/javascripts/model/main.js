@@ -137,10 +137,13 @@ require(['knockout',
 					return length == 0;
 				}),
 				"selectProduct" : function(model, e) {
-//					e.stopPropagation();
-//					vm.selectedProduct(model);
-//					vm.selectedProductId(model.id);
-//					navbar.selectedTab("");
+					e.stopPropagation();
+					vm.selectedProduct(model);
+					vm.selectedProductId(model.id);
+					navbar.selectedTab("");
+				},
+				"stopPropagation" : function(model, e) {
+					e.stopPropagation();
 				}
 			};
 		
