@@ -207,3 +207,10 @@ form {
 .loginError {
 	color: #BC2328;
 }
+.navbar-default .navbar-brand {
+    color: red;
+}
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+    color: red;
+}

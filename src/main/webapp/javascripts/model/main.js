@@ -10,6 +10,7 @@ require.config({
 	"cart": "cart",
 	"security": "security",
 	"clients": "clients",
+	"product": "product",
 	}
 });
 
@@ -19,10 +20,11 @@ require(['knockout',
          'cart',
          'security',
          'clients',
+         'product',
          'knockout-amd-helpers',
          'bootstrap',
          'less',],
-	function(ko, info, products, cart, security, clients) {
+	function(ko, info, products, cart, security, clients, product) {
 
 	ko.amdTemplateEngine.defaultPath = "../../templates";
 	ko.amdTemplateEngine.defaultSuffix = ".html";
@@ -98,6 +100,11 @@ require(['knockout',
 				},
 				"addToCart" : function(model, e) {
 					e.stopPropagation();
+					if (computed.isAgent()) {
+						model.stockSelection = true;
+					} else {
+						model.measureSelection = true;
+					}
 					cart.addToCart(vm.cartData, model, data.cartData().clientId);
 				},
 				"updateQuantity" : function(model, e) {
@@ -138,7 +145,7 @@ require(['knockout',
 				}),
 				"selectProduct" : function(model, e) {
 					e.stopPropagation();
-					vm.selectedProduct(model);
+					vm.selectedProduct(new product.ProductViewModel(model));
 					vm.selectedProductId(model.id);
 					navbar.selectedTab("");
 				},

@@ -21,17 +21,51 @@ define(['info', 'knockout'], function (info, ko) {
 		
 		addToCart : function(cartObservable, product, clientId) {
 			var url = "orders/" + clientId + "/addProduct";
-			var selectedQuantity = parseInt(product.selectedQuantity());
+			var selectedQuantity = 0;
+			var productId = 0;
+			var stockId = 0;
+			var unitOfMeasure = '';
+			var productName = '';
+			var productPrice = '';
+			
+			if (product.stockSelection && product.vm && product.vm.selectedStock) {
+				var stock = product.vm.selectedStock();
+				productName = product.vm.name;
+				productPrice = stock.price();
+				selectedQuantity = parseInt(product.vm.selectedQuantity());
+				productId = product.vm.id;
+				stockId = stock.id();
+				unitOfMeasure = stock.unitOfMeasure();
+				
+			} else if (product.measureSelection && product.vm && product.vm.selectedMeasure) {
+				var measure = product.vm.selectedMeasure();
+				productName = product.vm.name;
+				productPrice = measure.price();
+				selectedQuantity = parseInt(product.vm.selectedQuantity());
+				productId = product.vm.id;
+				stockId = product.vm.mainStockId;
+				unitOfMeasure = measure.unitOfMeasure();
+				
+			} else {
+				productName = product.name;
+				productPrice = product.price;
+				selectedQuantity = parseInt(product.selectedQuantity());
+				productId = product.id;
+				stockId = product.stockId;
+				unitOfMeasure = product.unitOfMeasure;
+			}
+			
 			var params = {
 					'quantity': selectedQuantity,
-					'productId': product.id,
-					'stockId' : product.stockId,
-					'unitOfMeasure' : product.unitOfMeasure,
+					'productId': productId,
+					'stockId' : stockId,
+					'unitOfMeasure' : unitOfMeasure,
 			};
+			
 			$.post(url, params, function(data) {
 				if (data.successful) {
 					cartObservable(data.data);
-					var successMessage = selectedQuantity + " " + product.unitOfMeasure + " '" + product.name + "' in valoare totala de " + selectedQuantity * product.price + " RON";
+					var successMessage = selectedQuantity + " " + params.unitOfMeasure + " '" + productName + "' in valoare totala de " + params.quantity * productPrice + " RON";
 					if (selectedQuantity === 1) {
 						info.showInfo(successMessage + " s-a adaugat la comanda curenta!");
 					} else {
@@ -83,7 +117,7 @@ define(['info', 'knockout'], function (info, ko) {
 			});
 		},
 	
-		removeProduct : function(cartObservable, item, clientId, callback) {
+		removeProduct : function(cartObservable, item, clientId) {
 			var url = "orders/" + clientId + "/removeProduct";
 			var params = {
 					'productId': item.product.id,
@@ -94,7 +128,6 @@ define(['info', 'knockout'], function (info, ko) {
 			$.post(url, params, function(data) {
 				if (data.successful) {
 					cartObservable(data.data);
-					callback();
 				} else {
 					info.showError("Eroare la eliminarea produsului din comanda curenta!");
 					console.log(data.error);

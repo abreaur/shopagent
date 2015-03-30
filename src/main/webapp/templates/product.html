@@ -1,33 +1,81 @@
 <div class="productsContainer">
-				<div class="productImage col-sm-12 col-md-4">
-					<img alt="some image" data-bind="attr: {src: picture}">
-				</div>
-				<div class="col-sm-12 col-md-3">
-				<div class="productInfo">
-					<h5 data-bind="text: name"></h5>
-					<label class="stock" data-bind="text: hasStock ? 'In stoc' : 'Stoc epuizat', css: {hasStock: hasStock}"></label>
-				</div>
-				<table>
-						<tr>
-							<td class="quantity">
-								<div data-bind="attr: {id: 'quantityDiv' + id}">
-			        				<input class="quantitySelector" type="text" data-bind="value: selectedQuantity, touchspin: 'small', disable: !hasStock">
-			    				</div>
-		    				</td>
-		    				<td>
-								<div class="productPrice">
-									<h3>
-										<strong data-bind="text: price.toFixed(2)"></strong>
-									</h3>
-									<span>RON / </span><span data-bind="text: unitOfMeasure"></span>
-								</div>
-							</td>
-    					</tr>
-    			</table>
-				<div class="addToCart">
-					<input type="button" class="btn btn-primary btn-block" value="Adauga la comanda curenta" 
-							data-bind="click: $parent.methods.addToCart,
-										disable: !hasStock || selectedQuantity()==='0' || ($parent.computed.isAgent() && $parent.navbar.selectedClient() === '')">
-				</div>
-				</div>
+	<div class="productImage col-sm-12 col-md-4">
+		<img alt="product image" data-bind="attr: {src: vm.picture}">
+	</div>
+	<div class="col-sm-12 col-md-3">
+		<div class="productInfo">
+			<h5 data-bind="text: vm.name"></h5>
+			<label class="stock" data-bind="text: vm.hasStock ? 'In stoc' : 'Stoc epuizat', css: {hasStock: vm.hasStock}"></label>
+		</div>
+		<!-- ko if: $parent.computed.isAgent -->
+		<div data-bind="foreach: vm.stocks">
+		    <div>
+		    <h4>
+		    	<input type="radio"
+		    			name="stockGroup" 
+		    			data-bind="attr: {'id' : $data.value},
+		    						value: $data.value, 
+		    						checked: $parent.vm.selectedStockValue(),
+		    						event: {change: $parent.methods.changeSelectedStock}"/>
+		    						
+			    	<label data-bind="attr: {'for': $data.value}, 
+			    					  text: $data.text">
+			    	</label>
+		    	</h4>
+		    </div>
+		</div>
+		<!-- /ko -->
+		<!-- ko ifnot: $parent.computed.isAgent -->
+		<div data-bind="foreach: vm.measures">
+			<div>
+		    	<h4>
+		    		<input type="radio"
+		    			name="measureUnitGroup" 
+		    			data-bind="attr: {'id' : $data.value},
+		    						value: $data.value, 
+		    						checked: $parent.vm.selectedMeasureValue(),
+		    						event: {change: $parent.methods.changeSelectedMeasure}"/>
+		    						
+			    	<label data-bind="attr: {'for': $data.value}, 
+			    					  text: $data.text">
+			    	</label>
+		    	</h4>
+		    </div>
+		</div>
+		<!-- /ko -->
+		<table>
+			<tr>
+				<td class="quantity">
+					<div data-bind="attr: {id: 'quantityDiv' + vm.id}">
+			        	<input class="quantitySelector" type="text" data-bind="value: vm.selectedQuantity, touchspin: 'small', disable: !vm.hasStock">
+					</div>
+		    	</td>
+		    	<!-- ko if: $parent.computed.isAgent -->
+		    	<td>
+					<div class="productPrice">
+						<h3>
+							<strong data-bind="text: vm.selectedStock().price().toFixed(2)"></strong>
+						</h3>
+						<span>RON / </span><span data-bind="text: vm.selectedStock().unitOfMeasure()"></span>
+					</div>
+				</td>
+				<!-- /ko -->
+				<!-- ko ifnot: $parent.computed.isAgent -->
+		    	<td>
+					<div class="productPrice">
+						<h3>
+							<strong data-bind="text: vm.selectedMeasure().price().toFixed(2)"></strong>
+						</h3>
+						<span>RON / </span><span data-bind="text: vm.selectedMeasure().unitOfMeasure()"></span>
+					</div>
+				</td>
+				<!-- /ko -->
+    		</tr>
+    	</table>
+		<div class="addToCart">
+			<input type="button" class="btn btn-primary btn-block" value="Adauga la comanda curenta" 
+							data-bind="click: $root.methods.addToCart,
+									   disable: !vm.hasStock || vm.selectedQuantity()==='0' || ($root.computed.isAgent() && $root.navbar.selectedClient() === '')">
+		</div>
+	</div>
 </div>
