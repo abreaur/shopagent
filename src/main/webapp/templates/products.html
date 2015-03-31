@@ -12,12 +12,14 @@
 	</div>
 	<!-- ko if: $parent.computed.isAgent -->
 	<div class="productsFilter col-sm-6 col-md-3">
-		<label>Bonitate</label>
-		<input 	type="text" class="form-control" data-bind="value: $parent.navbar.selectedClient().id ? $parent.navbar.selectedClient().reliability : ''" readonly>
+		<label data-bind="text: $parent.navbar.selectedClient().id ? 'Bonitate ' + $parent.navbar.selectedClient().name + '' : 'Bonitate'"></label>
+		<input 	type="text" class="form-control" 
+				data-bind="value: $parent.navbar.selectedClient().id ? $parent.navbar.selectedClient().reliability : ''" readonly>
 	</div>
 	<div class="productsFilter col-sm-6 col-md-3">
-		<label>Limita credit</label>
-		<input 	type="text" class="form-control" data-bind="value: $parent.navbar.selectedClientCreditLimit() ? $parent.navbar.selectedClientCreditLimit().toFixed(2) + ' RON' : ''" readonly>
+		<label data-bind="text: $parent.navbar.selectedClient().id ? 'Limita credit ' + $parent.navbar.selectedClient().name + '': 'Limita credit'"></label>
+		<input 	type="text" class="form-control" 
+				data-bind="value: $parent.navbar.selectedClientCreditLimit() ? $parent.navbar.selectedClientCreditLimit().toFixed(2) + ' RON' : ''" readonly>
 	</div>
 	<!-- /ko -->
 	<div class="col-md-12"></div>
