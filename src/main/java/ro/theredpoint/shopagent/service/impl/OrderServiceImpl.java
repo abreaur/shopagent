@@ -186,7 +186,7 @@ public class OrderServiceImpl implements OrderService {
 			throw new BusinessException("Comanda nu poate fi plasata deoarece nu contine nici un produs.");
 		}
 		
-		updateStock(order, true);
+		removeStock(order);
 		updateCreditLimit(order, true);
 		
 		order.setOrderStatus(OrderStatus.PLACED);
@@ -199,14 +199,76 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	/**
+	 * Removing stock usage when cancelling an order.
+	 * 
+	 * @param order
+	 * @throws BusinessException 
+	 */
+	private void addStock(Order order) throws BusinessException {
+		
+		for (OrderItem orderItem : order.getOrderItems()) {
+			
+			if ((orderItem.getStockUsages() != null) && (!orderItem.getStockUsages().isEmpty())) {
+				for (OrderItemStockUsage stockUsage : orderItem.getStockUsages()) {
+					
+					boolean convertionNeeded = !stockUsage.getUsedFrom().getUnitOfMeasure().getCode().equals(
+							orderItem.getStock().getUnitOfMeasure().getCode());
+					
+					LOG.info(String.format("Cancelling stock usage %d for %s, order item %d. Convertion needed %b.",
+							stockUsage.getId(), orderItem.getProduct().getName(), orderItem.getId(), convertionNeeded));
+					
+					double newQuantity = BigDecimal.valueOf(stockUsage.getUsedFrom().getQuantity()).add(
+							BigDecimal.valueOf(stockUsage.getUsedQuantity())).doubleValue();
+					LOG.info(String.format("Updating %s stock: old value %.2f, new value %.2f", 
+							orderItem.getProduct().getName(), stockUsage.getUsedFrom().getQuantity(), newQuantity));
+					stockUsage.getUsedFrom().setQuantity(newQuantity);
+					
+					if (!convertionNeeded) {
+						stockRepository.save(stockUsage.getUsedFrom());
+					}
+					else {
+						// Was converted, check if its stock is equal to a full unit
+						StockConverter stockConverter = getStockConverter(orderItem.getProduct(),
+								orderItem.getUnitOfMeasure().getCode());
+						
+						if (stockConverter.getRate() == stockUsage.getUsedFrom().getQuantity()) {
+							// It was one product. Increasing original stock value
+							
+							newQuantity = BigDecimal.valueOf(orderItem.getStock().getQuantity()).add(
+									BigDecimal.ONE).doubleValue();
+							LOG.info(String.format("Updating %s stock: old value %.2f, new value %.2f", 
+									orderItem.getProduct().getName(), orderItem.getStock().getQuantity(), newQuantity));
+							orderItem.getStock().setQuantity(newQuantity);
+							stockRepository.save(orderItem.getStock());
+							
+							// Removing stock for item
+							stockUsage.getUsedFrom().setQuantity(0);
+							stockRepository.save(stockUsage.getUsedFrom());
+						}
+						else {
+							// It was not one product
+							LOG.info("It was not one product");
+							stockRepository.save(stockUsage.getUsedFrom());
+						}
+					}
+					
+					stockUsage.setCancelled(true);
+					orderItemStockUsageRepository.save(stockUsage);
+				}
+			}
+		}
+	}
+	
+	/**
 	 * Remove stock according to order items
+	 * 
 	 * @param remove
 	 * @param order
 	 * @throws BusinessException 
 	 */
-	private void updateStock(Order order, boolean remove) throws BusinessException {
+	private void removeStock(Order order) throws BusinessException {
 		
-		LOG.info(String.format("Updating stocks for order %d, remove %b", order.getId(), remove));
+		LOG.info(String.format("Updating stocks for order %d.", order.getId()));
 		
 		for (OrderItem orderItem : order.getOrderItems()) {
 			
@@ -230,15 +292,12 @@ public class OrderServiceImpl implements OrderService {
 				convertStock = true;
 			}
 			
-			if (remove) {
-				
-				if (availableStock < orderItem.getQuantity()) {
-					String message = String.format("Cantitatea comandata (%.2f %s) pentru produsul %s depaseste "
-							+ "stocul disponibil.", orderItem.getQuantity(), orderItem.getUnitOfMeasure().getCode(),
-							orderItem.getProduct().getName());
-					LOG.error(message + String.format(" Stoc disponibil %s", availableStock));
-					throw new BusinessException(message);
-				}
+			if (availableStock < orderItem.getQuantity()) {
+				String message = String.format("Cantitatea comandata (%.2f %s) pentru produsul %s depaseste "
+						+ "stocul disponibil.", orderItem.getQuantity(), orderItem.getUnitOfMeasure().getCode(),
+						orderItem.getProduct().getName());
+				LOG.error(message + String.format(" Stoc disponibil %s", availableStock));
+				throw new BusinessException(message);
 			}
 			
 			Stock currentStock = orderItem.getStock();
@@ -258,10 +317,7 @@ public class OrderServiceImpl implements OrderService {
 					availableStock = choosenStock.getQuantity();
 					// Same unit of measure, just remove quantity
 					BigDecimal orderedQuantity = BigDecimal.valueOf(orderItem.getQuantity());
-					if (remove) {
-						orderedQuantity = orderedQuantity.multiply(BigDecimal.valueOf(-1));
-					}
-					double newQuantity = BigDecimal.valueOf(availableStock).add(orderedQuantity).doubleValue();
+					double newQuantity = BigDecimal.valueOf(availableStock).subtract(orderedQuantity).doubleValue();
 					LOG.info(String.format("Updating %s stock: old value %.2f, new value %.2f", 
 							orderItem.getProduct().getName(), availableStock, newQuantity));
 					choosenStock.setQuantity(newQuantity);
@@ -315,10 +371,7 @@ public class OrderServiceImpl implements OrderService {
 			else {
 			
 				BigDecimal orderedQuantity = BigDecimal.valueOf(orderItem.getQuantity());
-				if (remove) {
-					orderedQuantity = orderedQuantity.multiply(BigDecimal.valueOf(-1));
-				}
-				double newQuantity = BigDecimal.valueOf(availableStock).add(orderedQuantity).doubleValue();
+				double newQuantity = BigDecimal.valueOf(availableStock).subtract(orderedQuantity).doubleValue();
 				LOG.info(String.format("Updating %s stock: old value %.2f, new value %.2f", 
 						orderItem.getProduct().getName(), availableStock, newQuantity));
 				currentStock.setQuantity(newQuantity);
@@ -510,7 +563,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setOrderStatus(OrderStatus.CANCELLED);
 		order.setCancelDate(new Date());
 
-		updateStock(order, false);
+		addStock(order);
 		updateCreditLimit(order, false);
 		
 		return orderRepository.save(order);

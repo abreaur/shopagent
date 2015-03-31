@@ -19,6 +19,7 @@ public class OrderItemStockUsage {
 	private OrderItem orderItem;
 	private Stock usedFrom;
 	private double usedQuantity;
+	private boolean cancelled;
 	
 	@Id
 	@GeneratedValue
@@ -54,5 +55,13 @@ public class OrderItemStockUsage {
 	}
 	public void setUsedQuantity(double usedQuantity) {
 		this.usedQuantity = usedQuantity;
+	}
+	
+	@Column(name = "CANCELLED")
+	public boolean isCancelled() {
+		return cancelled;
+	}
+	public void setCancelled(boolean cancelled) {
+		this.cancelled = cancelled;
 	}
 }

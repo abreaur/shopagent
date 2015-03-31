@@ -26,11 +26,11 @@ CREATE TABLE `clients` (
   `client_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `user_id` bigint(20) DEFAULT NULL,
-  `credit_limit` double DEFAULT 0,
-  `reliability` double DEFAULT 0,
-  `ADDRESS` varchar(255) DEFAULT NULL,
-  `CUI` varchar(255) DEFAULT NULL,
-  `FISCAL_CODE` varchar(255) DEFAULT NULL,
+  `credit_limit` double DEFAULT NULL,
+  `reliability` double DEFAULT NULL,
+  `cui` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `fiscal_code` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`client_id`),
   KEY `FK_smrp6gi0tckq1w5rnd7boyowu` (`user_id`),
   CONSTRAINT `FK_smrp6gi0tckq1w5rnd7boyowu` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
@@ -43,8 +43,38 @@ CREATE TABLE `clients` (
 
 LOCK TABLES `clients` WRITE;
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
-INSERT INTO `clients` VALUES (1,'Client 1', 2, 1000, 11, 'Iasi, Romania', 'RO24020204', 'J11/2304/2004'), (2,'Client 2', NULL, 2000, 2, 'Tg. Frumos, Romania, Jud. Iasi', 'RO13436705', NULL);
+INSERT INTO `clients` VALUES (1,'Client 1',2,20000,0.5,'RO24020204','Iasi, Romania','J11/2304/2004'),(2,'Client 2',NULL,18029,0.8,'RO13436705','Tg. Frumos, Romania, Jud. Iasi','');
 /*!40000 ALTER TABLE `clients` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `order_item_stock_usages`
+--
+
+DROP TABLE IF EXISTS `order_item_stock_usages`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `order_item_stock_usages` (
+  `order_item_stock_usage_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `used_quantity` double DEFAULT NULL,
+  `order_item_id` bigint(20) NOT NULL,
+  `used_from_id` bigint(20) NOT NULL,
+  `cancelled` bit(1) DEFAULT NULL,
+  PRIMARY KEY (`order_item_stock_usage_id`),
+  KEY `FK_rtddgxhicr7a1i8nur7k3qrcu` (`order_item_id`),
+  KEY `FK_nnlu0ol6axm6mm8bpu7sxkc5p` (`used_from_id`),
+  CONSTRAINT `FK_nnlu0ol6axm6mm8bpu7sxkc5p` FOREIGN KEY (`used_from_id`) REFERENCES `stocks` (`stock_id`),
+  CONSTRAINT `FK_rtddgxhicr7a1i8nur7k3qrcu` FOREIGN KEY (`order_item_id`) REFERENCES `order_items` (`order_item`)
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `order_item_stock_usages`
+--
+
+LOCK TABLES `order_item_stock_usages` WRITE;
+/*!40000 ALTER TABLE `order_item_stock_usages` DISABLE KEYS */;
+/*!40000 ALTER TABLE `order_item_stock_usages` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -67,9 +97,13 @@ CREATE TABLE `order_items` (
   PRIMARY KEY (`order_item`),
   KEY `FK_9gap2fmw66v092ntb58rtohwh` (`order_id`),
   KEY `FK_3fea23hxar30bx7m7h8ed25n9` (`product_id`),
+  KEY `FK_bq31gjrvv7o8csc9cq7px6tmd` (`stock_id`),
+  KEY `FK_q8momd2kqu5mmaf1m5k027wwc` (`unit_of_measure_id`),
+  CONSTRAINT `FK_q8momd2kqu5mmaf1m5k027wwc` FOREIGN KEY (`unit_of_measure_id`) REFERENCES `unit_of_measures` (`unit_of_measure_id`),
   CONSTRAINT `FK_3fea23hxar30bx7m7h8ed25n9` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`),
-  CONSTRAINT `FK_9gap2fmw66v092ntb58rtohwh` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+  CONSTRAINT `FK_9gap2fmw66v092ntb58rtohwh` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`),
+  CONSTRAINT `FK_bq31gjrvv7o8csc9cq7px6tmd` FOREIGN KEY (`stock_id`) REFERENCES `stocks` (`stock_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,7 +112,6 @@ CREATE TABLE `order_items` (
 
 LOCK TABLES `order_items` WRITE;
 /*!40000 ALTER TABLE `order_items` DISABLE KEYS */;
-INSERT INTO `order_items` VALUES (5,10,0,10,1,5,1,0,0),(6,2,0,2,2,5,3,0,0),(7,3,0,3,3,5,4,0,0),(8,0.28,0,0.28,1,5,12,0,0),(9,12,0,12,2,5,2,0,0),(14,90,0,45,2,6,2,5,1),(15,750,0.5,150,10,6,1,1,1);
 /*!40000 ALTER TABLE `order_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,12 +130,13 @@ CREATE TABLE `orders` (
   `client_id` bigint(20) NOT NULL,
   `user_id` bigint(20) NOT NULL,
   `expected_delivery_date` datetime DEFAULT NULL,
+  `cancel_date` datetime DEFAULT NULL,
   PRIMARY KEY (`order_id`),
   KEY `FK_ktwyfbqs32h2qw22odq9pqmex` (`client_id`),
   KEY `FK_k8kupdtcdpqd57b6j4yq9uvdj` (`user_id`),
   CONSTRAINT `FK_k8kupdtcdpqd57b6j4yq9uvdj` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   CONSTRAINT `FK_ktwyfbqs32h2qw22odq9pqmex` FOREIGN KEY (`client_id`) REFERENCES `clients` (`client_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -111,7 +145,6 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (5,0,'2015-03-26 21:37:56',0,2,2,NULL),(6,840,'2015-03-28 17:44:23',0,1,2,NULL);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -218,7 +251,7 @@ CREATE TABLE `stocks` (
   KEY `FK_t4dk2ens7morbtjktcpy5xoe7` (`unit_of_measure_id`),
   CONSTRAINT `FK_htp625bmmsb6gay567r5sdfoc` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`),
   CONSTRAINT `FK_t4dk2ens7morbtjktcpy5xoe7` FOREIGN KEY (`unit_of_measure_id`) REFERENCES `unit_of_measures` (`unit_of_measure_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -319,4 +352,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-03-28 18:42:20
+-- Dump completed on 2015-03-31 10:19:40
