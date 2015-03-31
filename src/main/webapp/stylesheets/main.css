@@ -1,14 +1,10 @@
-@theme_color : #3276b1;
-@theme_color_light : #428bca;
-@button_color: rgb(204, 255, 204);
-
 div {
 	&.border_container {
 		margin: 5px 0px 5px 0px;
 		padding: 0px 5px 0px 5px;
 		background-color: #fff;
 		border-width: 1px;
-		border-color: @theme_color;
+		border-color: #3276b1;
 		border-radius: 5px 5px 5px 5px;
 		border-style:solid;
 		>div {
@@ -20,18 +16,7 @@ div {
 	}
 	h4 {
 		margin-left:5px;
-		color: @theme_color;
-	}
-	
-	tbody >tr {
-		&:hover {
-			background-color: @theme_color_light;
-			color: white;
-		}
-		&.selected {
-			background-color: @theme_color;
-			color: white;
-		}
+		color: #3276b1;
 	}
 	
 	&.login {
@@ -44,7 +29,13 @@ div {
 	    background-color: #f3f3f3;
 	}
 }
+	
+tbody > tr:hover {
+	background-color: rgba(66, 139, 202, 0.5);
+	color: white;
+}
 
+	
 form {
 	input {
 		margin-top:4px;
@@ -106,6 +97,11 @@ form {
 
 .productsFilter {
 	padding: 25px 25px 25px 25px;
+}
+
+.clientsFilter {
+	margin-top: 25px;
+	margin-bottom: 25px;
 }
 
 .stock {
@@ -203,4 +199,8 @@ form {
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-brand:focus {
     color: red;
+}
+
+.logoAndAppName {
+	max-width:100px;
 }
