@@ -1,6 +1,6 @@
 package ro.theredpoint.shopagent.service.impl;
 
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,12 +19,17 @@ public class ClientServiceImpl implements ClientService {
 	private ClientRepository clientRepository; 
 	
 	@Override
-	public Set<Client> getAllClients() {
+	public List<Client> getAllClients() {
 		return clientRepository.findAll();
 	}
 
 	@Override
 	public Client getClient(long clientId) {
 		return clientRepository.findOne(clientId);
+	}
+
+	@Override
+	public List<Client> getClients(String name) {
+		return clientRepository.findByName(name);
 	}
 }

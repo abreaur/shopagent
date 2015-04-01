@@ -1,6 +1,6 @@
 package ro.theredpoint.shopagent.service;
 
-import java.util.Set;
+import java.util.List;
 
 import ro.theredpoint.shopagent.domain.Client;
 
@@ -9,6 +9,7 @@ import ro.theredpoint.shopagent.domain.Client;
  */
 public interface ClientService {
 
-	public Set<Client> getAllClients();
+	public List<Client> getAllClients();
 	public Client getClient(long clientId);
+	public List<Client> getClients(String name);
 }
