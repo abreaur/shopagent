@@ -101,10 +101,14 @@ require(['knockout',
 		var methods = {
 				"switchTab": switchTab,
 				"viewCart": function(model, e) {
-					switchTab('cart');
+					navbar.selectedTab('cart');
+					vm.selectedProductId("");
+					vm.selectedClientDetailsId("");
 				},
 				"viewClients": function(model, e) {
-					switchTab('clients');
+					navbar.selectedTab('clients');
+					vm.selectedProductId("");
+					vm.selectedClientDetailsId("");
 				},
 				"addToCart" : function(model, e) {
 					e.stopPropagation();
@@ -150,6 +154,15 @@ require(['knockout',
 					clients.selectClient(vm.cartData, vm.ordersData, model.id);
 					navbar.selectedClient(model);
 					navbar.selectedClientCreditLimit(model.creditLimit);
+				},
+				"selectClientFromTable" : function(model, e) {
+					e.stopPropagation();
+					clients.selectClient(vm.cartData, vm.ordersData, model.id);
+					navbar.selectedClient(model);
+					navbar.selectedClientCreditLimit(model.creditLimit);
+					var oldColor = $(".clientSelector").css("background-color");
+					$(".clientSelector").animate({backgroundColor: "rgba(0, 255, 0, 0.2)"});
+					$(".clientSelector").animate({backgroundColor: oldColor});
 				},
 				"filterProducts" : function(model, e) {
 					vm.products(products.getProducts(vm.filterString));
@@ -208,6 +221,23 @@ require(['knockout',
 			"products" : products.getProducts(""),
 			"info" : info.data,
 	};
+	
+	ko.bindingHandlers.clearinput = {
+		    init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+		    	var value = valueAccessor();
+		        var valueUnwrapped = ko.unwrap(value);
+
+		        if (valueUnwrapped) {
+		        	$(element).click(function(){
+		        		var attachedInput = $(element).next(":input");
+		        		attachedInput.val('');
+		        		attachedInput.change();
+		        	});
+		        }		 
+		    },
+		    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+		    }
+		};
 	
 	ko.bindingHandlers.touchspin = {
 		    init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {

@@ -54,9 +54,9 @@
 		    	<td>
 					<div class="productPrice">
 						<h3>
-							<strong data-bind="text: vm.selectedStock().price().toFixed(2)"></strong>
+							<strong data-bind="text: vm.selectedStock().price ? vm.selectedStock().price().toFixed(2) : vm.price.toFixed(2)"></strong>
 						</h3>
-						<span>RON / </span><span data-bind="text: vm.selectedStock().unitOfMeasure()"></span>
+						<span>RON / </span><span data-bind="text: vm.selectedStock().unitOfMeasure ? vm.selectedStock().unitOfMeasure() : vm.unitOfMeasure"></span>
 					</div>
 				</td>
 				<!-- /ko -->

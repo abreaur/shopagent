@@ -30,9 +30,8 @@ div {
 	}
 }
 	
-tbody > tr:hover {
-	background-color: rgba(66, 139, 202, 0.5);
-	color: white;
+.hoverRow:hover {
+	font-weight: bold;
 }
 
 	
@@ -206,8 +205,22 @@ form {
 }
 
 #map-canvas {
-        height: 200px;
-        width: 200px;
+        height: 250px;
+        width: 300px;
         margin: 0px;
         padding: 0px
       }
+      
+.searchClear {
+	margin-right: 40px;
+	margin-top: 10px;
+    position: absolute;
+    right: 5px;
+    top: 0;
+    bottom: 0;
+    height: 14px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #ccc;
+    z-index:3;
+}

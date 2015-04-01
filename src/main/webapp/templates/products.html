@@ -3,6 +3,7 @@
 	<div class="productsFilter col-sm-12 col-md-6">
 		<label>Cauta produs</label>
 		<div class="input-group">
+			<span id="productsSearchclear" class="searchClear glyphicon glyphicon-remove-circle" data-bind="'clearinput': true"></span>
 			<input 	name="filter" id="filter" type="text" class="form-control" placeholder="Descriere" autofocus
 				data-bind="value: $data.vm.filterString, event {change: $data.methods.filterProducts}">
             <div class="input-group-btn">
