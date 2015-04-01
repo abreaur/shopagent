@@ -95,7 +95,7 @@ require(['knockout',
 		var switchTab = function(tab) {
 			navbar.selectedTab(tab.id);
 			vm.selectedProductId("");
-			vm.selectedClientDetailsId("");
+			vm.selectedClientDetailsId("");				
 		};
 		
 		var methods = {

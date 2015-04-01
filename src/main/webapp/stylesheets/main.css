@@ -224,3 +224,7 @@ form {
     color: #ccc;
     z-index:3;
 }
+
+.blurry-text {
+   text-shadow: 0 0 5px rgba(255,0,0,0.5);
+}
