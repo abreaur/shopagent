@@ -36,6 +36,7 @@ require(['knockout',
 	
 		var vm = {
 				"filterString": "",
+				"clientsFilterString": "",
 				"products" : ko.observable(data.products),
 				"orders" : ko.observableArray([]),
 				"userData" : data.userData,
@@ -150,6 +151,9 @@ require(['knockout',
 				"filterProducts" : function(model, e) {
 					vm.products(products.getProducts(vm.filterString));
 				},
+				"filterClients" : function(model, e) {
+					clients.loadClients(vm.clientsData, vm.clientsFilterString);
+				},
 				"isCartEmpty" : ko.computed(function() {
 					var length = 0;
 					if (vm.cartData().orderItems) {
@@ -182,7 +186,7 @@ require(['knockout',
 	var userObservable = ko.observable({});
 	var cartObservable = ko.observable({});
 	var clientsObservable = ko.observable({});
-	clients.loadClients(clientsObservable);
+	clients.loadClients(clientsObservable, "");
 	
 	var ordersObservable = ko.observable({});
 	security.loadCurrentUser(userObservable, cartObservable, ordersObservable);
@@ -223,6 +227,28 @@ require(['knockout',
 		    },
 		    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
 		    	
+		    }
+		};
+	
+	ko.bindingHandlers.colorValueIndicator = {
+		    init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+		    	
+		    },
+		    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+		    	var value = valueAccessor();
+		        var valueUnwrapped = ko.unwrap(value);
+		        
+		        if (valueUnwrapped) {
+			        if (valueUnwrapped >= 0.7) {
+			        	$(element).css("background-color", "rgba(0, 255, 0, 0.2)");
+			        } else if (valueUnwrapped >= 0.5) {
+			        	$(element).css("background-color", "rgba(255, 255, 0, 0.2)");
+			        } else {
+			        	$(element).css("background-color", "rgba(255, 0, 0, 0.2)");
+			        }
+		        } else {
+		        	$(element).css("background-color", "#EEE");
+		        }
 		    }
 		};
 	

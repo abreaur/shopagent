@@ -14,7 +14,8 @@
 	<div class="productsFilter col-sm-6 col-md-3">
 		<label data-bind="text: $parent.navbar.selectedClient().id ? 'Bonitate ' + $parent.navbar.selectedClient().name + '' : 'Bonitate'"></label>
 		<input 	type="text" class="form-control" 
-				data-bind="value: $parent.navbar.selectedClient().id ? $parent.navbar.selectedClient().reliability : ''" readonly>
+				data-bind="value: $parent.navbar.selectedClient().id ? $parent.navbar.selectedClient().reliability : '',
+				colorValueIndicator: $parent.navbar.selectedClient().reliability" readonly>
 	</div>
 	<div class="productsFilter col-sm-6 col-md-3">
 		<label data-bind="text: $parent.navbar.selectedClient().id ? 'Limita credit ' + $parent.navbar.selectedClient().name + '': 'Limita credit'"></label>
