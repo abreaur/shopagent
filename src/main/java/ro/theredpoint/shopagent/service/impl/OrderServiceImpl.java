@@ -568,4 +568,10 @@ public class OrderServiceImpl implements OrderService {
 		
 		return orderRepository.save(order);
 	}
+
+	@Override
+	public Order getOrder(long orderId) throws BusinessException {
+
+		return orderRepository.findOne(orderId);
+	}
 }

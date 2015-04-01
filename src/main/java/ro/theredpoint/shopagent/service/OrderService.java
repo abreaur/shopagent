@@ -87,4 +87,11 @@ public interface OrderService {
 	 * @throws BusinessException
 	 */
 	public Order cancelOrder(long orderId) throws BusinessException;
+	
+	/**
+	 * @param orderId
+	 * @return
+	 * @throws BusinessException
+	 */
+	public Order getOrder(long orderId) throws BusinessException;
 }

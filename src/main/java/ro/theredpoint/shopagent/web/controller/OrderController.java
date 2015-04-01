@@ -128,4 +128,14 @@ public class OrderController {
 			return new WebResponse<OrderModel>(e.getMessage());
 		}
 	}
+
+	@RequestMapping(value = "order/{orderId}", produces = "application/json")
+	public WebResponse<OrderModel> getOrder(@PathVariable long orderId) {
+		
+		try {
+			return new WebResponse<OrderModel>(prepareResponse(orderService.getOrder(orderId)));
+		} catch (BusinessException e) {
+			return new WebResponse<OrderModel>(e.getMessage());
+		}
+	}
 }
