@@ -12,7 +12,8 @@ define(['cart', 'orders', 'knockout'], function (cart, orders, ko) {
 		selectClient : function(cartObservable, ordersObservable, clientId) {
 			cart.loadCart(cartObservable, clientId);
 			orders.loadOrders(ordersObservable, clientId);
-		},
+		}
+
 	};
 	
 	return c;

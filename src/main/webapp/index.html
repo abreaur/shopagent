@@ -2,7 +2,9 @@
 <html>
     <head>
         <title>Red B2B Portal</title>
-		
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	    <meta charset="utf-8">
+   	
 		<link rel="stylesheet" media="screen" href="stylesheets/bootstrap.css">
         <link rel="stylesheet" media="screen" href="stylesheets/bootstrap-theme.css">
         <link rel="stylesheet" media="screen" href="stylesheets/touchspin.css">
@@ -12,6 +14,7 @@
         <script src="javascripts/jquery.js"></script>
         <script src="javascripts/jquery.color.js"></script>
         <script src="javascripts/touchspin.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
         
         <script data-main="javascripts/model/main" src="javascripts/require.js"></script>
 		
@@ -23,6 +26,9 @@
 		<div data-bind="template: {name: $data.navbar.selectedTab, data: $data}, visible: $data.vm.selectedProductId()===''"></div>
 		<!-- ko if: $data.vm.selectedProductId()!='' -->
         	<div data-bind="template: {name: 'product', data: $data.vm.selectedProduct}, visible: $data.vm.selectedProductId()!=''"></div>
+        <!-- /ko -->
+		<!-- ko if: $data.vm.selectedClientDetailsId()!='' -->
+        	<div data-bind="template: {name: 'client', data: $data.vm.selectedClientDetails}, visible: $data.vm.selectedClientDetailsId()!=''"></div>
         <!-- /ko -->
     </div>
     </body>

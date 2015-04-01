@@ -1,17 +1,17 @@
 require.config({
 	paths: {
-	"knockout": "../knockout-3.2.0",
-	"knockout-amd-helpers": "../knockout-amd-helpers",
-	"text": "../text",
-	"bootstrap": "../bootstrap",
-	"less": "../less.min",
-	"info": "info",
-	"products": "products",
-	"cart": "cart",
-	"security": "security",
-	"clients": "clients",
-	"product": "product",
-	"orders": "orders",
+		"knockout": "../knockout-3.2.0",
+		"knockout-amd-helpers": "../knockout-amd-helpers",
+		"text": "../text",
+		"bootstrap": "../bootstrap",
+		"less": "../less.min",
+		"info": "info",
+		"products": "products",
+		"cart": "cart",
+		"security": "security",
+		"clients": "clients",
+		"product": "product",
+		"orders": "orders",
 	}
 });
 
@@ -46,7 +46,9 @@ require(['knockout',
 				"customers" : ko.observableArray([]),
 				"info" : data.info,
 				"selectedProductId" : ko.observable(""),
-				"selectedProduct" : ko.observable({})
+				"selectedProduct" : ko.observable({}),
+				"selectedClientDetailsId" : ko.observable(""),
+				"selectedClientDetails" : ko.observable({})
 			};
 		
 		var computed = {
@@ -90,18 +92,19 @@ require(['knockout',
 				"selectedClientCreditLimit" : ko.observable(),
 		};
 		
+		var switchTab = function(tab) {
+			navbar.selectedTab(tab.id);
+			vm.selectedProductId("");
+			vm.selectedClientDetailsId("");
+		};
+		
 		var methods = {
-				"switchTab": function(tab) {
-					navbar.selectedTab(tab.id);
-					vm.selectedProductId("");
-				},
+				"switchTab": switchTab,
 				"viewCart": function(model, e) {
-					navbar.selectedTab('cart');
-					vm.selectedProductId("");
+					switchTab('cart');
 				},
 				"viewClients": function(model, e) {
-					navbar.selectedTab('clients');
-					vm.selectedProductId("");
+					switchTab('clients');
 				},
 				"addToCart" : function(model, e) {
 					e.stopPropagation();
@@ -170,6 +173,12 @@ require(['knockout',
 					vm.selectedProductId(model.id);
 					navbar.selectedTab("");
 				},
+				"selectClientDetails" : function(model, e) {
+					e.stopPropagation();
+					vm.selectedClientDetails(model);
+					vm.selectedClientDetailsId(model.id);
+					navbar.selectedTab("");
+				},
 				"stopPropagation" : function(model, e) {
 					e.stopPropagation();
 				}
@@ -229,7 +238,7 @@ require(['knockout',
 		    	
 		    }
 		};
-	
+
 	ko.bindingHandlers.colorValueIndicator = {
 		    init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
 		    	
@@ -248,6 +257,35 @@ require(['knockout',
 			        }
 		        } else {
 		        	$(element).css("background-color", "#EEE");
+		        }
+		    }
+		};
+
+	ko.bindingHandlers.googleMap = {
+		    init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+		    	
+		    },
+		    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+		    	var value = valueAccessor();
+		        var valueUnwrapped = ko.unwrap(value);
+		        
+		        if (valueUnwrapped) {
+		        	var mapOptions = {
+		      	          zoom: 14
+		      	        };
+		        	geocoder = new google.maps.Geocoder();
+		        	var map = new google.maps.Map(element, mapOptions);
+		        	geocoder.geocode( { 'address': valueUnwrapped}, function(results, status) {
+		        	      if (status == google.maps.GeocoderStatus.OK) {
+		        	        map.setCenter(results[0].geometry.location);
+		        	        var marker = new google.maps.Marker({
+		        	            map: map,
+		        	            position: results[0].geometry.location
+		        	        });
+		        	      } else {
+		        	        alert('Geocode was not successful for the following reason: ' + status);
+		        	      }
+		        	    });
 		        }
 		    }
 		};

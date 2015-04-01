@@ -204,3 +204,10 @@ form {
 .logoAndAppName {
 	max-width:100px;
 }
+
+#map-canvas {
+        height: 200px;
+        width: 200px;
+        margin: 0px;
+        padding: 0px
+      }

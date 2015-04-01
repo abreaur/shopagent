@@ -25,7 +25,7 @@
 		        </tr>
 		    </thead>
 		    <tbody data-bind="foreach: $data.vm.clientsData">
-		        <tr>
+		        <tr data-bind="click: $parent.methods.selectClientDetails">
 		            <td><div class="cartRow" data-bind="text: ($data.name ? name : '')"></div></td>
 		            <td><div class="cartRow" data-bind="text: ($data.address ? address : '')"></div></td>
 		            <td><div class="cartRow" data-bind="text: ($data.CUI ? CUI : '')"></div></td>
