@@ -124,6 +124,13 @@ form {
 	padding-right: 25px;
 }
 
+.clientDetailsContainer {
+	width: 80%;
+	margin-left:10%;
+	padding-left: 25px;
+	padding-right: 25px;
+}
+
 .informationContainer {
 	width: 80%;
 	margin-left: 10%;
@@ -204,10 +211,10 @@ form {
 	max-width:100px;
 }
 
-#map-canvas {
+.mapCanvas {
         height: 250px;
         width: 300px;
-        margin: 0px;
+        margin: 15px 15px 15px 15px;
         padding: 0px
       }
       

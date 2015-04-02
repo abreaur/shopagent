@@ -1,2 +1,77 @@
-<label>Localizare client</label>
-<div id="map-canvas" data-bind="googleMap: $data.address"></div>
+<div class="clientDetailsContainer">
+	<div id="title" class="col-sm-12 col-md-12">
+		<label>Detalii client: </label>
+		<label data-bind="text: ($data.name ? name : '')"></label>
+	</div>
+	<div id="details" class="details col-sm-12 col-md-8">
+		<table class="table">
+			<thead>
+				<tr>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+					   <label class="cartRow" for="clientName">Nume client</label>
+				     </td>
+					<td>
+					   <input id="clientName" type="text" class="form-control" data-bind="value: ($data.name ? name : '')" readonly>
+			         </td>
+				</tr>
+				<tr>
+					<td>
+					   <label class="cartRow"  for="clientAddress">Adresa</label>
+				     </td>
+					<td>
+					   <input id="clientAddress" type="text" class="form-control" data-bind="value: ($data.address ? address : '')" readonly>
+			         </td>
+				</tr>
+				<tr>
+					<td>
+					   <label class="cartRow"  for="clientCUI">CUI</label>
+				     </td>
+					<td>
+					   <input id="clientCUI" type="text" class="form-control" data-bind="value: ($data.CUI ? CUI : '')" readonly>
+			         </td>
+				</tr>
+				<tr>
+					<td>
+					   <label class="cartRow"  for="clientFiscalCode">Nr. Reg. Comertului</label>
+				     </td>
+					<td>
+					   <input id="clientFiscalCode" type="text" class="form-control" data-bind="value: ($data.fiscalCode ? fiscalCode : '')" readonly>
+			         </td>
+				</tr>
+				<tr>
+					<td>
+					   <label class="cartRow"  for="clientReliability">Bonitate</label>
+				     </td>
+					<td>
+					   <input id="clientReliability" type="text" class="form-control" data-bind="value: ($data.reliability ? reliability : '')" readonly>
+			         </td>
+				</tr>
+				<tr>
+					<td>
+					   <label class="cartRow"  for="clientCreditLimit">Limita credit</label>
+					</td>
+					<td>
+						<input id="clientCreditLimit" type="text" class="form-control" data-bind="value: ($data.creditLimit ? creditLimit.toFixed(2) + ' RON': '')" readonly>
+			        </td>
+				</tr>
+			</tbody>
+		</table>		        
+	</div>
+	<div id="map-canvas" class="mapCanvas col-sm-12 col-md-4" data-bind="googleMap: $data.address"></div>
+	<div class="col-sm-12 col-md-12"></div>
+	<div class="col-sm-4 col-md-2">
+		<input type="button" class="btn btn-primary btn-block" value="Istoric comenzi" data-bind="click: $parent.methods.viewOrders, enable: $parent.vm.ordersData().length > 0">
+	</div>
+		<div class="col-sm-4 col-md-2">
+		<input type="button" class="btn btn-primary btn-block" value="Facturi scadente">
+	</div>
+		<div class="col-sm-4 col-md-2">
+		<input type="button" class="btn btn-primary btn-block" value="Selecteaza" data-bind="click: $parent.methods.selectClientFromTable">
+	</div>
+</div>

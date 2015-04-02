@@ -101,14 +101,25 @@ require(['knockout',
 		var methods = {
 				"switchTab": switchTab,
 				"viewCart": function(model, e) {
-					navbar.selectedTab('cart');
-					vm.selectedProductId("");
-					vm.selectedClientDetailsId("");
+					if (vm.cartData().length > 0) {
+						navbar.selectedTab('cart');
+						vm.selectedProductId("");
+						vm.selectedClientDetailsId("");
+					}
 				},
 				"viewClients": function(model, e) {
-					navbar.selectedTab('clients');
-					vm.selectedProductId("");
-					vm.selectedClientDetailsId("");
+					if (vm.clientsData().length > 0) {
+						navbar.selectedTab('clients');
+						vm.selectedProductId("");
+						vm.selectedClientDetailsId("");
+					}
+				},
+				"viewOrders": function(model, e) {
+					if (vm.ordersData().length > 0) {
+						navbar.selectedTab('orders');
+						vm.selectedProductId("");
+						vm.selectedClientDetailsId("");
+					}
 				},
 				"addToCart" : function(model, e) {
 					e.stopPropagation();
