@@ -1,10 +1,13 @@
 package ro.theredpoint.shopagent.domain;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -20,6 +23,8 @@ public class Client {
 	private String address;
 	private String CUI;
 	private String fiscalCode;
+	private String deliveryAddress;
+	private Set<Person> contacts;
 	
 	@Id
 	@GeneratedValue
@@ -86,5 +91,22 @@ public class Client {
 	}
 	public void setFiscalCode(String fiscalCode) {
 		this.fiscalCode = fiscalCode;
+	}
+	
+	@Column(name = "DELIVERY_ADDRESS")
+	public String getDeliveryAddress() {
+		return deliveryAddress;
+		
+	}
+	public void setDeliveryAddress(String deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
+	}
+	
+	@OneToMany(mappedBy = "client")
+	public Set<Person> getContacts() {
+		return contacts;
+	}
+	public void setContacts(Set<Person> contacts) {
+		this.contacts = contacts;
 	}
 }

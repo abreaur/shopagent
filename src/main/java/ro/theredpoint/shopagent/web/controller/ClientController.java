@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ro.theredpoint.shopagent.domain.Client;
+import ro.theredpoint.shopagent.domain.Person;
 import ro.theredpoint.shopagent.service.ClientService;
 
 /**
@@ -19,13 +20,25 @@ public class ClientController {
 	@Autowired
 	private ClientService clientService;
 	
+	private List<Client> prepareResponse(List<Client> clients) {
+		
+		for (Client client : clients) {
+			for (Person person : client.getContacts()) {
+				person.setClient(null);
+			}
+		}
+		
+		return clients;
+	}
+	
+	
 	@RequestMapping(value = "clients", produces = "application/json")
 	public List<Client> getClients() {
-		return clientService.getAllClients();
+		return prepareResponse(clientService.getAllClients());
 	}
 	
 	@RequestMapping(value = "clients/{name}", produces = "application/json")
 	public List<Client> getClients(@PathVariable String name) {
-		return clientService.getClients(name);
+		return prepareResponse(clientService.getClients(name));
 	}
 }
