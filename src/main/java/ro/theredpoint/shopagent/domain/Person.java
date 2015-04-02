@@ -24,8 +24,9 @@ public class Person {
 	private String firstName;
 	private String lastName;
 	private String landline;
-	private String cellPhnoe;
+	private String cellPhone;
 	private String email;
+	private String description;
 	private ContactType contactType;
 	private Client client;
 	
@@ -64,19 +65,27 @@ public class Person {
 	}
 	
 	@Column(name = "CELL_PHONE")
-	public String getCellPhnoe() {
-		return cellPhnoe;
+	public String getCellPhone() {
+		return cellPhone;
 	}
-	public void setCellPhnoe(String cellPhnoe) {
-		this.cellPhnoe = cellPhnoe;
+	public void setCellPhone(String cellPhnoe) {
+		this.cellPhone = cellPhnoe;
 	}
-	
+
 	@Column(name = "EMAIL")
 	public String getEmail() {
 		return email;
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	@Column(name = "DESCRIPTION")
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	@Column(name = "CONTACT_TYPE")

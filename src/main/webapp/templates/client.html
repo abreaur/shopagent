@@ -1,9 +1,11 @@
 <div class="clientDetailsContainer">
-	<div id="title" class="col-sm-12 col-md-12">
-		<label>Detalii client: </label>
-		<label data-bind="text: ($data.name ? name : '')"></label>
-	</div>
 	<div id="details" class="details col-sm-12 col-md-8">
+		<div class="col-sm-12 col-md-12">
+		<h4>
+			<label>Detalii client: </label>
+			<label data-bind="text: ($data.name ? name : '')"></label>
+		</h4>
+		
 		<table class="table">
 			<thead>
 				<tr>
@@ -22,10 +24,18 @@
 				</tr>
 				<tr>
 					<td>
-					   <label class="cartRow"  for="clientAddress">Adresa</label>
+					   <label class="cartRow"  for="clientAddress">Adresa facturare</label>
 				     </td>
 					<td>
 					   <input id="clientAddress" type="text" class="form-control" data-bind="value: ($data.address ? address : '')" readonly>
+			         </td>
+				</tr>
+				<tr>
+					<td>
+					   <label class="cartRow"  for="deliveryAddress">Adresa livrare</label>
+				     </td>
+					<td>
+					   <input id="deliveryAddress" type="text" class="form-control" data-bind="value: ($data.deliveryAddress ? deliveryAddress : '')" readonly>
 			         </td>
 				</tr>
 				<tr>
@@ -49,7 +59,8 @@
 					   <label class="cartRow"  for="clientReliability">Bonitate</label>
 				     </td>
 					<td>
-					   <input id="clientReliability" type="text" class="form-control" data-bind="value: ($data.reliability ? reliability : '')" readonly>
+					   <input id="clientReliability" type="text" class="form-control" 
+					   			data-bind="value: ($data.reliability ? reliability : ''), colorValueIndicator: $data.reliability" readonly>
 			         </td>
 				</tr>
 				<tr>
@@ -61,17 +72,50 @@
 			        </td>
 				</tr>
 			</tbody>
-		</table>		        
+		</table>
+		</div>
+		<div class="col-sm-4 col-md-4">
+			<input type="button" class="btn btn-primary btn-block" value="Istoric comenzi" data-bind="click: $parent.methods.selectAndViewOrders">
+		</div>
+			<div class="col-sm-4 col-md-4">
+			<input type="button" class="btn btn-primary btn-block" value="Facturi scadente">
+		</div>
+			<div class="col-sm-4 col-md-4">
+			<input type="button" class="btn btn-primary btn-block" value="Selecteaza" data-bind="click: $parent.methods.selectClientFromTable">
+		</div>
 	</div>
-	<div id="map-canvas" class="mapCanvas col-sm-12 col-md-4" data-bind="googleMap: $data.address"></div>
-	<div class="col-sm-12 col-md-12"></div>
-	<div class="col-sm-4 col-md-2">
-		<input type="button" class="btn btn-primary btn-block" value="Istoric comenzi" data-bind="click: $parent.methods.selectAndViewOrders">
+	<div id="clientContact" class="col-sm-12 col-md-4">
+		<h4>
+				<label>Contact </label>
+		</h4>
+		<div id="map-canvas" class="mapCanvas" data-bind="googleMap: $data.address"></div>
+		<div id="contacts">
+			<table data-bind="foreach: $data.contacts" class="table">
+				<thead>
+					<tr>
+						<th class="col-sm-5 col-md-5"></th>
+						<th class="col-sm-7 col-md-7"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<label data-bind="text: $data.firstName ? $data.firstName : ''"></label><br>
+							<label data-bind="text: $data.lastName ? $data.lastName : ''"></label><br>
+							<span data-bind="text: $data.description ? $data.description : ''"></span>
+						</td>
+						<td>
+							<!-- ko if: $data.contactType === 'MAIN' -->
+								<label>CONTACT PRINCIPAL</label><br>
+							<!-- /ko -->
+							<span data-bind="text: $data.email ? $data.email : ''"></span><br>
+							<span data-bind="text: $data.cellPhone ? 'mobil: ' + $data.cellPhone : ''"></span><br>
+							<span data-bind="text: $data.landline ? 'fix: ' + $data.landline : ''"></span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-		<div class="col-sm-4 col-md-2">
-		<input type="button" class="btn btn-primary btn-block" value="Facturi scadente">
-	</div>
-		<div class="col-sm-4 col-md-2">
-		<input type="button" class="btn btn-primary btn-block" value="Selecteaza" data-bind="click: $parent.methods.selectClientFromTable">
-	</div>
+
 </div>

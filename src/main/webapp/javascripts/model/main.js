@@ -210,8 +210,15 @@ require(['knockout',
 					vm.selectedProductId(model.id);
 					navbar.selectedTab("");
 				},
-				"selectClientDetails" : function(model, e) {
+				"viewClientDetails" : function(model, e) {
 					e.stopPropagation();
+					if (model.contacts){
+						model.contacts = model.contacts.sort(function(a, b) {
+							   var aType = a.contactType;
+							   var bType = b.contactType;
+							   return (aType === 'MAIN') ? -1 : 1;
+							});
+					}
 					vm.selectedClientDetails(model);
 					vm.selectedClientDetailsId(model.id);
 					navbar.selectedTab("");
