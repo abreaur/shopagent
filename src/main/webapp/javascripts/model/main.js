@@ -98,6 +98,18 @@ require(['knockout',
 			vm.selectedClientDetailsId("");				
 		};
 		
+		var selectClient = function(model, e) {
+			clients.selectClient(vm.cartData, vm.ordersData, model.id);
+			navbar.selectedClient(model);
+			navbar.selectedClientCreditLimit(model.creditLimit);
+		};
+		
+		var flashClientSelection = function() {
+			var oldColor = $(".clientSelector").css("background-color");
+			$(".clientSelector").animate({backgroundColor: "rgba(0, 255, 0, 0.2)"});
+			$(".clientSelector").animate({backgroundColor: oldColor});
+		};
+		
 		var methods = {
 				"switchTab": switchTab,
 				"viewCart": function(model, e) {
@@ -120,6 +132,13 @@ require(['knockout',
 						vm.selectedProductId("");
 						vm.selectedClientDetailsId("");
 					}
+				},
+				"selectAndViewOrders": function(model, e) {
+					selectClient(model);
+					flashClientSelection();
+					navbar.selectedTab('orders');
+					vm.selectedProductId("");
+					vm.selectedClientDetailsId("");
 				},
 				"addToCart" : function(model, e) {
 					e.stopPropagation();
@@ -161,19 +180,13 @@ require(['knockout',
 						}
 					});
 				},
-				"selectClient" : function(model, e) {
-					clients.selectClient(vm.cartData, vm.ordersData, model.id);
-					navbar.selectedClient(model);
-					navbar.selectedClientCreditLimit(model.creditLimit);
-				},
+				"selectClient" : selectClient,
 				"selectClientFromTable" : function(model, e) {
 					e.stopPropagation();
 					clients.selectClient(vm.cartData, vm.ordersData, model.id);
 					navbar.selectedClient(model);
 					navbar.selectedClientCreditLimit(model.creditLimit);
-					var oldColor = $(".clientSelector").css("background-color");
-					$(".clientSelector").animate({backgroundColor: "rgba(0, 255, 0, 0.2)"});
-					$(".clientSelector").animate({backgroundColor: oldColor});
+					flashClientSelection();
 				},
 				"filterProducts" : function(model, e) {
 					vm.products(products.getProducts(vm.filterString));
