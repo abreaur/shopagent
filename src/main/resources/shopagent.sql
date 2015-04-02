@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.40, for Win64 (x86)
+-- MySQL dump 10.13  Distrib 5.6.22, for Win64 (x86_64)
 --
 -- Host: localhost    Database: shopagent
 -- ------------------------------------------------------
--- Server version	5.5.40
+-- Server version	5.6.22-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -31,6 +31,7 @@ CREATE TABLE `clients` (
   `cui` varchar(255) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
   `fiscal_code` varchar(255) DEFAULT NULL,
+  `delivery_address` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`client_id`),
   KEY `FK_smrp6gi0tckq1w5rnd7boyowu` (`user_id`),
   CONSTRAINT `FK_smrp6gi0tckq1w5rnd7boyowu` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
@@ -43,7 +44,7 @@ CREATE TABLE `clients` (
 
 LOCK TABLES `clients` WRITE;
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
-INSERT INTO `clients` VALUES (1,'Client 1',2,20000,0.5,'RO24020204','Iasi, Romania','J11/2304/2004'),(2,'Client 2',NULL,18029,0.8,'RO13436705','Tg. Frumos, Romania, Jud. Iasi','');
+INSERT INTO `clients` VALUES (1,'Client 1',2,20000,0.5,'RO24020204','Iasi, Romania','J11/2304/2004','Alpharetta, Georgia'),(2,'Client 2',NULL,18017,0.8,'RO13436705','Tg. Frumos, Romania, Jud. Iasi','','Atlanta, GA, US');
 /*!40000 ALTER TABLE `clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -65,7 +66,7 @@ CREATE TABLE `order_item_stock_usages` (
   KEY `FK_nnlu0ol6axm6mm8bpu7sxkc5p` (`used_from_id`),
   CONSTRAINT `FK_nnlu0ol6axm6mm8bpu7sxkc5p` FOREIGN KEY (`used_from_id`) REFERENCES `stocks` (`stock_id`),
   CONSTRAINT `FK_rtddgxhicr7a1i8nur7k3qrcu` FOREIGN KEY (`order_item_id`) REFERENCES `order_items` (`order_item`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,6 +75,7 @@ CREATE TABLE `order_item_stock_usages` (
 
 LOCK TABLES `order_item_stock_usages` WRITE;
 /*!40000 ALTER TABLE `order_item_stock_usages` DISABLE KEYS */;
+INSERT INTO `order_item_stock_usages` VALUES (33,1,83,12,''),(34,1,85,12,'\0');
 /*!40000 ALTER TABLE `order_item_stock_usages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -99,11 +101,11 @@ CREATE TABLE `order_items` (
   KEY `FK_3fea23hxar30bx7m7h8ed25n9` (`product_id`),
   KEY `FK_bq31gjrvv7o8csc9cq7px6tmd` (`stock_id`),
   KEY `FK_q8momd2kqu5mmaf1m5k027wwc` (`unit_of_measure_id`),
-  CONSTRAINT `FK_q8momd2kqu5mmaf1m5k027wwc` FOREIGN KEY (`unit_of_measure_id`) REFERENCES `unit_of_measures` (`unit_of_measure_id`),
   CONSTRAINT `FK_3fea23hxar30bx7m7h8ed25n9` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`),
   CONSTRAINT `FK_9gap2fmw66v092ntb58rtohwh` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`),
-  CONSTRAINT `FK_bq31gjrvv7o8csc9cq7px6tmd` FOREIGN KEY (`stock_id`) REFERENCES `stocks` (`stock_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8;
+  CONSTRAINT `FK_bq31gjrvv7o8csc9cq7px6tmd` FOREIGN KEY (`stock_id`) REFERENCES `stocks` (`stock_id`),
+  CONSTRAINT `FK_q8momd2kqu5mmaf1m5k027wwc` FOREIGN KEY (`unit_of_measure_id`) REFERENCES `unit_of_measures` (`unit_of_measure_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -112,6 +114,7 @@ CREATE TABLE `order_items` (
 
 LOCK TABLES `order_items` WRITE;
 /*!40000 ALTER TABLE `order_items` DISABLE KEYS */;
+INSERT INTO `order_items` VALUES (83,12,0,12,1,48,10,12,1),(84,12,0,12,1,47,10,12,1),(85,12,0,12,1,49,10,12,1);
 /*!40000 ALTER TABLE `order_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -136,7 +139,7 @@ CREATE TABLE `orders` (
   KEY `FK_k8kupdtcdpqd57b6j4yq9uvdj` (`user_id`),
   CONSTRAINT `FK_k8kupdtcdpqd57b6j4yq9uvdj` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   CONSTRAINT `FK_ktwyfbqs32h2qw22odq9pqmex` FOREIGN KEY (`client_id`) REFERENCES `clients` (`client_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -145,7 +148,41 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+INSERT INTO `orders` VALUES (47,12,'2015-04-01 20:42:51',0,1,1,NULL,NULL),(48,12,'2015-04-01 20:43:20',4,2,1,'2015-04-03 09:14:48','2015-04-01 22:16:50'),(49,12,'2015-04-01 21:14:48',1,2,2,'2015-04-03 10:16:44',NULL),(50,0,'2015-04-01 22:16:45',0,2,2,NULL,NULL);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `persons`
+--
+
+DROP TABLE IF EXISTS `persons`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `persons` (
+  `person_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `cell_phone` varchar(255) DEFAULT NULL,
+  `contact_type` int(11) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `first_name` varchar(255) DEFAULT NULL,
+  `landline` varchar(255) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `client_id` bigint(20) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`person_id`),
+  KEY `FK_6b6euufurlajtqob631ql2uml` (`client_id`),
+  CONSTRAINT `FK_6b6euufurlajtqob631ql2uml` FOREIGN KEY (`client_id`) REFERENCES `clients` (`client_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `persons`
+--
+
+LOCK TABLES `persons` WRITE;
+/*!40000 ALTER TABLE `persons` DISABLE KEYS */;
+INSERT INTO `persons` VALUES (1,'+40 123 122 312',0,'louis.defunes@client2.ro','Louis','+40 232 222 444','De Funes',2,'Director vanzari'),(2,'+40 744 122 312',1,'max.payne@gmail.com','Maxim','+40 332 777 550','Payne',2,'Resurse umane'),(3,'+40 747 133 435',1,'jean.vladoiu@yahoo.com','Jean','+40 332 777 550','Vladoiu',2,'Jucator fotbal');
+/*!40000 ALTER TABLE `persons` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -260,7 +297,7 @@ CREATE TABLE `stocks` (
 
 LOCK TABLES `stocks` WRITE;
 /*!40000 ALTER TABLE `stocks` DISABLE KEYS */;
-INSERT INTO `stocks` VALUES (1,1,1,10,150,''),(2,7,1,2,3,''),(3,1,2,15,1,'\0'),(4,1,2,25,1,'\0'),(5,2,1,2,45,''),(6,3,1,0,345,''),(7,4,1,0,12,''),(8,5,1,2,19.99,''),(9,6,2,200,2,''),(10,8,1,0,1999,''),(11,9,1,1,298,''),(12,10,1,22,12,''),(13,11,1,0,10,''),(14,12,1,0,22,'');
+INSERT INTO `stocks` VALUES (1,1,1,10,150,''),(2,7,1,2,3,''),(3,1,2,15,1,'\0'),(4,1,2,25,1,'\0'),(5,2,1,2,45,''),(6,3,1,0,345,''),(7,4,1,0,12,''),(8,5,1,2,19.99,''),(9,6,2,200,2,''),(10,8,1,0,1999,''),(11,9,1,1,298,''),(12,10,1,21,12,''),(13,11,1,0,10,''),(14,12,1,0,22,'');
 /*!40000 ALTER TABLE `stocks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -352,4 +389,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-03-31 10:19:40
+-- Dump completed on 2015-04-02 16:07:19
