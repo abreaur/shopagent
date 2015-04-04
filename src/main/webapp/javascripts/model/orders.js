@@ -12,6 +12,15 @@ define(['knockout', 'info'], function (ko, info) {
 		});
 	};
     
+    function getOrder(orderObservable, orderId) {
+		var url = "order/" + orderId;
+		var params = "";
+		$.post(url, params, function(data) {
+			orderObservable(data.data);
+		});
+	};
+
+	
 	function flashNewOrder(ordersObservable, clientId, order) {
 		loadOrders(ordersObservable, clientId, function() {
 			setTimeout(function() {
@@ -31,8 +40,9 @@ define(['knockout', 'info'], function (ko, info) {
 	};
     
 	var o = {
-		loadOrders : loadOrders,
-		cancelOrder : function(ordersObservable, clientId, order, callback) {
+			loadOrders : loadOrders,
+			getOrder : getOrder,
+			cancelOrder : function(ordersObservable, clientId, order, callback) {
 			$('#cancelOrderModal' + order.id).modal('hide');
 			$('body').removeClass('modal-open');
 			$('.modal-backdrop').remove();

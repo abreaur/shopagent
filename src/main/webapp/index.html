@@ -30,6 +30,9 @@
 		<!-- ko if: $data.vm.selectedClientDetailsId()!='' -->
         	<div data-bind="template: {name: 'client', data: $data.vm.selectedClientDetails}, visible: $data.vm.selectedClientDetailsId()!=''"></div>
         <!-- /ko -->
+		<!-- ko if: $data.vm.selectedOrderId()!='' -->
+        	<div data-bind="template: {name: 'order', data: $data.vm.selectedOrder}, visible: $data.vm.selectedOrderId()!=''"></div>
+        <!-- /ko -->
     </div>
     </body>
 </html>

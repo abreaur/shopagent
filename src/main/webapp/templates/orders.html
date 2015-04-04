@@ -13,7 +13,7 @@
 	    </thead>
 	    <tbody>
 	    	<!-- ko foreach: $data.vm.ordersData -->
-	        <tr data-bind="attr: {'id' : 'orderRow' + $data.id}">
+	        <tr class="hoverRow" data-bind="attr: {'id' : 'orderRow' + $data.id}, click: $parent.methods.viewOrder">
 	        	<td><div class="cartRow"><span data-bind="text: $data.id"></span></div></td>
 	        	<td><div class="cartRow"><span data-bind="text: $data.created"></span></div></td>
 	        	<td><div class="cartRow"><span data-bind="text: $data.expectedDeliveryDate"></span></div></td>

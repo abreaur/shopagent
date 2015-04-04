@@ -47,6 +47,8 @@ require(['knockout',
 				"info" : data.info,
 				"selectedProductId" : ko.observable(""),
 				"selectedProduct" : ko.observable({}),
+				"selectedOrderId" : ko.observable(""),
+				"selectedOrder" : ko.observable({}),
 				"selectedClientDetailsId" : ko.observable(""),
 				"selectedClientDetails" : ko.observable({})
 			};
@@ -95,6 +97,7 @@ require(['knockout',
 		var switchTab = function(tab) {
 			navbar.selectedTab(tab.id);
 			vm.selectedProductId("");
+			vm.selectedOrderId("");
 			vm.selectedClientDetailsId("");				
 		};
 		
@@ -113,9 +116,10 @@ require(['knockout',
 		var methods = {
 				"switchTab": switchTab,
 				"viewCart": function(model, e) {
-					if (vm.cartData().length > 0) {
+					if (vm.cartData().orderItems.length > 0) {
 						navbar.selectedTab('cart');
 						vm.selectedProductId("");
+						vm.selectedOrderId("");
 						vm.selectedClientDetailsId("");
 					}
 				},
@@ -123,6 +127,7 @@ require(['knockout',
 					if (vm.clientsData().length > 0) {
 						navbar.selectedTab('clients');
 						vm.selectedProductId("");
+						vm.selectedOrderId("");
 						vm.selectedClientDetailsId("");
 					}
 				},
@@ -130,6 +135,7 @@ require(['knockout',
 					if (vm.ordersData().length > 0) {
 						navbar.selectedTab('orders');
 						vm.selectedProductId("");
+						vm.selectedOrderId("");
 						vm.selectedClientDetailsId("");
 					}
 				},
@@ -138,6 +144,7 @@ require(['knockout',
 					flashClientSelection();
 					navbar.selectedTab('orders');
 					vm.selectedProductId("");
+					vm.selectedOrderId("");
 					vm.selectedClientDetailsId("");
 				},
 				"addToCart" : function(model, e) {
@@ -173,12 +180,19 @@ require(['knockout',
 					});
 				},
 				"cancelOrder" : function(model, e) {
+					e.stopPropagation();
 					orders.cancelOrder(vm.ordersData, data.cartData().clientId, model, function(order) {
 						vm.products(products.getProducts(vm.filterString));
 						if (computed.isAgent()) {
 							navbar.selectedClientCreditLimit(navbar.selectedClientCreditLimit() + order.amount);
 						}
 					});
+				},
+				"viewOrder" : function(model, e) {
+					e.stopPropagation();
+					orders.getOrder(vm.selectedOrder, model.id);
+					vm.selectedOrderId(model.id);
+					navbar.selectedTab("");
 				},
 				"selectClient" : selectClient,
 				"selectClientFromTable" : function(model, e) {

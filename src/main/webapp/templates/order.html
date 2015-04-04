@@ -1,0 +1,68 @@
+<div class="cartContainer">
+	<table class="table">
+	    <thead>
+	        <tr>
+        			<th class="col-sm-1 col-md-1"></th>
+			        <th class="col-sm-5 col-md-4">Nume articol</th>
+			        <th class="col-sm-1 col-md-2">Pret intreg</th>
+			        <th class="col-sm-1 col-md-2">Pret</th>
+			        <th class="col-sm-2 col-md-2">Cantitate</th>
+			        <th class="col-sm-2 col-md-1">Discount</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	    	<!-- ko foreach: $data.orderItems -->
+	        <tr>
+	        	<td>
+	        		<div class="productImage">
+						<img alt="some image" data-bind="attr: {src: product.picture}">
+					</div>
+	        	</td>
+	            <td>
+	            	<div class="cartRow">
+	            		<span data-bind="text: product.name"></span>
+	            	</div>
+	            </td>
+	            <td>
+		            <div class="productPrice cartRow">
+		            	<span data-bind="text: price.toFixed(2) + ' RON'"></span>
+		            </div>
+	            </td>
+	            <td>
+		            <div class="productPrice cartRow">
+		            	<span data-bind="text: amount.toFixed(2) + ' RON'"></span>
+		            </div>
+	            </td>
+	            <td>
+	            	<div class="productPrice cartRow">
+	            		<span data-bind="text: quantity + ' ' + unitOfMeasure"></span>
+	            	</div>
+	            </td>
+	            <td>
+	            	<div class="productPrice cartRow">
+	            		<span data-bind="text: discount > 0 ? discount + ' %' : '-'"></span>
+	            	</div>
+	            </td>
+	            <td></td>
+	    	</tr>
+	    	<!-- /ko -->
+	    	<tr>
+	        	<td></td>
+	        	<td></td>
+	        	<td>
+	            	<div class="cartRow productPrice">
+	            		<label>TOTAL:</label>
+	            	</div>
+	            </td>
+	            <td>
+	            	<div class="cartRow productPrice">
+	            		<label data-bind="text: $data.amount ? $data.amount.toFixed(2) + ' RON' : ''"></label>
+	            	</div>
+	            </td>
+	    		<td></td>
+	            <td></td>
+	        	<td></td>
+	    	</tr>
+	    </tbody>
+	</table>
+</div>
