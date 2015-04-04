@@ -15,6 +15,7 @@ public class ProductModel {
 	private long id;
 	private long stockId;
 	private String name;
+	private String description;
 	private double price;
 	private double quantity;
 	private String picture;
@@ -30,6 +31,7 @@ public class ProductModel {
 		
 		this.id = product.getId();
 		this.name = product.getName();
+		this.description = product.getDesciption();
 		this.picture = product.getPicture();
 		
 		stocks = new HashSet<StockModel>();
@@ -84,6 +86,13 @@ public class ProductModel {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	public double getPrice() {

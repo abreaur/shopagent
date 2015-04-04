@@ -19,6 +19,7 @@ public class Product {
 
 	public long id;
 	public String name;
+	public String desciption;
 	public String picture;
 	public Set<Stock> stocks;
 	public Set<StockConverter> stockConverters;
@@ -39,6 +40,14 @@ public class Product {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	@Column(name = "DESCRIPTION")
+	public String getDesciption() {
+		return desciption;
+	}
+	public void setDesciption(String desciption) {
+		this.desciption = desciption;
 	}
 	
 	@Column(name = "PICTURE")
