@@ -68,11 +68,11 @@ define(['info', 'orders', 'knockout'], function (info, orders, ko) {
 			$.post(url, params, function(data) {
 				if (data.successful) {
 					cartObservable(data.data);
-					var successMessage = selectedQuantity + " " + params.unitOfMeasure + " '" + productName + "' in valoare totala de " + params.quantity * productPrice + " RON";
+					var successMessage = selectedQuantity + " " + params.unitOfMeasure + " '" + productName + "' in valoare total\u0103 de " + params.quantity * productPrice + " RON";
 					if (selectedQuantity === 1) {
-						info.showInfo(successMessage + " s-a adaugat la comanda curenta!");
+						info.showInfo(successMessage + " s-a adaugat la comanda curent\u0103!");
 					} else {
-						info.showInfo(successMessage + " s-au adaugat la comanda curenta!");
+						info.showInfo(successMessage + " s-au adaugat la comanda curent\u0103!");
 					}
 				} else {
 					info.showError("Eroare la adaugare produs!");
@@ -95,7 +95,7 @@ define(['info', 'orders', 'knockout'], function (info, orders, ko) {
 				if (data.successful) {
 					cartObservable(data.data);
 				} else {
-					info.showError("Eroare la modificarea cantitatii!");
+					info.showError("Eroare la modificarea cantita\u021Bii!");
 					console.log(data.error);
 				}
 			});
@@ -132,7 +132,7 @@ define(['info', 'orders', 'knockout'], function (info, orders, ko) {
 				if (data.successful) {
 					cartObservable(data.data);
 				} else {
-					info.showError("Eroare la eliminarea produsului din comanda curenta!");
+					info.showError("Eroare la eliminarea produsului din comanda curent\u0103!");
 					console.log(data.error);
 				}
 			});
@@ -148,7 +148,7 @@ define(['info', 'orders', 'knockout'], function (info, orders, ko) {
 					load(cartObservable, clientId, function(){
 						successCallback(data.data);
 					});
-					info.showInfo("Comanda curenta a fost plasata cu succes si va ajunge la destinatie la data: " + data.data.expectedDeliveryDate + "!");
+					info.showInfo("Comanda curent\u0103 a fost plasat\u0103 cu succes. Data estimativ\u0103 pentru livrare este: " + info.formatDate(data.data.expectedDeliveryDate) + "!");
 				} else {
 					var errorMessage = "Eroare la plasarea comenzii curente!";
 					if (data.error) {

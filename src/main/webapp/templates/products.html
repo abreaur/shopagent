@@ -1,6 +1,6 @@
 <div class="productsContainer">
 
-	<div class="productsFilter col-sm-12 col-md-6">
+	<div class="productsFilter col-sm-12 col-md-3">
 		<label>Caut&#259; produs</label>
 		<div class="input-group">
 			<span id="productsSearchclear" class="searchClear glyphicon glyphicon-remove-circle" data-bind="'clearinput': true"></span>
@@ -22,6 +22,15 @@
 		<label data-bind="text: $parent.navbar.selectedClient().id ? 'Limit&#259; credit ' + $parent.navbar.selectedClient().name + '': 'Limit&#259; credit'"></label>
 		<input 	type="text" class="form-control" 
 				data-bind="value: $parent.navbar.selectedClientCreditLimit() ? $parent.navbar.selectedClientCreditLimit().toFixed(2) + ' RON' : ''" readonly>
+	</div>
+	<div class="productsFilter col-sm-6 col-md-3">
+		<label> </label>
+		<input title="Doresc sa fiu contactat de agentul meu de v&#226;nz&#259;ri" 
+				type="button" 
+				class="btn btn-primary btn-block marginButton" 
+				value="Solicit asisten&#x21b;&#259;"
+				data-toggle="modal"
+				data-target="#salesAgentContactModal">
 	</div>
 	<!-- /ko -->
 	<div class="col-md-12"></div>
@@ -71,3 +80,24 @@
 		</div>
 	</div>
 </div>
+		<!-- Modal for sales agent contact-->
+					<div class="modal fade" id="salesAgentContactModal" name="salesAgentContactModal" 
+						tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					        <h4 class="modal-title" id="myModalLabel">Confirmare contact agent v&#226;nz&#259;ri</h4>
+					      </div>
+					      <div class="modal-body">
+					      	<label for="listNameInput">Doresc sa fiu contactat de agentul meu de v&#226;nz&#259;ri</label>
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-warning" data-dismiss="modal">Renunt&#259;</button>
+					        <button type="button" class="btn btn-primary" data-dismiss="modal">Da</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+		<!--  -->
+	<!-- /ko -->

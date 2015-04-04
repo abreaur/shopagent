@@ -1,13 +1,24 @@
 <div class="cartContainer">
+	<h4>
+		<span>Comanda nr.</span>
+		<label data-bind="text: ($data.id ? + $data.id: '')"></label>
+		<span> din </span>
+		<label data-bind="formattedDate: $data.created"></label><span>.</span>
+		<span>Data estimativ&#259; pentru livrare:</span>
+		<label data-bind="formattedDate: $data.expectedDeliveryDate"></label>
+		<span>. Status: </span>
+		<label data-bind="orderStatus: $data.orderStatus"></label>
+	</h4>
+
 	<table class="table">
 	    <thead>
 	        <tr>
         			<th class="col-sm-1 col-md-1"></th>
 			        <th class="col-sm-5 col-md-4">Nume articol</th>
-			        <th class="col-sm-1 col-md-2">Pre&#x21b; intreg</th>
+			        <th class="col-sm-1 col-md-2">Pre&#x21b; &#238;ntreg</th>
 			        <th class="col-sm-1 col-md-2">Pre&#x21b;</th>
 			        <th class="col-sm-2 col-md-2">Cantitate</th>
-			        <th class="col-sm-2 col-md-1">Discount</th>
+			        <th class="col-sm-2 col-md-1">Discount special</th>
 	        </tr>
 	    </thead>
 	    <tbody>
@@ -68,14 +79,20 @@
 	<table class="table">
 	    <thead>
 	        <tr>
-        		<th class="col-sm-10 col-md-3"></th>
-        		<th class="col-sm-2 col-md-9"></th>
+        		<th class="col-sm-5 col-md-2"></th>
+        		<th class="col-sm-5 col-md-2"></th>
+        		<th class="col-sm-2 col-md-10"></th>
 		    </tr>
 	    </thead>
 	    <tbody>
 	        <tr>
 				<td>
-		            <div class="backButton">
+		            <div>
+						<input type="button" class="btn btn-primary btn-block" value="Ini&#x21b;iaz&#259; sesizare" data-bind="disable: true">
+					</div>
+				</td>
+				<td>
+		            <div>
 						<input type="button" class="btn btn-success btn-block" value="&#206;napoi" data-bind="click: $root.methods.viewOrders">
 					</div>
 				</td>

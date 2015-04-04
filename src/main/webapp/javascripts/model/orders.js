@@ -50,7 +50,7 @@ define(['knockout', 'info'], function (ko, info) {
 			var params = "";
 			$.post(url, params, function(data) {
 				if (data.successful) {
-					info.showInfo("Comanda a fost anulata cu succes!");
+					info.showInfo("Comanda a fost anulat\u0103 cu succes!");
 					flashCanceledOrder(ordersObservable, clientId, order);
 					if (callback) {
 						callback(order);

@@ -81,11 +81,11 @@ require(['knockout',
 		var navbar = {
 				"tabs": ko.computed(function() {
 					var tabs = [{"id": "products", "name": "Produse"} , 
-						         {"id": "cart", "name": "Comanda curenta"} , 
+						         {"id": "cart", "name": "Comanda curent\u0103"} , 
 						         {"id": "orders", "name": "Comenzi"}
 						         ];
 					if (computed.isAgent()) {
-				         tabs.push({"id": "clients", "name": "Clienti"});
+				         tabs.push({"id": "clients", "name": "Clien\u021Bi"});
 					}
 					return tabs;
 				}),
@@ -186,6 +186,7 @@ require(['knockout',
 					});
 				},
 				"cancelOrder" : function(model, e) {
+					e.preventDefault();
 					e.stopPropagation();
 					orders.cancelOrder(vm.ordersData, data.cartData().clientId, model, function(order) {
 						vm.products(products.getProducts(vm.filterString));
@@ -338,6 +339,38 @@ require(['knockout',
 			        }
 		        } else {
 		        	$(element).css("background-color", "#EEE");
+		        }
+		    }
+		};
+	
+	ko.bindingHandlers.formattedDate = {
+		    init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+		    	
+		    },
+		    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+		    	var value = valueAccessor();
+		        var valueUnwrapped = ko.unwrap(value);
+		        
+		        if (valueUnwrapped) {
+			        	$(element).html(info.formatDate(valueUnwrapped));
+		        } else {
+		        	$(element).html("");
+		        }
+		    }
+		};
+	
+	ko.bindingHandlers.orderStatus = {
+		    init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+		    	
+		    },
+		    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+		    	var value = valueAccessor();
+		        var valueUnwrapped = ko.unwrap(value);
+		        
+		        if (valueUnwrapped) {
+			        	$(element).html(info.getOrderStatus(valueUnwrapped));
+		        } else {
+		        	$(element).html("");
 		        }
 		    }
 		};

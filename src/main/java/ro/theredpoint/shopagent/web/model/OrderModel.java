@@ -17,9 +17,9 @@ public class OrderModel {
 	private long id;
 	private long clientId;
 	private OrderStatus orderStatus;
-	private Date created;
-	private Date cancelDate;
-	private Date expectedDeliveryDate;
+	private Long created;
+	private Long cancelDate;
+	private Long expectedDeliveryDate;
 	private double amount;
 	private List<OrderItemModel> orderItems;
 	
@@ -28,9 +28,9 @@ public class OrderModel {
 		this.id = order.getId();
 		this.setClientId(order.getClient().getId());
 		this.orderStatus = order.getOrderStatus();
-		this.created = order.getCreated();
-		this.cancelDate = order.getCancelDate();
-		this.expectedDeliveryDate = order.getExpectedDeliveryDate();
+		this.created = order.getCreated() != null ? order.getCreated().getTime() : null;
+		this.cancelDate = order.getCancelDate() != null ? order.getCancelDate().getTime() : null;
+		this.expectedDeliveryDate = order.getExpectedDeliveryDate() != null ? order.getExpectedDeliveryDate().getTime() : null;
 		this.amount = order.getAmount();
 		
 		orderItems = new ArrayList<OrderItemModel>();
@@ -56,24 +56,24 @@ public class OrderModel {
 	public void setOrderStatus(OrderStatus orderStatus) {
 		this.orderStatus = orderStatus;
 	}
-	public Date getCreated() {
+	public Long getCreated() {
 		return created;
 	}
-	public void setCreated(Date created) {
+	public void setCreated(Long created) {
 		this.created = created;
 	}
 	
-	public Date getCancelDate() {
+	public Long getCancelDate() {
 		return cancelDate;
 	}
-	public void setCancelDate(Date cancelDate) {
+	public void setCancelDate(Long cancelDate) {
 		this.cancelDate = cancelDate;
 	}
 	
-	public Date getExpectedDeliveryDate() {
+	public Long getExpectedDeliveryDate() {
 		return expectedDeliveryDate;
 	}
-	public void setExpectedDeliveryDate(Date expectedDeliveryDate) {
+	public void setExpectedDeliveryDate(Long expectedDeliveryDate) {
 		this.expectedDeliveryDate = expectedDeliveryDate;
 	}
 	public double getAmount() {

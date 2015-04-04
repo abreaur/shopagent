@@ -4,8 +4,8 @@
 	        <tr>
 			        <th class="col-sm-1 col-md-1">Numar comand&#259;</th>
 			        <th class="col-sm-2 col-md-2">Dat&#259; plasare</th>
-			        <th class="col-sm-2 col-md-2">Dat&#259; livrare</th>
-			        <th class="col-sm-1 col-md-1">Pret total</th>
+			        <th class="col-sm-2 col-md-2">Dat&#259; estimat&#259; livrare</th>
+			        <th class="col-sm-1 col-md-1">Pre&#x21b; total</th>
 			        <th class="col-sm-1 col-md-1">Status</th>
 			        <th class="col-sm-1 col-md-1"></th>
 			        <th class="col-sm-1 col-md-1"></th>
@@ -13,14 +13,14 @@
 	    </thead>
 	    <tbody>
 	    	<!-- ko foreach: $data.vm.ordersData -->
-	        <tr class="hoverRow" data-bind="attr: {'id' : 'orderRow' + $data.id}, click: $parent.methods.viewOrder">
-	        	<td><div class="cartRow"><span data-bind="text: $data.id"></span></div></td>
-	        	<td><div class="cartRow"><span data-bind="text: $data.created"></span></div></td>
-	        	<td><div class="cartRow"><span data-bind="text: $data.expectedDeliveryDate"></span></div></td>
-	            <td><div class="productPrice cartRow"><label data-bind="text: $data.amount.toFixed(2) + ' RON'"></label></div></td>
+	        <tr class="hoverRow" data-bind="attr: {'id' : 'orderRow' + $data.id}">
+	        	<td><div class="cartRow"><span data-bind="text: $data.id, click: $parent.methods.viewOrder"></span></div></td>
+	        	<td><div class="cartRow"><span data-bind="formattedDate: $data.created, click: $parent.methods.viewOrder"></span></div></td>
+	        	<td><div class="cartRow"><span data-bind="formattedDate: $data.expectedDeliveryDate, click: $parent.methods.viewOrder"></span></div></td>
+	            <td><div class="productPrice cartRow"><span data-bind="text: $data.amount.toFixed(2) + ' RON', click: $parent.methods.viewOrder"></span></div></td>
 	            <td>
 	            	<div class="cartRow">
-	            		<label data-bind="text: $data.orderStatus"></label>
+	            		<span data-bind="orderStatus: $data.orderStatus, click: $parent.methods.viewOrder"></span>
 	            	</div>
 	            </td>
 	         	<td>
