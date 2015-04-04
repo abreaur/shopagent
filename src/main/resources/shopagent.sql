@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.6.22, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.5.40, for Win64 (x86)
 --
 -- Host: localhost    Database: shopagent
 -- ------------------------------------------------------
--- Server version	5.6.22-log
+-- Server version	5.5.40
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -35,7 +35,7 @@ CREATE TABLE `clients` (
   PRIMARY KEY (`client_id`),
   KEY `FK_smrp6gi0tckq1w5rnd7boyowu` (`user_id`),
   CONSTRAINT `FK_smrp6gi0tckq1w5rnd7boyowu` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +44,7 @@ CREATE TABLE `clients` (
 
 LOCK TABLES `clients` WRITE;
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
-INSERT INTO `clients` VALUES (1,'Client 1',2,20000,0.5,'RO24020204','Iasi, Romania','J11/2304/2004','Alpharetta, Georgia'),(2,'Client 2',NULL,18017,0.8,'RO13436705','Tg. Frumos, Romania, Jud. Iasi','','Atlanta, GA, US');
+INSERT INTO `clients` VALUES (1,'Geometry Global',2,20000,0.5,'RO24020204','Str. Frumoasa, sector 1, București','J11/2304/2004',''),(2,'Saatchi & Saatchi',NULL,18017,0.8,'RO13436705','Nicolae Iorga nr. 13, sector 1, București','',''),(3,'MSPS Marketing',NULL,15000,0.1,'RO34789243','Nicolae Caramfil nr.71-73, sector 1, București',NULL,NULL),(4,'Hello Communication',NULL,250000,0.9,'RO56709823','Str. Soldat Radu Mihaila nr. 15 București',NULL,NULL),(5,'HIPPOS',NULL,10000,0.2,NULL,'Str. Vaselor 60, et. 4, București',NULL,NULL);
 /*!40000 ALTER TABLE `clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -75,7 +75,6 @@ CREATE TABLE `order_item_stock_usages` (
 
 LOCK TABLES `order_item_stock_usages` WRITE;
 /*!40000 ALTER TABLE `order_item_stock_usages` DISABLE KEYS */;
-INSERT INTO `order_item_stock_usages` VALUES (33,1,83,12,''),(34,1,85,12,'\0');
 /*!40000 ALTER TABLE `order_item_stock_usages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -105,7 +104,7 @@ CREATE TABLE `order_items` (
   CONSTRAINT `FK_9gap2fmw66v092ntb58rtohwh` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`),
   CONSTRAINT `FK_bq31gjrvv7o8csc9cq7px6tmd` FOREIGN KEY (`stock_id`) REFERENCES `stocks` (`stock_id`),
   CONSTRAINT `FK_q8momd2kqu5mmaf1m5k027wwc` FOREIGN KEY (`unit_of_measure_id`) REFERENCES `unit_of_measures` (`unit_of_measure_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -114,7 +113,6 @@ CREATE TABLE `order_items` (
 
 LOCK TABLES `order_items` WRITE;
 /*!40000 ALTER TABLE `order_items` DISABLE KEYS */;
-INSERT INTO `order_items` VALUES (83,12,0,12,1,48,10,12,1),(84,12,0,12,1,47,10,12,1),(85,12,0,12,1,49,10,12,1);
 /*!40000 ALTER TABLE `order_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -139,7 +137,7 @@ CREATE TABLE `orders` (
   KEY `FK_k8kupdtcdpqd57b6j4yq9uvdj` (`user_id`),
   CONSTRAINT `FK_k8kupdtcdpqd57b6j4yq9uvdj` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   CONSTRAINT `FK_ktwyfbqs32h2qw22odq9pqmex` FOREIGN KEY (`client_id`) REFERENCES `clients` (`client_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,7 +146,6 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (47,12,'2015-04-01 20:42:51',0,1,1,NULL,NULL),(48,12,'2015-04-01 20:43:20',4,2,1,'2015-04-03 09:14:48','2015-04-01 22:16:50'),(49,12,'2015-04-01 21:14:48',1,2,2,'2015-04-03 10:16:44',NULL),(50,0,'2015-04-01 22:16:45',0,2,2,NULL,NULL);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -181,7 +178,7 @@ CREATE TABLE `persons` (
 
 LOCK TABLES `persons` WRITE;
 /*!40000 ALTER TABLE `persons` DISABLE KEYS */;
-INSERT INTO `persons` VALUES (1,'+40 123 122 312',0,'louis.defunes@client2.ro','Louis','+40 232 222 444','De Funes',2,'Director vanzari'),(2,'+40 744 122 312',1,'max.payne@gmail.com','Maxim','+40 332 777 550','Payne',2,'Resurse umane'),(3,'+40 747 133 435',1,'jean.vladoiu@yahoo.com','Jean','+40 332 777 550','Vladoiu',2,'Jucator fotbal');
+INSERT INTO `persons` VALUES (1,'+40 123 122 312',0,'louis.defunes@client2.ro','Louis','+40 232 222 444','De Funes',2,'Director vanzari'),(2,'+40 744 122 312',1,'max.payne@gmail.com','Maxim','+40 332 777 550','Payne',2,'Resurse umane'),(3,'+40 747 133 435',1,'ion.ovidiu@yahoo.com','Ovidiu','+40 332 777 550','Ion',1,'Director vanzari');
 /*!40000 ALTER TABLE `persons` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -206,7 +203,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'Rola 1','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/I/M/IMG_8717.JPG'),(2,'Product 2','http://www.ikea.com/PIAimages/0151521_PE309574_S3.JPG'),(3,'Product 3','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1018300.jpg'),(4,'Product 4','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/10347_large.jpg'),(5,'Product 5','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1002051.jpg'),(6,'Product 6','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1003367_1.jpg'),(7,'Rola 7','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1027681.jpg'),(8,'Product 8','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1024332_1.jpg'),(9,'Product 9','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1018502.jpg'),(10,'Product 10','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/3/4/34112.jpg'),(11,'Product 11','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1019117_2.jpg'),(12,'Product 12','http://i.dedeman.ro/media/catalog/product/cache/dedeman/small_image/135x/9df78eab33525d08d6e5fb8d27136e95/1/0/1032638.jpg');
+INSERT INTO `products` VALUES (1,'Rola tip 1','images/products/RolaTip1.jpg'),(2,'Profile pentru Policarbonat','images/products/profile-pentru-policarbonat-12609-p-0.jpg'),(3,'3M Blockout 3635','images/products/3M-Blockout-3635-0-771.jpg'),(4,'Arlon Wrapping Film 2300X','images/products/arlon-wrapping-film-2300x-13424-p-0.png'),(5,'Natura M/P Photo Paper','images/products/Natura-M-P-Premium-Photo-Glossy-Paper-18-745.jpg'),(6,'Luminus White Back','images/products/Luminus-White-Back-51-1352.jpg'),(7,'Rola tip 2','images/products/RolaTip2.jpg'),(8,'Sublitex satin','images/products/panza-premium-subli-satin-11675-p-0.jpg'),(9,'Natura PVC Vinyl','images/products/Natura-Grey-Adhesive-PVC-Vinyl-45-1351.jpg'),(10,'3M Cleaner Spray','images/products/3M-Cleaner-Spray-46-1312.jpg'),(11,'Kit curatare folii pentru tuning','images/products/Kit-curatare-folii-pentru-tuning-39-1703.jpg'),(12,'Altuglas Cleaner','images/products/altuglas-cleaner-13156-p-0.jpg');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -297,7 +294,7 @@ CREATE TABLE `stocks` (
 
 LOCK TABLES `stocks` WRITE;
 /*!40000 ALTER TABLE `stocks` DISABLE KEYS */;
-INSERT INTO `stocks` VALUES (1,1,1,10,150,''),(2,7,1,2,3,''),(3,1,2,15,1,'\0'),(4,1,2,25,1,'\0'),(5,2,1,2,45,''),(6,3,1,0,345,''),(7,4,1,0,12,''),(8,5,1,2,19.99,''),(9,6,2,200,2,''),(10,8,1,0,1999,''),(11,9,1,1,298,''),(12,10,1,21,12,''),(13,11,1,0,10,''),(14,12,1,0,22,'');
+INSERT INTO `stocks` VALUES (1,1,1,10,150,''),(2,7,1,2,3,''),(3,1,2,15,1,'\0'),(4,1,2,25,1,'\0'),(5,2,2,5,2.4,''),(6,3,3,14,22,''),(7,4,3,7,22,''),(8,5,3,12,2.9,''),(9,6,3,26,1.05,''),(10,8,3,10,2.5,''),(11,9,3,5,4.9,''),(12,10,1,21,16.96,''),(13,11,1,0,15,''),(14,12,1,3,34,'');
 /*!40000 ALTER TABLE `stocks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -313,7 +310,7 @@ CREATE TABLE `unit_of_measures` (
   `code` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`unit_of_measure_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -322,7 +319,7 @@ CREATE TABLE `unit_of_measures` (
 
 LOCK TABLES `unit_of_measures` WRITE;
 /*!40000 ALTER TABLE `unit_of_measures` DISABLE KEYS */;
-INSERT INTO `unit_of_measures` VALUES (1,'buc','Bucata'),(2,'m','Metru');
+INSERT INTO `unit_of_measures` VALUES (1,'buc','Bucata'),(2,'ML','Metru Liniar'),(3,'MP','Metru Patrat');
 /*!40000 ALTER TABLE `unit_of_measures` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -389,4 +386,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-04-02 16:07:19
+-- Dump completed on 2015-04-04 18:48:48
