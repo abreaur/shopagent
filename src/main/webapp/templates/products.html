@@ -1,6 +1,6 @@
 <div class="productsContainer">
 
-	<div class="productsFilter col-sm-12 col-md-3">
+	<div class="productsFilter col-sm-12 col-md-6">
 		<label>Caut&#259; produs</label>
 		<div class="input-group">
 			<span id="productsSearchclear" class="searchClear glyphicon glyphicon-remove-circle" data-bind="'clearinput': true"></span>
@@ -23,6 +23,8 @@
 		<input 	type="text" class="form-control" 
 				data-bind="value: $parent.navbar.selectedClientCreditLimit() ? $parent.navbar.selectedClientCreditLimit().toFixed(2) + ' RON' : ''" readonly>
 	</div>
+	<!-- /ko -->
+	<!-- ko ifnot: $parent.computed.isAgent -->
 	<div class="productsFilter col-sm-6 col-md-3">
 		<label> </label>
 		<input title="Doresc sa fiu contactat de agentul meu de v&#226;nz&#259;ri" 
