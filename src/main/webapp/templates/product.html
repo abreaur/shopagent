@@ -5,7 +5,7 @@
 	<div class="col-sm-12 col-md-3">
 		<div class="productInfo">
 			<h5 data-bind="text: vm.name"></h5>
-			<label class="stock" data-bind="text: vm.hasStock ? 'In stoc' : 'Stoc epuizat', css: {hasStock: vm.hasStock}"></label>
+			<label class="stock" data-bind="text: vm.hasStock ? '&#206;n stoc' : 'Stoc epuizat', css: {hasStock: vm.hasStock}"></label>
 		</div>
 		<!-- ko if: $parent.computed.isAgent -->
 		<div data-bind="foreach: vm.stocks">
@@ -73,9 +73,12 @@
     		</tr>
     	</table>
 		<div class="addToCart">
-			<input type="button" class="btn btn-primary btn-block" value="Adauga la comanda curenta" 
+			<input type="button" class="btn btn-primary btn-block" value="Adaug&#259; la comanda curent&#259;" 
 							data-bind="click: $root.methods.addToCart,
 									   disable: !vm.hasStock || vm.selectedQuantity()==='0' || ($root.computed.isAgent() && !$root.navbar.selectedClient().id)">
+		</div>
+		<div class="backButton">
+			<input type="button" class="btn btn-success btn-block" value="&#206;napoi" data-bind="click: $root.methods.viewProducts">
 		</div>
 	</div>
 </div>

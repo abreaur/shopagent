@@ -2,9 +2,9 @@
 	<table class="table">
 	    <thead>
 	        <tr>
-			        <th class="col-sm-1 col-md-1">Numar comanda</th>
-			        <th class="col-sm-2 col-md-2">Data plasare</th>
-			        <th class="col-sm-2 col-md-2">Data livrare</th>
+			        <th class="col-sm-1 col-md-1">Numar comand&#259;</th>
+			        <th class="col-sm-2 col-md-2">Dat&#259; plasare</th>
+			        <th class="col-sm-2 col-md-2">Dat&#259; livrare</th>
 			        <th class="col-sm-1 col-md-1">Pret total</th>
 			        <th class="col-sm-1 col-md-1">Status</th>
 			        <th class="col-sm-1 col-md-1"></th>
@@ -25,7 +25,7 @@
 	            </td>
 	         	<td>
 	            	<div>
-	            		<input type="button" class="btn btn-primary btn-block" value="Anuleaza" 
+	            		<input type="button" class="btn btn-primary btn-block" value="Anuleaz&#259;" 
 	            				data-toggle="modal"
 	            				data-bind="disable: $data.orderStatus === 'CANCELLED', attr: {'data-target': '#cancelOrderModal' + $data.id}">
 	            	</div>
@@ -42,13 +42,13 @@
 					    <div class="modal-content">
 					      <div class="modal-header">
 					        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-					        <h4 class="modal-title" id="myModalLabel">Confirmare anulare comanda</h4>
+					        <h4 class="modal-title" id="myModalLabel">Confirmare anulare comand&#259;</h4>
 					      </div>
 					      <div class="modal-body">
-					      	<label for="listNameInput">Sigur doriti sa anulati comanda?</label>
+					      	<label for="listNameInput">Sigur dori&#x21b;i s&#259; anula&#x21b;i comanda?</label>
 					      </div>
 					      <div class="modal-footer">
-					        <button type="button" class="btn btn-warning" data-dismiss="modal">Renunta</button>
+					        <button type="button" class="btn btn-warning" data-dismiss="modal">Renunt&#259;</button>
 					        <button type="button" class="btn btn-primary" data-bind="click: $root.methods.cancelOrder">Da</button>
 					      </div>
 					    </div>

@@ -115,6 +115,12 @@ require(['knockout',
 		
 		var methods = {
 				"switchTab": switchTab,
+				"viewProducts": function(model, e) {
+					navbar.selectedTab('products');
+					vm.selectedProductId("");
+					vm.selectedOrderId("");
+					vm.selectedClientDetailsId("");
+				},
 				"viewCart": function(model, e) {
 					if (vm.cartData().orderItems.length > 0) {
 						navbar.selectedTab('cart');

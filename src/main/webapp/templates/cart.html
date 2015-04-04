@@ -5,7 +5,7 @@
 	        	<!-- ko if: $parent.computed.isAgent -->
         			<th class="col-sm-1 col-md-1"></th>
 			        <th class="col-sm-5 col-md-5">Nume articol</th>
-			        <th class="col-sm-1 col-md-1">Pret unitar</th>
+			        <th class="col-sm-1 col-md-1">Pre&#x21b; unitar</th>
 			        <th class="col-sm-2 col-md-2">Cantitate</th>
 			        <th class="col-sm-2 col-md-2">Discount</th>
 			        <th class="col-sm-1 col-md-1"></th>
@@ -13,7 +13,7 @@
         		<!-- ko ifnot: $parent.computed.isAgent -->
 		        	<th class="col-sm-1 col-md-1"></th>
 			        <th class="col-sm-6 col-md-6">Nume articol</th>
-			        <th class="col-sm-1 col-md-1">Pret unitar</th>
+			        <th class="col-sm-1 col-md-1">Pre&#x21b; unitar</th>
 			        <th class="col-sm-2 col-md-2">Cantitate</th>
 			        <th class="col-sm-2 col-md-2"></th>
 		        <!-- /ko -->
@@ -74,21 +74,11 @@
 	            		<label data-bind="text: $data.vm.cartData().amount.toFixed(2) + ' RON'"></label>
 	            	</div>
 	            </td>
-	            <!-- ko if: $parent.computed.isAgent -->
-	         	<td>
-	         		<div>
-	            		<input type="button" class="btn btn-primary btn-block" value="Plaseaza comanda" data-bind="click: $parent.methods.placeActiveOrder">
-	            	</div>
-	         	</td>
-	         	<td></td>
-	            <!-- /ko -->
-	            <!-- ko ifnot: $parent.computed.isAgent -->
 	         	<td>
 	            	<div>
-	            		<input type="button" class="btn btn-primary btn-block" value="Plaseaza comanda" data-bind="click: $parent.methods.placeActiveOrder">
+	            		<input type="button" class="btn btn-primary btn-block" value="Plaseaz&#259; comanda" data-bind="click: $parent.methods.placeActiveOrder">
 	            	</div>
 	            </td>
-	            <!-- /ko -->
 	    	</tr>
 	    </tbody>
 	</table>

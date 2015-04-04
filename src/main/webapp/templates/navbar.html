@@ -32,7 +32,7 @@
 				<!-- ko ifnot: $parent.methods.isCartEmpty -->
 				<li>
 					<span>
-						<a href="#" class="myCart" data-bind="enable: !$parent.methods.isCartEmpty(), click: $parent.methods.viewCart"> Comanda curenta 
+						<a href="#" class="myCart" data-bind="enable: !$parent.methods.isCartEmpty(), click: $parent.methods.viewCart"> Comanda curent&#259; 
 							(<span data-bind="text: $parent.computed.cartSize()">0</span>)
 						</a>
 					</span>
@@ -41,7 +41,7 @@
 				<!-- ko if: $parent.computed.isAgent -->
 		        <li class="dropdown clientSelector">
 			        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-			        	<span data-bind="text: (!navbar.selectedClient().name ? 'Selecteaza client' : navbar.selectedClient().name)"></span>
+			        	<span data-bind="text: (!navbar.selectedClient().name ? 'Selecteaz&#259; client' : navbar.selectedClient().name)"></span>
 						<span class="caret"></span>
 					</a>
 			        <ul class="dropdown-menu" role="menu" data-bind="foreach: $data.vm.clientsData">

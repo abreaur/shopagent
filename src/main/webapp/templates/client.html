@@ -24,7 +24,7 @@
 				</tr>
 				<tr>
 					<td>
-					   <label class="cartRow"  for="clientAddress">Adresa facturare</label>
+					   <label class="cartRow"  for="clientAddress">Adres&#259; facturare</label>
 				     </td>
 					<td>
 					   <input id="clientAddress" type="text" class="form-control" data-bind="value: ($data.address ? address : '')" readonly>
@@ -32,7 +32,7 @@
 				</tr>
 				<tr>
 					<td>
-					   <label class="cartRow"  for="deliveryAddress">Adresa livrare</label>
+					   <label class="cartRow"  for="deliveryAddress">Adres&#259; livrare</label>
 				     </td>
 					<td>
 					   <input id="deliveryAddress" type="text" class="form-control" data-bind="value: ($data.deliveryAddress ? deliveryAddress : '')" readonly>
@@ -48,7 +48,7 @@
 				</tr>
 				<tr>
 					<td>
-					   <label class="cartRow"  for="clientFiscalCode">Nr. Reg. Comertului</label>
+					   <label class="cartRow"  for="clientFiscalCode">Nr. Reg. Comer&#x21b;ului</label>
 				     </td>
 					<td>
 					   <input id="clientFiscalCode" type="text" class="form-control" data-bind="value: ($data.fiscalCode ? fiscalCode : '')" readonly>
@@ -65,7 +65,7 @@
 				</tr>
 				<tr>
 					<td>
-					   <label class="cartRow"  for="clientCreditLimit">Limita credit</label>
+					   <label class="cartRow"  for="clientCreditLimit">Limit&#259; credit</label>
 					</td>
 					<td>
 						<input id="clientCreditLimit" type="text" class="form-control" data-bind="value: ($data.creditLimit ? creditLimit.toFixed(2) + ' RON': '')" readonly>
@@ -74,14 +74,19 @@
 			</tbody>
 		</table>
 		</div>
-		<div class="col-sm-4 col-md-4">
+		<div class="col-sm-3 col-md-3">
 			<input type="button" class="btn btn-primary btn-block" value="Istoric comenzi" data-bind="click: $parent.methods.selectAndViewOrders">
 		</div>
-			<div class="col-sm-4 col-md-4">
+		<div class="col-sm-3 col-md-3">
 			<input type="button" class="btn btn-primary btn-block" value="Facturi scadente">
 		</div>
-			<div class="col-sm-4 col-md-4">
-			<input type="button" class="btn btn-primary btn-block" value="Selecteaza" data-bind="click: $parent.methods.selectClientFromTable">
+		<div class="col-sm-3 col-md-3">
+			<input type="button" class="btn btn-primary btn-block" value="Selecteaz&#259;" data-bind="click: $parent.methods.selectClientFromTable">
+		</div>
+		<div class="col-sm-3 col-md-3">
+			<div>
+				<input type="button" class="btn btn-success btn-block" value="&#206;napoi" data-bind="click: $root.methods.viewClients">
+			</div>
 		</div>
 	</div>
 	<div id="clientContact" class="col-sm-12 col-md-4">
@@ -117,5 +122,4 @@
 			</table>
 		</div>
 	</div>
-
 </div>

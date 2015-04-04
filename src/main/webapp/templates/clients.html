@@ -1,7 +1,7 @@
 <div class="cartContainer">
 
 	<div class="clientsFilter col-sm-12 col-md-6">
-		<label>Cauta client</label>
+		<label>Caut&#259; client</label>
 		<div class="input-group">
 			<span id="clientsSearchclear" class="searchClear glyphicon glyphicon-remove-circle" data-bind="'clearinput': true"></span>
 			<input 	name="filter" id="filter" type="text" class="form-control" placeholder="Nume client" autofocus
@@ -17,12 +17,12 @@
 		    <thead>
 		        <tr>
 			        <th class="col-sm-2 col-md-2">Nume client</th>
-			        <th class="col-sm-3 col-md-3">Adresa</th>
+			        <th class="col-sm-3 col-md-3">Adres&#259;</th>
 			        <th class="col-sm-1 col-md-1">CUI</th>
 			        <th class="col-sm-2 col-md-2">Nr. Reg. Comertului</th>
 			        <th class="col-sm-1 col-md-1">Bonitate</th>
 			        <th class="col-sm-2 col-md-2">Limita credit</th>
-			        <th class="col-sm-1 col-md-1">Selecteaza</th>
+			        <th class="col-sm-1 col-md-1">Selecteaz&#259;</th>
 		        </tr>
 		    </thead>
 		    <tbody data-bind="foreach: $data.vm.clientsData">
@@ -33,7 +33,7 @@
 		            <td><div class="cartRow" data-bind="text: ($data.fiscalCode ? fiscalCode : '')"></div></td>
 		            <td><div class="cartRow" data-bind="text: ($data.reliability ? reliability : '')"></div></td>
 		            <td><div class="cartRow productPrice"><span data-bind="text: ($data.creditLimit ? creditLimit.toFixed(2) + ' RON': '')"></span></div></td>
-		            <td><input type="button" class="btn btn-primary btn-block" value="Selecteaza" data-bind="click: $parent.methods.selectClientFromTable"></td>
+		            <td><input type="button" class="btn btn-primary btn-block" value="Selecteaz&#259;" data-bind="click: $parent.methods.selectClientFromTable"></td>
 		        </tr>
 		    </tbody>
 		</table>

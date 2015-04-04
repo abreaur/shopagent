@@ -1,7 +1,7 @@
 <div class="productsContainer">
 
 	<div class="productsFilter col-sm-12 col-md-6">
-		<label>Cauta produs</label>
+		<label>Caut&#259; produs</label>
 		<div class="input-group">
 			<span id="productsSearchclear" class="searchClear glyphicon glyphicon-remove-circle" data-bind="'clearinput': true"></span>
 			<input 	name="filter" id="filter" type="text" class="form-control" placeholder="Descriere" autofocus
@@ -19,7 +19,7 @@
 				colorValueIndicator: $parent.navbar.selectedClient().reliability" readonly>
 	</div>
 	<div class="productsFilter col-sm-6 col-md-3">
-		<label data-bind="text: $parent.navbar.selectedClient().id ? 'Limita credit ' + $parent.navbar.selectedClient().name + '': 'Limita credit'"></label>
+		<label data-bind="text: $parent.navbar.selectedClient().id ? 'Limit&#259; credit ' + $parent.navbar.selectedClient().name + '': 'Limit&#259; credit'"></label>
 		<input 	type="text" class="form-control" 
 				data-bind="value: $parent.navbar.selectedClientCreditLimit() ? $parent.navbar.selectedClientCreditLimit().toFixed(2) + ' RON' : ''" readonly>
 	</div>
@@ -39,7 +39,7 @@
 						<label class="stock" data-bind="text: 'Stoc: ' +  quantity + ' ' + unitOfMeasure, css: {hasStock: hasStock}"></label>
 					<!-- /ko -->
 					<!-- ko ifnot: $parent.computed.isAgent -->
-						<label class="stock" data-bind="text: hasStock ? 'In stoc' : 'Stoc epuizat', css: {hasStock: hasStock}"></label>
+						<label class="stock" data-bind="text: hasStock ? '&#206;n stoc' : 'Stoc epuizat', css: {hasStock: hasStock}"></label>
 					<!-- /ko -->
 				</div>
 				<table>
@@ -63,7 +63,7 @@
     					</tr>
     			</table>
 				<div class="addToCart">
-					<input 	type="button" class="btn btn-primary btn-block" value="Adauga la comanda curenta" 
+					<input 	type="button" class="btn btn-primary btn-block" value="Adaug&#259; la comanda curent&#259;" 
 							data-bind = "click: $parent.methods.addToCart, 
 										 disable: !hasStock || selectedQuantity()==='0' || ($parent.computed.isAgent() && !$parent.navbar.selectedClient().id)">
 				</div>
