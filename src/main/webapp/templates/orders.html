@@ -14,13 +14,13 @@
 	    <tbody>
 	    	<!-- ko foreach: $data.vm.ordersData -->
 	        <tr class="hoverRow" data-bind="attr: {'id' : 'orderRow' + $data.id}">
-	        	<td><div class="cartRow"><span data-bind="text: $data.id, click: $parent.methods.viewOrder"></span></div></td>
-	        	<td><div class="cartRow"><span data-bind="formattedDate: $data.created, click: $parent.methods.viewOrder"></span></div></td>
-	        	<td><div class="cartRow"><span data-bind="formattedDate: $data.expectedDeliveryDate, click: $parent.methods.viewOrder"></span></div></td>
-	            <td><div class="productPrice cartRow"><span data-bind="text: $data.amount.toFixed(2) + ' RON', click: $parent.methods.viewOrder"></span></div></td>
-	            <td>
+	        	<td data-bind="click: $parent.methods.viewOrder"><div class="cartRow"><span data-bind="text: $data.id"></span></div></td>
+	        	<td data-bind="click: $parent.methods.viewOrder"><div class="cartRow"><span data-bind="formattedDate: $data.created"></span></div></td>
+	        	<td data-bind="click: $parent.methods.viewOrder"><div class="cartRow"><span data-bind="formattedDate: $data.expectedDeliveryDate"></span></div></td>
+	            <td data-bind="click: $parent.methods.viewOrder"><div class="productPrice cartRow"><span data-bind="text: $data.amount.toFixed(2) + ' RON'"></span></div></td>
+	            <td data-bind="click: $parent.methods.viewOrder">
 	            	<div class="cartRow">
-	            		<span data-bind="orderStatus: $data.orderStatus, click: $parent.methods.viewOrder"></span>
+	            		<span data-bind="orderStatus: $data.orderStatus"></span>
 	            	</div>
 	            </td>
 	         	<td>
