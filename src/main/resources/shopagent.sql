@@ -44,7 +44,7 @@ CREATE TABLE `clients` (
 
 LOCK TABLES `clients` WRITE;
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
-INSERT INTO `clients` VALUES (1,'Geometry Global',2,20000,0.5,'RO24020204','Str. Frumoasa, sector 1, București','J11/2304/2004',''),(2,'Saatchi & Saatchi',NULL,18017,0.8,'RO13436705','Nicolae Iorga nr. 13, sector 1, București','',''),(3,'MSPS Marketing',NULL,15000,0.1,'RO34789243','Nicolae Caramfil nr.71-73, sector 1, București',NULL,NULL),(4,'Hello Communication',NULL,250000,0.9,'RO56709823','Str. Soldat Radu Mihaila nr. 15 București',NULL,NULL),(5,'HIPPOS',NULL,10000,0.2,NULL,'Str. Vaselor 60, et. 4, București',NULL,NULL);
+INSERT INTO `clients` VALUES (1,'Geometry Global',2,18250,0.5,'RO24020204','Str. Frumoasa, sector 1, București','J11/2304/2004',''),(2,'Saatchi & Saatchi',NULL,18017,0.8,'RO13436705','Nicolae Iorga nr. 13, sector 1, București','',''),(3,'MSPS Marketing',NULL,15000,0.1,'RO34789243','Nicolae Caramfil nr.71-73, sector 1, București',NULL,NULL),(4,'Hello Communication',NULL,250000,0.9,'RO56709823','Str. Soldat Radu Mihaila nr. 15 București',NULL,NULL),(5,'HIPPOS',NULL,9711.04,0.2,NULL,'Str. Vaselor 60, et. 4, București',NULL,NULL);
 /*!40000 ALTER TABLE `clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -66,7 +66,7 @@ CREATE TABLE `order_item_stock_usages` (
   KEY `FK_nnlu0ol6axm6mm8bpu7sxkc5p` (`used_from_id`),
   CONSTRAINT `FK_nnlu0ol6axm6mm8bpu7sxkc5p` FOREIGN KEY (`used_from_id`) REFERENCES `stocks` (`stock_id`),
   CONSTRAINT `FK_rtddgxhicr7a1i8nur7k3qrcu` FOREIGN KEY (`order_item_id`) REFERENCES `order_items` (`order_item`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,7 +104,7 @@ CREATE TABLE `order_items` (
   CONSTRAINT `FK_9gap2fmw66v092ntb58rtohwh` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`),
   CONSTRAINT `FK_bq31gjrvv7o8csc9cq7px6tmd` FOREIGN KEY (`stock_id`) REFERENCES `stocks` (`stock_id`),
   CONSTRAINT `FK_q8momd2kqu5mmaf1m5k027wwc` FOREIGN KEY (`unit_of_measure_id`) REFERENCES `unit_of_measures` (`unit_of_measure_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -137,7 +137,7 @@ CREATE TABLE `orders` (
   KEY `FK_k8kupdtcdpqd57b6j4yq9uvdj` (`user_id`),
   CONSTRAINT `FK_k8kupdtcdpqd57b6j4yq9uvdj` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   CONSTRAINT `FK_ktwyfbqs32h2qw22odq9pqmex` FOREIGN KEY (`client_id`) REFERENCES `clients` (`client_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -286,7 +286,7 @@ CREATE TABLE `stocks` (
   KEY `FK_t4dk2ens7morbtjktcpy5xoe7` (`unit_of_measure_id`),
   CONSTRAINT `FK_htp625bmmsb6gay567r5sdfoc` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`),
   CONSTRAINT `FK_t4dk2ens7morbtjktcpy5xoe7` FOREIGN KEY (`unit_of_measure_id`) REFERENCES `unit_of_measures` (`unit_of_measure_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -295,7 +295,7 @@ CREATE TABLE `stocks` (
 
 LOCK TABLES `stocks` WRITE;
 /*!40000 ALTER TABLE `stocks` DISABLE KEYS */;
-INSERT INTO `stocks` VALUES (1,1,1,10,150,''),(2,7,1,2,3,''),(3,1,2,15,1,'\0'),(4,1,2,25,1,'\0'),(5,2,2,5,2.4,''),(6,3,3,14,22,''),(7,4,3,7,22,''),(8,5,3,12,2.9,''),(9,6,3,26,1.05,''),(10,8,3,10,2.5,''),(11,9,3,5,4.9,''),(12,10,1,21,16.96,''),(13,11,1,0,15,''),(14,12,1,3,34,'');
+INSERT INTO `stocks` VALUES (1,1,1,10,150,''),(2,7,1,2,3,''),(3,1,2,15,1,'\0'),(4,1,2,25,1,'\0'),(5,2,2,5,2.4,''),(6,3,3,9,22,''),(7,4,3,6,22,''),(8,5,3,12,2.9,''),(9,6,3,26,1.05,''),(10,8,3,10,2.5,''),(11,9,3,5,4.9,''),(12,10,1,17,16.96,''),(13,11,1,0,15,''),(14,12,1,0,34,'');
 /*!40000 ALTER TABLE `stocks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -387,4 +387,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-04-04 19:55:18
+-- Dump completed on 2015-04-05 11:15:25

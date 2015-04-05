@@ -38,7 +38,7 @@ import ro.theredpoint.shopagent.service.SecurityService;
  * @author Radu DELIU
  */
 @Service
-@Transactional
+@Transactional(rollbackFor = BusinessException.class)
 public class OrderServiceImpl implements OrderService {
 
 	private static final Logger LOG = Logger.getLogger(OrderServiceImpl.class);
@@ -172,7 +172,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = BusinessException.class)
 	public Order placeActiveOrder(long clientId) throws BusinessException {
 		
 		Order order = orderRepository.findByClientAndOrderStatus(clientId, OrderStatus.BASKET);
@@ -184,6 +184,13 @@ public class OrderServiceImpl implements OrderService {
 		
 		if ((order.getOrderItems() == null) || (order.getOrderItems().isEmpty())) {
 			throw new BusinessException("Comanda nu poate fi plasata deoarece nu contine nici un produs.");
+		}
+		
+		for (OrderItem orderItem : order.getOrderItems()) {
+			if (orderItem.getQuantity() == 0) {
+				throw new BusinessException(String.format("Comanda nu poate fi plasata deoarece nu ati specificat "
+						+ "cantitatea pentru %s.", orderItem.getProduct().getName()));
+			}
 		}
 		
 		removeStock(order);
@@ -555,7 +562,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = BusinessException.class)
 	public Order cancelOrder(long orderId) throws BusinessException {
 
 		Order order = orderRepository.findOne(orderId);
