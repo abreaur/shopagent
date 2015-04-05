@@ -68,7 +68,7 @@
 					   <label class="cartRow"  for="clientCreditLimit">Limit&#259; credit</label>
 					</td>
 					<td>
-						<input id="clientCreditLimit" type="text" class="form-control" data-bind="value: ($data.creditLimit ? creditLimit.toFixed(2) + ' RON': '')" readonly>
+						<input id="clientCreditLimit" type="text" class="form-control" data-bind="value: ($data.creditLimit ? creditLimit.formatMoney(2) + ' RON': '')" readonly>
 			        </td>
 				</tr>
 			</tbody>

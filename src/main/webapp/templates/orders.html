@@ -17,7 +17,7 @@
 	        	<td data-bind="click: $parent.methods.viewOrder"><div class="cartRow"><span data-bind="text: $data.id"></span></div></td>
 	        	<td data-bind="click: $parent.methods.viewOrder"><div class="cartRow"><span data-bind="formattedDate: $data.created"></span></div></td>
 	        	<td data-bind="click: $parent.methods.viewOrder"><div class="cartRow"><span data-bind="formattedDate: $data.expectedDeliveryDate"></span></div></td>
-	            <td data-bind="click: $parent.methods.viewOrder"><div class="productPrice cartRow"><span data-bind="text: $data.amount.toFixed(2) + ' RON'"></span></div></td>
+	            <td data-bind="click: $parent.methods.viewOrder"><div class="productPrice cartRow"><span data-bind="text: $data.amount.formatMoney(2) + ' RON'"></span></div></td>
 	            <td data-bind="click: $parent.methods.viewOrder">
 	            	<div class="cartRow">
 	            		<span data-bind="orderStatus: $data.orderStatus"></span>

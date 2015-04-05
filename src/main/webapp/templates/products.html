@@ -21,7 +21,7 @@
 	<div class="productsFilter col-sm-6 col-md-3">
 		<label data-bind="text: $parent.navbar.selectedClient().id ? 'Limit&#259; credit ' + $parent.navbar.selectedClient().name + '': 'Limit&#259; credit'"></label>
 		<input 	type="text" class="form-control" 
-				data-bind="value: $parent.navbar.selectedClientCreditLimit() ? $parent.navbar.selectedClientCreditLimit().toFixed(2) + ' RON' : ''" readonly>
+				data-bind="value: $parent.navbar.selectedClientCreditLimit() ? $parent.navbar.selectedClientCreditLimit().formatMoney(2) + ' RON' : ''" readonly>
 	</div>
 	<!-- /ko -->
 	<!-- ko ifnot: $parent.computed.isAgent -->
@@ -66,7 +66,7 @@
 		    				<td>
 								<div class="productPrice">
 									<h3>
-										<strong data-bind="text: price.toFixed(2)"></strong>
+										<strong data-bind="text: price.formatMoney(2)"></strong>
 									</h3>
 									<span>RON / </span><span data-bind="text: unitOfMeasure"></span>
 								</div>

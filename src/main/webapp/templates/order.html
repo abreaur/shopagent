@@ -36,7 +36,7 @@
 	            </td>
 	            <td>
 		            <div class="productPrice cartRow">
-		            	<span data-bind="text: price.toFixed(2) + ' RON'"></span>
+		            	<span data-bind="text: price.formatMoney(2) + ' RON'"></span>
 		            </div>
 	            </td>
 	            <td>
@@ -51,7 +51,7 @@
 	            </td>
 	            <td>
 		            <div class="productPrice cartRow">
-		            	<span data-bind="text: amount.toFixed(2) + ' RON'"></span>
+		            	<span data-bind="text: amount.formatMoney(2) + ' RON'"></span>
 		            </div>
 	            </td>
 	            <td></td>
@@ -60,6 +60,8 @@
 	    	<tr>
 	        	<td></td>
 	        	<td></td>
+	    		<td></td>
+	            <td></td>
 	        	<td>
 	            	<div class="cartRow productPrice">
 	            		<label>TOTAL:</label>
@@ -67,12 +69,9 @@
 	            </td>
 	            <td>
 	            	<div class="cartRow productPrice">
-	            		<label data-bind="text: $data.amount ? $data.amount.toFixed(2) + ' RON' : ''"></label>
+	            		<label data-bind="text: $data.amount ? $data.amount.formatMoney(2) + ' RON' : ''"></label>
 	            	</div>
 	            </td>
-	    		<td></td>
-	            <td></td>
-	        	<td></td>
 	        </tr>
 	    </tbody>
 	</table>

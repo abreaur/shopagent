@@ -32,7 +32,7 @@
 		            <td><div class="cartRow" data-bind="text: ($data.CUI ? CUI : '')"></div></td>
 		            <td><div class="cartRow" data-bind="text: ($data.fiscalCode ? fiscalCode : '')"></div></td>
 		            <td><div class="cartRow" data-bind="text: ($data.reliability ? reliability : '')"></div></td>
-		            <td><div class="cartRow productPrice"><span data-bind="text: ($data.creditLimit ? creditLimit.toFixed(2) + ' RON': '')"></span></div></td>
+		            <td><div class="cartRow productPrice"><span data-bind="text: ($data.creditLimit ? creditLimit.formatMoney(2) + ' RON': '')"></span></div></td>
 		            <td><input type="button" class="btn btn-primary btn-block" value="Selecteaz&#259;" data-bind="click: $parent.methods.selectClientFromTable"></td>
 		        </tr>
 		    </tbody>
