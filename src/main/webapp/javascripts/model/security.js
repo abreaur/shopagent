@@ -18,9 +18,9 @@ define(['cart', 'orders', 'knockout'], function (cart, orders, ko) {
 					}
 				}
 				
-				if (isClient) {
-					cart.loadCart(cartObservable, data.id);
-					orders.loadOrders(ordersObservable, data.id);
+				if (isClient && data.clientId) {
+					cart.loadCart(cartObservable, data.clientId);
+					orders.loadOrders(ordersObservable, data.clientId);
 				}
 			});
 		}
