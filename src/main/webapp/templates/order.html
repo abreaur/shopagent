@@ -15,10 +15,10 @@
 	        <tr>
         			<th class="col-sm-1 col-md-1"></th>
 			        <th class="col-sm-5 col-md-4">Nume articol</th>
-			        <th class="col-sm-1 col-md-2 centerText">Pre&#x21b; &#238;ntreg</th>
-			        <th class="col-sm-1 col-md-2 centerText">Pre&#x21b;</th>
+			        <th class="col-sm-1 col-md-2 centerText">Pre&#x21b; unitar</th>
 			        <th class="col-sm-1 col-md-1 centerText">Cantitate</th>
 			        <th class="col-sm-2 col-md-2 centerText">Discount special</th>
+			        <th class="col-sm-1 col-md-2 centerText">Total</th>
 	        </tr>
 	    </thead>
 	    <tbody>
@@ -40,11 +40,6 @@
 		            </div>
 	            </td>
 	            <td>
-		            <div class="productPrice cartRow">
-		            	<span data-bind="text: amount.toFixed(2) + ' RON'"></span>
-		            </div>
-	            </td>
-	            <td>
 	            	<div class="productPrice cartRow">
 	            		<span data-bind="text: quantity + ' ' + unitOfMeasure"></span>
 	            	</div>
@@ -53,6 +48,11 @@
 	            	<div class="productPrice cartRow">
 	            		<span data-bind="text: discount > 0 ? discount + ' %' : '-'"></span>
 	            	</div>
+	            </td>
+	            <td>
+		            <div class="productPrice cartRow">
+		            	<span data-bind="text: amount.toFixed(2) + ' RON'"></span>
+		            </div>
 	            </td>
 	            <td></td>
 	    	</tr>
@@ -86,17 +86,23 @@
 	    </thead>
 	    <tbody>
 	        <tr>
-				<td>
-		            <div>
-						<input type="button" class="btn btn-primary btn-block" value="Ini&#x21b;iaz&#259; sesizare" data-bind="disable: true">
-					</div>
+	        	<!-- ko ifnot: $parent.computed.isAgent -->
+	        	<td>
+					    <div>
+							<input type="button" class="btn btn-primary btn-block" value="Ini&#x21b;iaz&#259; sesizare" data-bind="disable: true">
+						</div>
 				</td>
+				<!-- /ko -->
 				<td>
 		            <div>
 						<input type="button" class="btn btn-success btn-block" value="&#206;napoi" data-bind="click: $root.methods.viewOrders">
 					</div>
 				</td>
 				<td></td>
+				<!-- ko if: $parent.computed.isAgent -->
+	        	<td></td>
+				<!-- /ko -->
+				
 			</tr>
 	    </tbody>
 	</table>

@@ -4,7 +4,7 @@
 	</div>
 	<div class="col-sm-12 col-md-3">
 		<div class="productInfo">
-			<h5 data-bind="text: vm.name"></h5>
+			<h4 data-bind="text: vm.name"></h4>
 			<label class="stock" data-bind="text: vm.hasStock ? '&#206;n stoc' : 'Stoc epuizat', css: {hasStock: vm.hasStock}"></label>
 		</div>
 		<!-- ko if: $parent.computed.isAgent -->
@@ -80,5 +80,8 @@
 		<div class="backButton">
 			<input type="button" class="btn btn-success btn-block" value="&#206;napoi" data-bind="click: $root.methods.viewProducts">
 		</div>
+	</div>
+	<div class="productDescription col-sm-12 col-md-4">
+		<span data-bind="text: vm.description"></span>
 	</div>
 </div>

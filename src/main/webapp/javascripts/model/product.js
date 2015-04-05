@@ -48,6 +48,7 @@ define([ 'knockout' ], function(ko) {
 					"hasStock" : data.hasStock,
 					"mainStockId" : data.stockId,
 					"name" : data.name,
+					"description" : data.description,
 					"id" : data.id,
 					"selectedQuantity" : ko.observable(1),
 					"stocks" : stocks,
